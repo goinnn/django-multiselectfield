@@ -29,7 +29,7 @@ class MultiSelectField(models.Field):
 
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
-        return self.get_db_prep_value(value)
+        return self.get_prep_value(value)
 
     def validate(self, value, model_instance):
         arr_choices = self.get_choices_selected(self.get_choices_default())
@@ -46,7 +46,7 @@ class MultiSelectField(models.Field):
         defaults.update(kwargs)
         return MultiSelectFormField(**defaults)
 
-    def get_db_prep_value(self, value, connection, prepared=False):
+    def get_prep_value(self, value):
         if isinstance(value, basestring):
             return value
         elif isinstance(value, list):
