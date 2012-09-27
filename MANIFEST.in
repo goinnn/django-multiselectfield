@@ -1,4 +1,3 @@
 include README.rst
-include AUTHORS
-include CHANGES
+include CHANGES.rst
 include *.py
