@@ -12,6 +12,7 @@ setup(
     name="django-multiselectfield",
     version="0.0.1",
     author="Daniel Roseman",
+    author_email="goinnn@gmail.com",
     description="Django multiple select field",
     long_description=(read('README.rst') + '\n\n' + read('CHANGES.rst')),
     classifiers=[
