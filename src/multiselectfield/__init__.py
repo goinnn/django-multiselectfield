@@ -1,2 +1,1 @@
 from multiselectfield.db.fields import MultiSelectField
-from multiselectfield.forms.fields import MultiSelectFormField

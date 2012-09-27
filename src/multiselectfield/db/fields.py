@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import capfirst
 from django.core import exceptions
 
-from multiselectfield import MultiSelectFormField
+from ..forms.fields import MultiSelectFormField
 
 
 class MultiSelectField(models.Field):
@@ -62,3 +62,9 @@ class MultiSelectField(models.Field):
         if self.choices:
             func = lambda self, fieldname = name, choicedict = dict(self.choices): ",".join([choicedict.get(value, value) for value in getattr(self, fieldname)])
             setattr(cls, 'get_%s_display' % self.name, func)
+
+try:
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ['^multiselectfield\.db.fields\.MultiSelectField'])
+except ImportError:
+    pass
