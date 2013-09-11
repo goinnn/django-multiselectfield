@@ -35,17 +35,23 @@ In your models.py
 
     ...
 
+    MY_CHOICES = (('item_key1', 'Item title1'),
+                  ('item_key2', 'Item title2'),
+                  ('item_key3', 'Item title3'),
+                  ('item_key4', 'Item title4'),
+                  ('item_key5', 'Item title5'))
+
     class MyModel(models.Model):
 
         .....
 
-        my_field = MultiSelectField(verbose_name=_('xxx'), choices=MY_CHOICES)
+        my_field = MultiSelectField(choices=MY_CHOICES, max_length=20)
 
 
 Development
 ===========
 
 You can get the last bleeding edge version of django-configfield by doing a clone
-of its hg repository::
+of its git repository::
 
   git clone https://github.com/goinnn/django-multiselectfield

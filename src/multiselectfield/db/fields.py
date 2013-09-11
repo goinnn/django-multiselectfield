@@ -1,13 +1,52 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2012-2013 by Pablo Martín <goinnn@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this programe.  If not, see <http://www.gnu.org/licenses/>.
+
+
+import sys
+
 from django.db import models
 from django.utils.text import capfirst
 from django.core import exceptions
 
 from ..forms.fields import MultiSelectFormField
 
+if sys.version_info.major == 2:
+    string = basestring
+    string_type = unicode
+else:
+    string = str
+    string_type = string
+
+# Code from six egg https://bitbucket.org/gutworth/six/src/a3641cb211cc360848f1e2dd92e9ae6cd1de55dd/six.py?at=default
+
+
+def add_metaclass(metaclass):
+    """Class decorator for creating a class with a metaclass."""
+    def wrapper(cls):
+        orig_vars = cls.__dict__.copy()
+        orig_vars.pop('__dict__', None)
+        orig_vars.pop('__weakref__', None)
+        for slots_var in orig_vars.get('__slots__', ()):
+            orig_vars.pop(slots_var)
+        return metaclass(cls.__name__, cls.__bases__, orig_vars)
+    return wrapper
+
 
 class MultiSelectField(models.Field):
     """ Choice values can not contain commas. """
-    __metaclass__ = models.SubfieldBase
 
     def get_internal_type(self):
         return "CharField"
@@ -47,7 +86,7 @@ class MultiSelectField(models.Field):
         return MultiSelectFormField(**defaults)
 
     def get_prep_value(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, string):
             return value
         elif isinstance(value, list):
             return ",".join(value)
@@ -60,8 +99,11 @@ class MultiSelectField(models.Field):
     def contribute_to_class(self, cls, name):
         super(MultiSelectField, self).contribute_to_class(cls, name)
         if self.choices:
-            func = lambda self, fieldname = name, choicedict = dict(self.choices): ",".join([choicedict.get(value, value) for value in getattr(self, fieldname)])
+            func = lambda self, fieldname = name, choicedict = dict(self.choices): ",".join([string_type(choicedict.get(value, value)) for value in getattr(self, fieldname)])
             setattr(cls, 'get_%s_display' % self.name, func)
+
+
+MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
 
 try:
     from south.modelsinspector import add_introspection_rules
