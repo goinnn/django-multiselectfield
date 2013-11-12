@@ -23,7 +23,7 @@ from django.core import exceptions
 
 from ..forms.fields import MultiSelectFormField
 
-if sys.version_info.major == 2:
+if sys.version_info[0] == 2:
     string = basestring
     string_type = unicode
 else:
