@@ -1,3 +1,9 @@
+0.0.4 (2013-11-??)
+------------------
+* Support to python2.6
+* Thanks to:
+    * `Daniele Procida <https://github.com/evildmp>`_
+
 0.0.3 (2013-09-11)
 ------------------
 
