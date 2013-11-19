@@ -38,12 +38,11 @@ TAGS_CHOICES = (
     ('nice', 'Nice'),
 )
 
-#"categories": "4,5",
-
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    categories = MultiSelectField(choices=CATEGORY_CHOICES, max_length=10)
+    categories = MultiSelectField(choices=CATEGORY_CHOICES, max_length=10,
+                                  null=True, blank=True)
     tags = MultiSelectField(choices=TAGS_CHOICES, max_length=10)
 
     def __str__(self):
