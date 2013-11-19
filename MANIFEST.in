@@ -2,3 +2,4 @@ include README.rst
 include CHANGES.rst
 include COPYING.LGPLv3
 include *.py
+prune   example/
