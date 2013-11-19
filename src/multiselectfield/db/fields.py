@@ -45,11 +45,8 @@ def add_metaclass(metaclass):
     return wrapper
 
 
-class MultiSelectField(models.Field):
+class MultiSelectField(models.CharField):
     """ Choice values can not contain commas. """
-
-    def get_internal_type(self):
-        return "CharField"
 
     def get_choices_default(self):
         return self.get_choices(include_blank=False)
@@ -59,7 +56,7 @@ class MultiSelectField(models.Field):
             return False
         list = []
         for choice_selected in arr_choices:
-            list.append(choice_selected[0])
+            list.append(string_type(choice_selected[0]))
         return list
 
     def _get_FIELD_display(self, field):
