@@ -69,10 +69,6 @@ class MultiSelectField(models.CharField):
             list.append(string_type(choice_selected[0]))
         return list
 
-    def _get_FIELD_display(self, field):
-        value = getattr(self, field.attname)
-        choicedict = dict(field.choices)
-
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
         return self.get_prep_value(value)
@@ -110,9 +106,20 @@ class MultiSelectField(models.CharField):
     def contribute_to_class(self, cls, name):
         super(MultiSelectField, self).contribute_to_class(cls, name)
         if self.choices:
-            func = lambda self, fieldname = name, choicedict = dict(self.choices): ",".join([string_type(choicedict.get(value, value)) for value in getattr(self, fieldname)])
-            setattr(cls, 'get_%s_display' % self.name, func)
-
+            def get_display(obj):
+                fieldname = name
+                choicedict = dict(self.choices)
+                display = []
+                for value in getattr(obj, fieldname):
+                    item_display = choicedict.get(value, None)
+                    if item_display is None:
+                        try:
+                            item_display = choicedict.get(int(value), value)
+                        except (ValueError, TypeError):
+                            item_display = value
+                    display.append(string_type(item_display))
+                return ", ".join(display)
+            setattr(cls, 'get_%s_display' % self.name, get_display)
 
 MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
 
