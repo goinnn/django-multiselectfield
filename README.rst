@@ -15,7 +15,7 @@ django-multiselectfield
 
 A new model and form field. With this you can get a multiple select from a choices
 
-This egg is done from a `snippet <http://djangosnippets.org/snippets/1200/>`_
+This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>`_
 
 Installation
 ============
