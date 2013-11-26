@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
+from django.core.exceptions import ValidationError
 from django.forms.models import modelform_factory
 from django.test import TestCase
 
@@ -38,3 +39,24 @@ class MultiSelectTestCase(TestCase):
         book = Book.objects.all()[0]
         self.assertEqual(book.get_tags_display(), 'Sex, Work, Happy')
         self.assertEqual(book.get_categories_display(), 'Handbooks and manuals by discipline, Books of literary criticism, Books about literature')
+
+    def test_validate(self):
+        book = Book.objects.all()[0]
+        Book._meta.get_field_by_name('tags')[0].clean(['sex', 'work'], book)
+        try:
+            Book._meta.get_field_by_name('tags')[0].clean(['sex1', 'work'], book)
+            raise AssertionError()
+        except ValidationError:
+            pass
+
+        Book._meta.get_field_by_name('categories')[0].clean(['1', '2', '3'], book)
+        try:
+            Book._meta.get_field_by_name('categories')[0].clean(['1', '2', '3', '4'], book)
+            raise AssertionError()
+        except ValidationError:
+            pass
+        try:
+            Book._meta.get_field_by_name('categories')[0].clean(['11', '12', '13'], book)
+            raise AssertionError()
+        except ValidationError:
+            pass
