@@ -36,12 +36,12 @@ class MultiSelectTestCase(TestCase):
             form.save()
 
     def test_object(self):
-        book = Book.objects.all()[0]
+        book = Book.objects.get(id=1)
         self.assertEqual(book.get_tags_display(), 'Sex, Work, Happy')
         self.assertEqual(book.get_categories_display(), 'Handbooks and manuals by discipline, Books of literary criticism, Books about literature')
 
     def test_validate(self):
-        book = Book.objects.all()[0]
+        book = Book.objects.get(id=1)
         Book._meta.get_field_by_name('tags')[0].clean(['sex', 'work'], book)
         try:
             Book._meta.get_field_by_name('tags')[0].clean(['sex1', 'work'], book)
@@ -60,3 +60,8 @@ class MultiSelectTestCase(TestCase):
             raise AssertionError()
         except ValidationError:
             pass
+
+    def test_serializer(self):
+        book = Book.objects.get(id=1)
+        self.assertEqual(Book._meta.get_field_by_name('tags')[0].value_to_string(book), 'sex,work,happy')
+        self.assertEqual(Book._meta.get_field_by_name('categories')[0].value_to_string(book), '1,3,5')

@@ -20,7 +20,7 @@ from multiselectfield import MultiSelectField
 
 CATEGORY_CHOICES = (
     (1, 'Handbooks and manuals by discipline'),
-    (2, 'Business books2'),
+    (2, 'Business books'),
     (3, 'Books of literary criticism'),
     (4, 'Books about literary theory'),
     (5, 'Books about literature')
