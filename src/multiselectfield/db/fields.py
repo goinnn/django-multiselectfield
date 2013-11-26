@@ -21,7 +21,9 @@ from django.db import models
 from django.utils.text import capfirst
 from django.core import exceptions
 
-from ..forms.fields import MultiSelectFormField
+from ..forms.fields import MultiSelectFormField, MaxChoicesValidator
+from ..utils import get_max_length
+from ..validators import MaxValueMultiFieldValidator
 
 if sys.version_info[0] == 2:
     string = basestring
@@ -48,11 +50,19 @@ def add_metaclass(metaclass):
 class MultiSelectField(models.CharField):
     """ Choice values can not contain commas. """
 
+    def __init__(self, *args, **kwargs):
+        self.max_choices = kwargs.pop('max_choices', None)
+        super(MultiSelectField, self).__init__(*args, **kwargs)
+        self.max_length = get_max_length(self.choices, self.max_length)
+        self.validators[0] = MaxValueMultiFieldValidator(self.max_length)
+        if self.max_choices is not None:
+            self.validators.append(MaxChoicesValidator(self.max_choices))
+
     def get_choices_default(self):
         return self.get_choices(include_blank=False)
 
-    def get_choices_selected(self, arr_choices=''):
-        if not arr_choices:
+    def get_choices_selected(self, arr_choices=None):
+        if arr_choices is None:
             return False
         list = []
         for choice_selected in arr_choices:
@@ -75,8 +85,12 @@ class MultiSelectField(models.CharField):
         return
 
     def formfield(self, **kwargs):
-        defaults = {'required': not self.blank, 'label': capfirst(self.verbose_name),
-                    'help_text': self.help_text, 'choices': self.choices}
+        defaults = {'required': not self.blank,
+                    'label': capfirst(self.verbose_name),
+                    'help_text': self.help_text,
+                    'choices': self.choices,
+                    'max_length': self.max_length,
+                    'max_choices': self.max_choices}
         if self.has_default():
             defaults['initial'] = self.get_default()
         defaults.update(kwargs)
