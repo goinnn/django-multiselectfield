@@ -1,0 +1,12 @@
+[run]
+source = multiselectfield
+omit =
+    example/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    def parse_args
