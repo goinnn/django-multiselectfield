@@ -76,3 +76,15 @@ You can get the last bleeding edge version of django-configfield by doing a clon
 of its git repository::
 
   git clone https://github.com/goinnn/django-multiselectfield
+
+
+Example project
+===============
+
+In the source tree, you will find a directory called  `example <https://github.com/goinnn/django-multiselectfield/tree/master/example/>`_. It contains
+a readily setup project that uses django-multiselectfield. You can run it as usual:
+
+::
+
+    python manage.py syncdb --noinput
+    python manage.py runserver
