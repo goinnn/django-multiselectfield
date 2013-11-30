@@ -6,6 +6,7 @@
 * Now max_length is not required, the Multiselect field calculate it automatically. 
 * The max_choices attr can be a attr in the model field
 * Refactor the code
+* Spanish translations
 * Support to python2.6
 * Thanks to:
     * `Daniele Procida <https://github.com/evildmp>`_
