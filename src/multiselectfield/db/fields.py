@@ -27,11 +27,9 @@ from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator
 
 if sys.version_info[0] == 2:
-    string = basestring
     string_type = unicode
 else:
-    string = str
-    string_type = string
+    string_type = str
 
 # Code from six egg https://bitbucket.org/gutworth/six/src/a3641cb211cc360848f1e2dd92e9ae6cd1de55dd/six.py?at=default
 
@@ -102,10 +100,7 @@ class MultiSelectField(models.CharField):
         return MultiSelectFormField(**defaults)
 
     def get_prep_value(self, value):
-        if isinstance(value, string):
-            return value
-        elif isinstance(value, list):
-            return ",".join(value)
+        return ",".join(value)
 
     def to_python(self, value):
         if value is not None:
