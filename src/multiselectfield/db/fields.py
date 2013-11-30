@@ -82,7 +82,12 @@ class MultiSelectField(models.CharField):
                     raise exceptions.ValidationError(self.error_messages['invalid_choice'] % {"value": value})
                 else:
                     raise exceptions.ValidationError(self.error_messages['invalid_choice'] % value)
-        return
+
+    def get_default(self):
+        default = super(MultiSelectField, self).get_default()
+        if isinstance(default, int):
+            default = string_type(default)
+        return default
 
     def formfield(self, **kwargs):
         defaults = {'required': not self.blank,

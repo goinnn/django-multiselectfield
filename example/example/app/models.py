@@ -42,7 +42,9 @@ TAGS_CHOICES = (
 class Book(models.Model):
     title = models.CharField(max_length=200)
     categories = MultiSelectField(choices=CATEGORY_CHOICES,
-                                  max_choices=3)
+                                  max_choices=3,
+                                  #default='1,5',
+                                  default=1)
     tags = MultiSelectField(choices=TAGS_CHOICES,
                             null=True, blank=True)
 
