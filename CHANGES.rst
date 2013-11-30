@@ -1,10 +1,11 @@
-0.1.0 (2013-11-??)
+0.1.0 (2013-11-30)
 ------------------
 
 * Test/example project
 * Now works if the first composant of the list of tuple is an integer
 * Now max_length is not required, the Multiselect field calculate it automatically. 
 * The max_choices attr can be a attr in the model field
+* Refactor the code
 * Support to python2.6
 * Thanks to:
     * `Daniele Procida <https://github.com/evildmp>`_
