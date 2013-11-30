@@ -60,13 +60,11 @@ class MultiSelectField(models.CharField):
     def get_choices_default(self):
         return self.get_choices(include_blank=False)
 
-    def get_choices_selected(self, arr_choices=None):
-        if arr_choices is None:
-            return False
-        list = []
+    def get_choices_selected(self, arr_choices):
+        choices_selected = []
         for choice_selected in arr_choices:
-            list.append(string_type(choice_selected[0]))
-        return list
+            choices_selected.append(string_type(choice_selected[0]))
+        return choices_selected
 
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
