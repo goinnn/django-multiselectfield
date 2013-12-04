@@ -41,7 +41,6 @@ setup(
     keywords="django,multiple,select,field,choices",
     url='https://github.com/goinnn/django-multiselectfield',
     packages=find_packages(),
-    package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
 )
