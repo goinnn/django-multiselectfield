@@ -1,3 +1,8 @@
+0.1.1 (2013-12-04)
+------------------
+* Move the multiselectfield app to parent folder
+* Details
+
 0.1.0 (2013-11-30)
 ------------------
 
