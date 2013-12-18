@@ -19,6 +19,7 @@ from django.forms.models import modelform_factory
 from django.test import TestCase
 
 from example.app.models import Book
+from multiselectfield import MultiSelectField
 
 
 class MultiSelectTestCase(TestCase):
@@ -65,3 +66,10 @@ class MultiSelectTestCase(TestCase):
         book = Book.objects.get(id=1)
         self.assertEqual(Book._meta.get_field_by_name('tags')[0].value_to_string(book), 'sex,work,happy')
         self.assertEqual(Book._meta.get_field_by_name('categories')[0].value_to_string(book), '1,3,5')
+
+    def test_to_python(self):
+        f = MultiSelectField()
+        self.assertEqual(f.to_python(''), [])
+        self.assertEqual(f.to_python(None), None)
+        self.assertEqual(f.to_python('a,b'), ['a', 'b'])
+        self.assertEqual(f.to_python(['a', 'b']), ['a', 'b'])
