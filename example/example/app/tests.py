@@ -79,5 +79,5 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(f.get_default(), ['a','b'])
         f.default = ('a','b')
         self.assertEqual(f.get_default(), ('a','b'))
-        f.default = {'a','b'}
-        self.assertEqual(f.get_default(), {'a','b'})
+        f.default = set(['a','b'])
+        self.assertEqual(f.get_default(), set(['a','b']))
