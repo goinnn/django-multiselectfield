@@ -73,3 +73,8 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(f.to_python(None), None)
         self.assertEqual(f.to_python('a,b'), ['a', 'b'])
         self.assertEqual(f.to_python(['a', 'b']), ['a', 'b'])
+
+    def test_get_prep_value(self):
+        f = MultiSelectField()
+        self.assertEqual(f.get_prep_value(None), None)
+        self.assertEqual(f.get_prep_value(['a', 'b']), 'a,b')
