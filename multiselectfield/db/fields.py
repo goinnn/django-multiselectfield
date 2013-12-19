@@ -98,7 +98,10 @@ class MultiSelectField(models.CharField):
         return MultiSelectFormField(**defaults)
 
     def get_prep_value(self, value):
-        return ",".join(value)
+        if value is None:
+            return None
+        else:
+            return ",".join(value)
 
     def to_python(self, value):
         if value is None:
