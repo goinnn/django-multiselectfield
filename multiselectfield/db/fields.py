@@ -98,12 +98,11 @@ class MultiSelectField(models.CharField):
         return MultiSelectFormField(**defaults)
 
     def get_prep_value(self, value):
-        return ",".join(value)
+        return '' if value is None else ",".join(value)
 
     def to_python(self, value):
-        if value is not None:
+        if value:
             return value if isinstance(value, list) else value.split(',')
-        return ''
 
     def contribute_to_class(self, cls, name):
         super(MultiSelectField, self).contribute_to_class(cls, name)
