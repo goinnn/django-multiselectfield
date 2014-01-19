@@ -1,3 +1,11 @@
+0.1.2 (2014-??-??)
+------------------
+
+* Include the spanish translations to the pypi egg
+* Improvements in the readme file
+* Thanks to:
+    * `StillNewb <https://github.com/StillNewb>`_
+
 0.1.1 (2013-12-04)
 ------------------
 * Move the multiselectfield app to parent folder

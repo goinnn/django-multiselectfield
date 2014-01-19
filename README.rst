@@ -20,23 +20,6 @@ This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>
 Installation
 ============
 
-In your settings.py
--------------------
-
-::
-
-    INSTALLED_APPS = (
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.sites',
-        'django.contrib.admin',
-
-        #.....................#
-
-        'multiselectfield',
-    )
-
 
 In your models.py
 -----------------
@@ -67,6 +50,26 @@ In your models.py
         my_field2 = MultiSelectField(choices=MY_CHOICES2,
                                      max_choices=3,
                                      max_length=3)
+
+
+In your settings.py
+-------------------
+
+Only you need it, if you want the translation of django-multiselectfield
+
+::
+
+    INSTALLED_APPS = (
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.sites',
+        'django.contrib.admin',
+
+        #.....................#
+
+        'multiselectfield',
+    )
 
 
 Development
