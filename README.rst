@@ -75,7 +75,7 @@ Only you need it, if you want the translation of django-multiselectfield
 Development
 ===========
 
-You can get the last bleeding edge version of django-configfield by doing a clone
+You can get the last bleeding edge version of django-multiselectfield by doing a clone
 of its git repository::
 
   git clone https://github.com/goinnn/django-multiselectfield
