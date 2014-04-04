@@ -1,10 +1,12 @@
-0.1.2 (2014-??-??)
+0.1.2 (2014-04-04)
 ------------------
 
 * Include the spanish translations to the pypi egg
 * Improvements in the readme file
+* Windows OS compatibility
 * Thanks to:
     * `StillNewb <https://github.com/StillNewb>`_
+    * `Diego Yungh <https://github.com/DiegoYungh>`_
 
 0.1.1 (2013-12-04)
 ------------------
