@@ -119,7 +119,9 @@ class MultiSelectField(models.CharField):
                             item_display = choicedict.get(int(value), value)
                         except (ValueError, TypeError):
                             item_display = value
-                    display.append(string_type(item_display))
+                    item_display = string_type(item_display)
+                    if item_display not in ('', u'', None):
+                        display.append(item_display)
                 return display
             def get_display(obj):
                 return ", ".join(get_list(obj))
