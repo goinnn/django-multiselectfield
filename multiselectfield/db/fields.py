@@ -111,14 +111,15 @@ class MultiSelectField(models.CharField):
                 fieldname = name
                 choicedict = dict(self.choices)
                 display = []
-                for value in getattr(obj, fieldname):
-                    item_display = choicedict.get(value, None)
-                    if item_display is None:
-                        try:
-                            item_display = choicedict.get(int(value), value)
-                        except (ValueError, TypeError):
-                            item_display = value
-                    display.append(string_type(item_display))
+                if getattr(obj, fieldname):
+                    for value in getattr(obj, fieldname):
+                        item_display = choicedict.get(value, None)
+                        if item_display is None:
+                            try:
+                                item_display = choicedict.get(int(value), value)
+                            except (ValueError, TypeError):
+                                item_display = value
+                        display.append(string_type(item_display))
                 return ", ".join(display)
             setattr(cls, 'get_%s_display' % self.name, get_display)
 
