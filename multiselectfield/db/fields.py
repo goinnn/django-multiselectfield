@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2012-2013 by Pablo Martín <goinnn@gmail.com>
+# Copyright (c) 2012 by Pablo Martín <goinnn@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2012-2013 by Pablo Martín <goinnn@gmail.com>
+# Copyright (c) 2012 by Pablo Martín <goinnn@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -25,7 +25,7 @@ def read(*rnames):
 
 setup(
     name="django-multiselectfield",
-    version="0.1.2",
+    version="0.1.3",
     author="Pablo Martin",
     author_email="goinnn@gmail.com",
     description="Django multiple select field",
