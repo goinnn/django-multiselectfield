@@ -21,7 +21,7 @@ from os import path
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-BASEDIR = path.dirname(path.abspath(__file__))
+BASE_DIR = path.dirname(path.abspath(__file__))
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -70,7 +70,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = path.join(BASEDIR, 'media')
+MEDIA_ROOT = path.join(BASE_DIR, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -81,7 +81,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = path.join(BASEDIR, 'static')
+STATIC_ROOT = path.join(BASE_DIR, 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"

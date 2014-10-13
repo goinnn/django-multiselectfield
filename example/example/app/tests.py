@@ -23,6 +23,8 @@ from example.app.models import Book
 
 class MultiSelectTestCase(TestCase):
 
+    fixtures = ['data.json']
+
     def test_filter(self):
         self.assertEqual(Book.objects.filter(tags__contains='sex').count(), 1)
         self.assertEqual(Book.objects.filter(tags__contains='boring').count(), 0)
