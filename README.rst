@@ -90,5 +90,5 @@ a readily setup project that uses django-multiselectfield. You can run it as usu
 ::
 
     python manage.py syncdb --noinput
-    python manage.py loaddata data
+    python manage.py loaddata app_data
     python manage.py runserver
