@@ -2,9 +2,11 @@
 ------------------
 
 * Support to Django 1.7 (I'm sorry to the delay)
+* Adding get_FIELD_list function
 * Thanks to:
     * `Hernil <https://github.com/hernil>`_
     * `Vasyl Stanislavchuk <https://github.com/vasyabigi>`_
+    * `Litchfield <https://github.com/litchfield/>`_
 
 0.1.2 (2014-04-04)
 ------------------
