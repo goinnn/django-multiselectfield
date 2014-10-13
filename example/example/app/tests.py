@@ -19,6 +19,7 @@ from django.forms.models import modelform_factory
 from django.test import TestCase
 
 from example.app.models import Book
+from multiselectfield import MultiSelectField
 
 
 class MultiSelectTestCase(TestCase):
@@ -72,3 +73,18 @@ class MultiSelectTestCase(TestCase):
         book = Book.objects.get(id=1)
         self.assertEqual(Book._meta.get_field_by_name('tags')[0].value_to_string(book), 'sex,work,happy')
         self.assertEqual(Book._meta.get_field_by_name('categories')[0].value_to_string(book), '1,3,5')
+
+    def test_get_default(self):
+        f = MultiSelectField()
+        f.default = None
+        self.assertEqual(f.get_default(), None)
+        f.default = 'a,b,c'
+        self.assertEqual(f.get_default(), 'a,b,c')
+        f.default = 1
+        self.assertEqual(f.get_default(), '1')
+        f.default = ['a','b']
+        self.assertEqual(f.get_default(), ['a','b'])
+        f.default = ('a','b')
+        self.assertEqual(f.get_default(), ('a','b'))
+        f.default = set(['a','b'])
+        self.assertEqual(f.get_default(), set(['a','b']))

@@ -80,6 +80,8 @@ class MultiSelectField(models.CharField):
                     raise exceptions.ValidationError(self.error_messages['invalid_choice'] % value)
 
     def get_default(self):
+        if type(self.default) in (list, set, tuple):
+            return self.default
         default = super(MultiSelectField, self).get_default()
         if isinstance(default, int):
             default = string_type(default)
