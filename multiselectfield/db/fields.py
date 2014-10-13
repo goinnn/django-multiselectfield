@@ -98,12 +98,11 @@ class MultiSelectField(models.CharField):
         return MultiSelectFormField(**defaults)
 
     def get_prep_value(self, value):
-        return ",".join(value)
+        return '' if value is None else ",".join(value)
 
     def to_python(self, value):
-        if value is not None:
+        if value:
             return value if isinstance(value, list) else value.split(',')
-        return ''
 
     def contribute_to_class(self, cls, name):
         super(MultiSelectField, self).contribute_to_class(cls, name)
@@ -112,14 +111,15 @@ class MultiSelectField(models.CharField):
                 fieldname = name
                 choicedict = dict(self.choices)
                 display = []
-                for value in getattr(obj, fieldname):
-                    item_display = choicedict.get(value, None)
-                    if item_display is None:
-                        try:
-                            item_display = choicedict.get(int(value), value)
-                        except (ValueError, TypeError):
-                            item_display = value
-                    display.append(string_type(item_display))
+                if getattr(obj, fieldname):
+                    for value in getattr(obj, fieldname):
+                        item_display = choicedict.get(value, None)
+                        if item_display is None:
+                            try:
+                                item_display = choicedict.get(int(value), value)
+                            except (ValueError, TypeError):
+                                item_display = value
+                        display.append(string_type(item_display))
                 return ", ".join(display)
             setattr(cls, 'get_%s_display' % self.name, get_display)
 
