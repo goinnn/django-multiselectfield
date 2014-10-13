@@ -78,7 +78,7 @@ class MultiSelectField(models.CharField):
         arr_choices = self.get_choices_selected(self.get_choices_default())
         for opt_select in value:
             if (opt_select not in arr_choices):
-                if django.VERSION[0] >= 1 and django.VERSION[1] >= 6:
+                if django.VERSION[0] == 1 and django.VERSION[1] >= 6:
                     raise exceptions.ValidationError(self.error_messages['invalid_choice'] % {"value": value})
                 else:
                     raise exceptions.ValidationError(self.error_messages['invalid_choice'] % value)
