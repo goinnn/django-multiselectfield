@@ -104,6 +104,11 @@ class MultiSelectField(models.CharField):
     def get_prep_value(self, value):
         return '' if value is None else ",".join(value)
 
+    def get_db_prep_value(self, value, connection, prepared=False):
+        if not prepared and not isinstance(value, str) and not isinstance(value, unicode):
+            value = self.get_prep_value(value)
+        return value
+
     def to_python(self, value):
         if value:
             return value if isinstance(value, list) else value.split(',')
