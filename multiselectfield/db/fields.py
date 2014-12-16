@@ -61,9 +61,15 @@ class MultiSelectField(models.CharField):
         return self.get_choices(include_blank=False)
 
     def get_choices_selected(self, arr_choices):
+        named_groups = arr_choices and isinstance(arr_choices[0][1], (list, tuple))
         choices_selected = []
-        for choice_selected in arr_choices:
-            choices_selected.append(string_type(choice_selected[0]))
+        if named_groups:
+            for choice_group_selected in arr_choices:
+                for choice_selected in choice_group_selected[1]:
+                    choices_selected.append(string_type(choice_selected[0]))
+        else:
+            for choice_selected in arr_choices:
+                choices_selected.append(string_type(choice_selected[0]))
         return choices_selected
 
     def value_to_string(self, obj):
