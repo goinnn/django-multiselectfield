@@ -105,7 +105,7 @@ class MultiSelectField(models.CharField):
         return '' if value is None else ",".join(value)
 
     def get_db_prep_value(self, value, connection, prepared=False):
-        if not prepared and not isinstance(value, str) and not isinstance(value, unicode):
+        if not prepared and not isinstance(value, string_type):
             value = self.get_prep_value(value)
         return value
 
