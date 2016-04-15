@@ -34,18 +34,6 @@ else:
 # Code from six egg https://bitbucket.org/gutworth/six/src/a3641cb211cc360848f1e2dd92e9ae6cd1de55dd/six.py?at=default
 
 
-def add_metaclass(metaclass):
-    """Class decorator for creating a class with a metaclass."""
-    def wrapper(cls):
-        orig_vars = cls.__dict__.copy()
-        orig_vars.pop('__dict__', None)
-        orig_vars.pop('__weakref__', None)
-        for slots_var in orig_vars.get('__slots__', ()):
-            orig_vars.pop(slots_var)
-        return metaclass(cls.__name__, cls.__bases__, orig_vars)
-    return wrapper
-
-
 class MultiSelectField(models.CharField):
     """ Choice values can not contain commas. """
 
@@ -108,6 +96,9 @@ class MultiSelectField(models.CharField):
         if value:
             return value if isinstance(value, list) else value.split(',')
 
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
+
     def contribute_to_class(self, cls, name):
         super(MultiSelectField, self).contribute_to_class(cls, name)
         if self.choices:
@@ -131,8 +122,6 @@ class MultiSelectField(models.CharField):
 
             setattr(cls, 'get_%s_list' % self.name, get_list)
             setattr(cls, 'get_%s_display' % self.name, get_display)
-
-MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
 
 try:
     from south.modelsinspector import add_introspection_rules
