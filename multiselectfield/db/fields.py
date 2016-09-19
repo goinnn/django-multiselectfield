@@ -108,6 +108,11 @@ class MultiSelectField(models.CharField):
         if value:
             return value if isinstance(value, list) else value.split(',')
 
+    def from_db_value(self, value, expression, connection, context):
+        if value is None:
+            return value
+        return self.to_python(value)
+
     def contribute_to_class(self, cls, name):
         super(MultiSelectField, self).contribute_to_class(cls, name)
         if self.choices:
@@ -132,7 +137,8 @@ class MultiSelectField(models.CharField):
             setattr(cls, 'get_%s_list' % self.name, get_list)
             setattr(cls, 'get_%s_display' % self.name, get_display)
 
-MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
+if django.VERSION[0] == 1 and django.VERSION[1] < 8:
+    MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
 
 try:
     from south.modelsinspector import add_introspection_rules
