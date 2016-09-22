@@ -14,11 +14,20 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
+from django import VERSION
 from django.core.exceptions import ValidationError
 from django.forms.models import modelform_factory
 from django.test import TestCase
 
-from example.app.models import Book
+from .models import Book
+
+
+if VERSION < (1, 9):
+    def get_field(model, name):
+        return model._meta.get_field_by_name(name)[0]
+else:
+    def get_field(model, name):
+        return model._meta.get_field(name)
 
 
 class MultiSelectTestCase(TestCase):
@@ -30,7 +39,7 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(Book.objects.filter(tags__contains='boring').count(), 0)
 
     def test_form(self):
-        form_class = modelform_factory(Book)
+        form_class = modelform_factory(Book, fields='__all__')
         self.assertEqual(len(form_class.base_fields), 3)
         form = form_class({'title': 'new book',
                            'categories': '1,2'})
@@ -49,26 +58,26 @@ class MultiSelectTestCase(TestCase):
 
     def test_validate(self):
         book = Book.objects.get(id=1)
-        Book._meta.get_field_by_name('tags')[0].clean(['sex', 'work'], book)
+        get_field(Book, 'tags').clean(['sex', 'work'], book)
         try:
-            Book._meta.get_field_by_name('tags')[0].clean(['sex1', 'work'], book)
+            get_field(Book, 'tags').clean(['sex1', 'work'], book)
             raise AssertionError()
         except ValidationError:
             pass
 
-        Book._meta.get_field_by_name('categories')[0].clean(['1', '2', '3'], book)
+        get_field(Book, 'categories').clean(['1', '2', '3'], book)
         try:
-            Book._meta.get_field_by_name('categories')[0].clean(['1', '2', '3', '4'], book)
+            get_field(Book, 'categories').clean(['1', '2', '3', '4'], book)
             raise AssertionError()
         except ValidationError:
             pass
         try:
-            Book._meta.get_field_by_name('categories')[0].clean(['11', '12', '13'], book)
+            get_field(Book, 'categories').clean(['11', '12', '13'], book)
             raise AssertionError()
         except ValidationError:
             pass
 
     def test_serializer(self):
         book = Book.objects.get(id=1)
-        self.assertEqual(Book._meta.get_field_by_name('tags')[0].value_to_string(book), 'sex,work,happy')
-        self.assertEqual(Book._meta.get_field_by_name('categories')[0].value_to_string(book), '1,3,5')
+        self.assertEqual(get_field(Book, 'tags').value_to_string(book), 'sex,work,happy')
+        self.assertEqual(get_field(Book, 'categories').value_to_string(book), '1,3,5')

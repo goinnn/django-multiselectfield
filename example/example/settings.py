@@ -157,7 +157,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 
     'multiselectfield',
-    'example.app'
+    'app'
 )
 
 
@@ -208,3 +208,6 @@ if django.VERSION[0] == 1 and django.VERSION[1] >= 4:
         },
     }
     LOGGING['handlers']['mail_admins']['filters'] = ['require_debug_false']
+
+if django.VERSION >= (1, 6):
+    TEST_RUNNER = 'django.test.runner.DiscoverRunner'

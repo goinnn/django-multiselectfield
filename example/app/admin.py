@@ -16,7 +16,7 @@
 
 from django.contrib import admin
 
-from example.app.models import Book
+from .models import Book
 
 
 class BookAdmin(admin.ModelAdmin):

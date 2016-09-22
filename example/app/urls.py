@@ -20,6 +20,6 @@ except ImportError:  # Django < 1.4
     from django.conf.urls.defaults import include, patterns, url
 
 
-urlpatterns = patterns('example.app.views',
+urlpatterns = patterns('app.views',
     url(r'^$', 'app_index', name='app_index'),
 )
