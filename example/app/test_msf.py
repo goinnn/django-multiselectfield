@@ -19,6 +19,8 @@ from django.core.exceptions import ValidationError
 from django.forms.models import modelform_factory
 from django.test import TestCase
 
+from multiselectfield.utils import get_max_length
+
 from .models import Book
 
 
@@ -81,3 +83,19 @@ class MultiSelectTestCase(TestCase):
         book = Book.objects.get(id=1)
         self.assertEqual(get_field(Book, 'tags').value_to_string(book), 'sex,work,happy')
         self.assertEqual(get_field(Book, 'categories').value_to_string(book), '1,3,5')
+
+
+class MultiSelectUtilsTestCase(TestCase):
+    def test_get_max_length_max_length_is_not_none(self):
+        self.assertEqual(5, get_max_length([], 5))
+
+    def test_get_max_length_max_length_is_none_and_choices_is_empty(self):
+        self.assertEqual(200, get_max_length([], None))
+
+    def test_get_max_length_max_length_is_none_and_choices_is_not_empty(self):
+        choices = [
+            ('key1', 'value1'),
+            ('key2', 'value2'),
+            ('key3', 'value3'),
+        ]
+        self.assertEqual(14, get_max_length(choices, None))
