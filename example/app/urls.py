@@ -14,12 +14,27 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
+from django import VERSION
 try:
-    from django.conf.urls import include, patterns, url
+    from django.conf.urls import url
+
+    # Compatibility for Django > 1.8
+    def patterns(prefix, *args):
+        if VERSION < (1, 9):
+            from django.conf.urls import patterns as django_patterns
+            return django_patterns(prefix, *args)
+        elif prefix != '':
+            raise NotImplementedError("You need to update your URLConf for "
+                                      "Django 1.10, or tweak it to remove the "
+                                      "prefix parameter")
+        else:
+            return list(args)
 except ImportError:  # Django < 1.4
-    from django.conf.urls.defaults import include, patterns, url
+    from django.conf.urls.defaults import patterns, url
+
+from .views import app_index
 
 
-urlpatterns = patterns('app.views',
-    url(r'^$', 'app_index', name='app_index'),
+urlpatterns = patterns('',
+    url(r'^$', app_index, name='app_index'),
 )
