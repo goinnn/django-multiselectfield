@@ -15,6 +15,7 @@
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.db import models
+from django.utils.translation import gettext as _
 
 from multiselectfield import MultiSelectField
 
@@ -27,15 +28,31 @@ CATEGORY_CHOICES = (
 )
 
 TAGS_CHOICES = (
-    ('sex', 'Sex'),
-    ('work', 'Work'),
-    ('happy', 'Happy'),
-    ('food', 'Food'),
-    ('field', 'Field'),
-    ('boring', 'Boring'),
-    ('interesting', 'Interesting'),
-    ('huge', 'huge'),
-    ('nice', 'Nice'),
+    ('sex',         _('Sex')),
+    ('work',        _('Work')),
+    ('happy',       _('Happy')),
+    ('food',        _('Food')),
+    ('field',       _('Field')),
+    ('boring',      _('Boring')),
+    ('interesting', _('Interesting')),
+    ('huge',        _('Huge')),
+    ('nice',        _('Nice')),
+)
+
+PROVINCES = (
+    ('AB', _("Alberta")),
+    ('BC', _("British Columbia")),
+)
+
+STATES = (
+    ('AK', _("Alaska")),
+    ('AL', _("Alabama")),
+    ('AZ', _("Arizona")),
+)
+
+PROVINCES_AND_STATES = (
+    (_("Canada - Provinces"), PROVINCES),
+    (_("USA - States"),       STATES),
 )
 
 
@@ -47,6 +64,7 @@ class Book(models.Model):
                                   default=1)
     tags = MultiSelectField(choices=TAGS_CHOICES,
                             null=True, blank=True)
+    published_in = MultiSelectField(_("Province or State"), max_length=2, choices=PROVINCES_AND_STATES)
 
     def __str__(self):
         return self.title

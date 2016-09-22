@@ -13,9 +13,9 @@ django-multiselectfield
 .. image:: https://pypip.in/d/django-multiselectfield/badge.png
     :target: https://pypi.python.org/pypi/django-multiselectfield
 
-A new model and form field. With this you can get a multiple select from a choices
+A new model field and form field. With this you can get a multiple select from a choices. Stores to the database as a CharField of comma-separated values.
 
-This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>`_
+This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>`_.
 
 Installation
 ============
@@ -24,28 +24,28 @@ Installation
 In your models.py
 -----------------
 
-::
+.. code-block:: python
 
     from multiselectfield import MultiSelectField
-
-    ...
-
+    
+    # ...
+    
     MY_CHOICES = (('item_key1', 'Item title 1.1'),
                   ('item_key2', 'Item title 1.2'),
                   ('item_key3', 'Item title 1.3'),
                   ('item_key4', 'Item title 1.4'),
                   ('item_key5', 'Item title 1.5'))
-
+    
     MY_CHOICES2 = ((1, 'Item title 2.1'),
                    (2, 'Item title 2.2'),
                    (3, 'Item title 2.3'),
                    (4, 'Item title 2.4'),
                    (5, 'Item title 2.5'))
-
+    
     class MyModel(models.Model):
-
-        .....
-
+        
+        # .....
+        
         my_field = MultiSelectField(choices=MY_CHOICES)
         my_field2 = MultiSelectField(choices=MY_CHOICES2,
                                      max_choices=3,
@@ -57,7 +57,7 @@ In your settings.py
 
 Only you need it, if you want the translation of django-multiselectfield
 
-::
+.. code-block:: python
 
     INSTALLED_APPS = (
         'django.contrib.auth',
@@ -72,13 +72,25 @@ Only you need it, if you want the translation of django-multiselectfield
     )
 
 
+Known Bugs and Limitations
+==========================
+
+Only in Django 1.6 and 1.7, due to `Django bug #9619 <https://code.djangoproject.com/ticket/9619>`_, passing a MultiSelectField to ``values()`` or ``values_list()`` will return the database representation of the field (a string of comma-separated values). The workaround is to manually call ``.split(',')`` on the result.
+
+The Django bug was introduced in Django 1.6 and is fixed in Django 1.8 and onward, so ``values()`` and ``values_list()`` return a vanilla Python list of values for Django <= 1.5 and Django >= 1.8.
+
+See `issue #40 <https://github.com/goinnn/django-multiselectfield/issues/40>`_ for discussion about this bug.
+
+
 Development
 ===========
 
 You can get the last bleeding edge version of django-multiselectfield by doing a clone
-of its git repository::
+of its git repository:
 
-  git clone https://github.com/goinnn/django-multiselectfield
+.. code-block:: bash
+
+    git clone https://github.com/goinnn/django-multiselectfield
 
 
 Example project
@@ -87,7 +99,7 @@ Example project
 In the source tree, you will find a directory called  `example <https://github.com/goinnn/django-multiselectfield/tree/master/example/>`_. It contains
 a readily setup project that uses django-multiselectfield. You can run it as usual:
 
-::
+.. code-block:: bash
 
     python manage.py syncdb --noinput
     python manage.py loaddata app_data

@@ -16,7 +16,7 @@
 
 import sys
 
-import django
+from django import VERSION
 
 from django.db import models
 from django.utils.text import capfirst
@@ -26,7 +26,7 @@ from ..forms.fields import MultiSelectFormField, MaxChoicesValidator
 from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator
 
-if sys.version_info[0] == 2:
+if sys.version_info < (3,):
     string_type = unicode
 else:
     string_type = str
@@ -78,7 +78,7 @@ class MultiSelectField(models.CharField):
         arr_choices = self.get_choices_selected(self.get_choices_default())
         for opt_select in value:
             if (opt_select not in arr_choices):
-                if django.VERSION[0] == 1 and django.VERSION[1] >= 6:
+                if VERSION >= (1, 6):
                     raise exceptions.ValidationError(self.error_messages['invalid_choice'] % {"value": value})
                 else:
                     raise exceptions.ValidationError(self.error_messages['invalid_choice'] % value)
@@ -143,7 +143,7 @@ class MultiSelectField(models.CharField):
             setattr(cls, 'get_%s_list' % self.name, get_list)
             setattr(cls, 'get_%s_display' % self.name, get_display)
 
-if django.VERSION < (1, 8):
+if VERSION < (1, 8):
     MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
 
 try:

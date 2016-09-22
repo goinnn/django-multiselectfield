@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+
 from django import VERSION
 from django.core.exceptions import ValidationError
 from django.forms.models import modelform_factory
@@ -22,6 +24,12 @@ from django.test import TestCase
 from multiselectfield.utils import get_max_length
 
 from .models import Book
+
+
+if sys.version_info < (3,):
+    u = unicode
+else:
+    u = str
 
 
 if VERSION < (1, 9):
@@ -36,12 +44,47 @@ class MultiSelectTestCase(TestCase):
 
     fixtures = ['app_data.json']
 
+    def assertListEqual(self, left, right, msg=None):
+        if sys.version_info >= (3, 2):
+            # Added in Python 3.2
+            self.assertCountEqual(left, right, msg=msg)
+        else:
+            # Manually check list equality
+            self.assertEqual(len(left), len(right), msg=msg)
+            for i, tag_list in enumerate(left):
+                for j, tag in enumerate(tag_list):
+                    self.assertEqual(tag, right[i][j], msg=msg)
+
+    def assertStringEqual(self, left, right, msg=None):
+        _msg = "Chars in position %%d differ: %%s != %%s. %s" % msg
+
+        # Compare characters individually
+        for i, chars in enumerate(zip(left, right)):
+            self.assertEqual(chars[0], chars[1], msg=_msg % (i, chars[0], chars[1]))
+
     def test_filter(self):
         self.assertEqual(Book.objects.filter(tags__contains='sex').count(), 1)
         self.assertEqual(Book.objects.filter(tags__contains='boring').count(), 0)
 
+    def test_values_list(self):
+        tag_list_list = Book.objects.all().values_list('tags', flat=True)
+        categories_list_list = Book.objects.all().values_list('categories', flat=True)
+
+        # Workaround for Django bug #9619
+        # https://code.djangoproject.com/ticket/9619
+        # For Django 1.6 and 1.7, calling values() or values_list() doesn't
+        # call Field.from_db_field, it simply returns a Python representation
+        # of the data in the database (which in our case is a string of
+        # comma-separated values). The bug was fixed in Django 1.8+.
+        if VERSION >= (1, 6) and VERSION < (1, 8):
+            self.assertStringEqual(tag_list_list, [u('sex,work,happy')])
+            self.assertStringEqual(categories_list_list, [u('1,3,5')])
+        else:
+            self.assertListEqual(tag_list_list, [['sex', 'work', 'happy']])
+            self.assertListEqual(categories_list_list, [['1', '3', '5']])
+
     def test_form(self):
-        form_class = modelform_factory(Book, fields='__all__')
+        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories'))
         self.assertEqual(len(form_class.base_fields), 3)
         form = form_class({'title': 'new book',
                            'categories': '1,2'})
@@ -87,10 +130,10 @@ class MultiSelectTestCase(TestCase):
 
 class MultiSelectUtilsTestCase(TestCase):
     def test_get_max_length_max_length_is_not_none(self):
-        self.assertEqual(5, get_max_length([], 5))
+        self.assertEqual(get_max_length([], 5), 5)
 
     def test_get_max_length_max_length_is_none_and_choices_is_empty(self):
-        self.assertEqual(200, get_max_length([], None))
+        self.assertEqual(get_max_length([], None), 200)
 
     def test_get_max_length_max_length_is_none_and_choices_is_not_empty(self):
         choices = [
@@ -98,4 +141,4 @@ class MultiSelectUtilsTestCase(TestCase):
             ('key2', 'value2'),
             ('key3', 'value3'),
         ]
-        self.assertEqual(14, get_max_length(choices, None))
+        self.assertEqual(get_max_length(choices, None), 14)
