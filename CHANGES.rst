@@ -1,3 +1,12 @@
+0.1.4 (2016-02-23)
+------------------
+
+* Fixed warning about SubfieldBase
+* Added support for Django 1.8+
+* Added support for named groups
+* We now play nice with django-dynamic-fixture
+* More tests
+
 0.1.3 (2014-10-13)
 ------------------
 

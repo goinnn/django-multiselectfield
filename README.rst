@@ -22,8 +22,15 @@ Installation
 ============
 
 
-In your models.py
------------------
+Install with pip
+----------------
+
+.. code-block:: bash
+
+    $ pip install django-multiselectfield
+
+Configure your models.py
+------------------------
 
 .. code-block:: python
 
