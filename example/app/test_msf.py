@@ -23,7 +23,7 @@ from django.test import TestCase
 
 from multiselectfield.utils import get_max_length
 
-from .models import Book
+from .models import Book, PROVINCES, STATES
 
 
 if sys.version_info < (3,):
@@ -126,6 +126,11 @@ class MultiSelectTestCase(TestCase):
         book = Book.objects.get(id=1)
         self.assertEqual(get_field(Book, 'tags').value_to_string(book), 'sex,work,happy')
         self.assertEqual(get_field(Book, 'categories').value_to_string(book), '1,3,5')
+
+    def test_flatchoices(self):
+        #raise Exception(Book._meta.get_field('published_in').flatchoices)
+        # raise Exception(Book.published_in.flatchoices)
+        self.assertEqual(get_field(Book, 'published_in').flatchoices, list(PROVINCES+STATES))
 
 
 class MultiSelectUtilsTestCase(TestCase):
