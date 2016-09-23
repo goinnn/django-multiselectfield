@@ -10,9 +10,6 @@ django-multiselectfield
 .. image:: https://badge.fury.io/py/django-multiselectfield.png
     :target: https://badge.fury.io/py/django-multiselectfield
 
-.. image:: https://pypip.in/d/django-multiselectfield/badge.png
-    :target: https://pypi.python.org/pypi/django-multiselectfield
-
 A new model field and form field. With this you can get a multiple select from a choices. Stores to the database as a CharField of comma-separated values.
 
 This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>`_.
