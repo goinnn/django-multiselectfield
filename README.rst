@@ -17,6 +17,9 @@ A new model field and form field. With this you can get a multiple select from a
 
 This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>`_.
 
+Supported Python versions: 2.6, 2.7, 3.3+
+Supported Django versions: 1.4-1.0+
+
 Installation
 ============
 
@@ -75,6 +78,8 @@ Only you need it, if you want the translation of django-multiselectfield
 Known Bugs and Limitations
 ==========================
 
+Named groups do not render properly in Django 1.6. The workaround is to manually render the field in your form or use a different version of Django.
+
 Only in Django 1.6 and 1.7, due to `Django bug #9619 <https://code.djangoproject.com/ticket/9619>`_, passing a MultiSelectField to ``values()`` or ``values_list()`` will return the database representation of the field (a string of comma-separated values). The workaround is to manually call ``.split(',')`` on the result.
 
 The Django bug was introduced in Django 1.6 and is fixed in Django 1.8 and onward, so ``values()`` and ``values_list()`` return a vanilla Python list of values for Django <= 1.5 and Django >= 1.8.
@@ -97,10 +102,10 @@ Example project
 ===============
 
 In the source tree, you will find a directory called  `example <https://github.com/goinnn/django-multiselectfield/tree/master/example/>`_. It contains
-a readily setup project that uses django-multiselectfield. You can run it as usual:
+an already setup project that uses django-multiselectfield. You can run it as usual:
 
 .. code-block:: bash
 
-    python manage.py syncdb --noinput
+    python manage.py migrate  # or python manage.py syncdb --noinput
     python manage.py loaddata app_data
     python manage.py runserver

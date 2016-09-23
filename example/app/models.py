@@ -20,11 +20,11 @@ from django.utils.translation import gettext as _
 from multiselectfield import MultiSelectField
 
 CATEGORY_CHOICES = (
-    (1, 'Handbooks and manuals by discipline'),
-    (2, 'Business books'),
-    (3, 'Books of literary criticism'),
-    (4, 'Books about literary theory'),
-    (5, 'Books about literature')
+    (1, _('Handbooks and manuals by discipline')),
+    (2, _('Business books')),
+    (3, _('Books of literary criticism')),
+    (4, _('Books about literary theory')),
+    (5, _('Books about literature')),
 )
 
 TAGS_CHOICES = (
@@ -64,7 +64,9 @@ class Book(models.Model):
                                   default=1)
     tags = MultiSelectField(choices=TAGS_CHOICES,
                             null=True, blank=True)
-    published_in = MultiSelectField(_("Province or State"), max_length=2, choices=PROVINCES_AND_STATES)
+    published_in = MultiSelectField(_("Province or State"),
+                                    choices=PROVINCES_AND_STATES,
+                                    max_length=2)
 
     def __str__(self):
         return self.title

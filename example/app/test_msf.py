@@ -23,7 +23,7 @@ from django.test import TestCase
 
 from multiselectfield.utils import get_max_length
 
-from .models import Book, PROVINCES, STATES
+from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES
 
 
 if sys.version_info < (3,):
@@ -43,6 +43,7 @@ else:
 class MultiSelectTestCase(TestCase):
 
     fixtures = ['app_data.json']
+    maxDiff = 4000
 
     def assertListEqual(self, left, right, msg=None):
         if sys.version_info >= (3, 2):
@@ -128,9 +129,27 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(get_field(Book, 'categories').value_to_string(book), '1,3,5')
 
     def test_flatchoices(self):
-        #raise Exception(Book._meta.get_field('published_in').flatchoices)
-        # raise Exception(Book.published_in.flatchoices)
         self.assertEqual(get_field(Book, 'published_in').flatchoices, list(PROVINCES+STATES))
+
+    def test_named_groups(self):
+        self.assertEqual(get_field(Book, 'published_in').choices, PROVINCES_AND_STATES)
+
+    def test_named_groups_form(self):
+        form_class = modelform_factory(Book, fields=('published_in',))
+        self.assertEqual(len(form_class.base_fields), 1)
+        form = form_class(initial={'published_in': ['BC', 'AK']})
+
+        expected_html = u("""<p><label for="id_published_in_0">Province or State:</label> <ul id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n"""
+                          """<li><label for="id_published_in_0_1"><input checked="checked" id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n"""
+                          """<li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input checked="checked" id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n"""
+                          """<li><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n"""
+                          """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>""")
+        actual_html = form.as_p()
+
+        if VERSION < (1, 6) or VERSION >= (1, 7):
+            # Django 1.6 renders the Python repr() for each group (eg: tuples
+            # with HTML entities), so we skip the test for that version
+            self.assertEqual(expected_html.replace('\n', ''), actual_html.replace('\n', ''))
 
 
 class MultiSelectUtilsTestCase(TestCase):
