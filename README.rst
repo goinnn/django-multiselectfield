@@ -16,7 +16,7 @@ This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>
 
 Supported Python versions: 2.6, 2.7, 3.3+
 
-Supported Django versions: 1.4-1.0+
+Supported Django versions: 1.4-1.10+
 
 Installation
 ============
