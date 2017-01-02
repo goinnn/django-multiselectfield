@@ -18,8 +18,8 @@ import sys
 
 
 if sys.version_info[0] == 2:
-    string = basestring
-    string_type = unicode
+    string = basestring  # noqa: F821
+    string_type = unicode  # noqa: F821
 else:
     string = str
     string_type = string

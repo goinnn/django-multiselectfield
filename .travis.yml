@@ -56,10 +56,11 @@ matrix:
 
 install:
   - pip install -q $DJANGO_VERSION
-  - pip install tox coveralls
+  - pip install tox coveralls flake8
 
 script:
   - coverage erase
+  - if [[ $(python -c 'import sys; print("0" if sys.version_info < (2, 7) else "1")') == "1" ]]; then flake8 --ignore=E501; fi
   - PYTHONPATH=. coverage run -p example/run_tests.py
   - PYTHONPATH=. coverage run -p example/run_tests.py example.settings_no_debug
 after_success:

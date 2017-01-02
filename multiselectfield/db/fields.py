@@ -27,7 +27,7 @@ from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator
 
 if sys.version_info < (3,):
-    string_type = unicode
+    string_type = unicode  # noqa: F821
 else:
     string_type = str
 
@@ -147,6 +147,7 @@ class MultiSelectField(models.CharField):
 
             setattr(cls, 'get_%s_list' % self.name, get_list)
             setattr(cls, 'get_%s_display' % self.name, get_display)
+
 
 if VERSION < (1, 8):
     MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)

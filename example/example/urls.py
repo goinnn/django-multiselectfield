@@ -42,12 +42,14 @@ js_info_dict = {
     'packages': ('django.conf',),
 }
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^', include('app.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
 
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
         serve,
         {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),

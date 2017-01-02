@@ -32,7 +32,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'example.db',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
@@ -100,7 +100,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -128,7 +128,7 @@ if VERSION < (1, 8):
     TEMPLATE_LOADERS = (
         'django.template.loaders.filesystem.Loader',
         'django.template.loaders.app_directories.Loader',
-    #     'django.template.loaders.eggs.Loader',
+        # 'django.template.loaders.eggs.Loader',
     )
 
     TEMPLATE_DIRS = (
@@ -191,13 +191,13 @@ INSTALLED_APPS = (
 
 
 # If formadmin is installed
-from django.conf import ENVIRONMENT_VARIABLE
+from django.conf import ENVIRONMENT_VARIABLE  # noqa: E402
 # I check it if formadmin is installed of this way because if I execute
 # python manage.py runserver --settings=settings_no_debug
 # I get an error
 if os.environ[ENVIRONMENT_VARIABLE] == 'example.settings':
     try:
-        import formadmin
+        import formadmin  # noqa: F401
         INSTALLED_APPS += ('formadmin',)
     except ImportError:
         pass
