@@ -27,7 +27,7 @@ from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES
 
 
 if sys.version_info < (3,):
-    u = unicode
+    u = unicode  # noqa: F821
 else:
     u = str
 
@@ -129,7 +129,7 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(get_field(Book, 'categories').value_to_string(book), '1,3,5')
 
     def test_flatchoices(self):
-        self.assertEqual(get_field(Book, 'published_in').flatchoices, list(PROVINCES+STATES))
+        self.assertEqual(get_field(Book, 'published_in').flatchoices, list(PROVINCES + STATES))
 
     def test_named_groups(self):
         self.assertEqual(get_field(Book, 'published_in').choices, PROVINCES_AND_STATES)

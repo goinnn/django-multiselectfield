@@ -23,6 +23,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
+
 setup(
     name="django-multiselectfield",
     version="0.1.4",
@@ -51,6 +52,7 @@ setup(
         'django>=1.4',
         'tox',
         'coverage',
+        'flake8',
     ],
     install_requires=[
         'django>=1.4',

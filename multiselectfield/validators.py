@@ -20,8 +20,15 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class MaxValueMultiFieldValidator(validators.MaxLengthValidator):
-    clean = lambda self, x: len(','.join(x))
     code = 'max_multifield_value'
+
+    def clean(self, x):
+        return len(','.join(x))
+
+
+class MinChoicesValidator(validators.MinLengthValidator):
+    message = _(u'You must select a minimum of  %(limit_value)d choices.')
+    code = 'min_choices'
 
 
 class MaxChoicesValidator(validators.MaxLengthValidator):

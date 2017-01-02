@@ -35,6 +35,7 @@ except ImportError:  # Django < 1.4
 from .views import app_index
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^$', app_index, name='app_index'),
 )

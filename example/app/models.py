@@ -28,15 +28,15 @@ CATEGORY_CHOICES = (
 )
 
 TAGS_CHOICES = (
-    ('sex',         _('Sex')),
-    ('work',        _('Work')),
-    ('happy',       _('Happy')),
-    ('food',        _('Food')),
-    ('field',       _('Field')),
-    ('boring',      _('Boring')),
-    ('interesting', _('Interesting')),
-    ('huge',        _('Huge')),
-    ('nice',        _('Nice')),
+    ('sex',         _('Sex')),          # noqa: E241
+    ('work',        _('Work')),         # noqa: E241
+    ('happy',       _('Happy')),        # noqa: E241
+    ('food',        _('Food')),         # noqa: E241
+    ('field',       _('Field')),        # noqa: E241
+    ('boring',      _('Boring')),       # noqa: E241
+    ('interesting', _('Interesting')),  # noqa: E241
+    ('huge',        _('Huge')),         # noqa: E241
+    ('nice',        _('Nice')),         # noqa: E241
 )
 
 PROVINCES = (
@@ -52,7 +52,7 @@ STATES = (
 
 PROVINCES_AND_STATES = (
     (_("Canada - Provinces"), PROVINCES),
-    (_("USA - States"),       STATES),
+    (_("USA - States"),       STATES),  # noqa: E241
 )
 
 
@@ -60,7 +60,7 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     categories = MultiSelectField(choices=CATEGORY_CHOICES,
                                   max_choices=3,
-                                  #default='1,5')
+                                  # default='1,5')
                                   default=1)
     tags = MultiSelectField(choices=TAGS_CHOICES,
                             null=True, blank=True)
