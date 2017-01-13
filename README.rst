@@ -83,15 +83,18 @@ Only you need it, if you want the translation of django-multiselectfield
 Django REST Framework
 ---------------------
 
-Django REST Framework comes with a ``MultiSelectField`` that works perfectly with this:
+Django REST Framework comes with a ``MultipleChoiceField`` that works perfectly with this:
 
 .. code-block:: python
 
     from rest_framework import fields, serializers
+    
+    from myapp.models import MY_CHOICES, MY_CHOICES2
 
     class MyModelSerializer(serializers.HyperlinkedModelSerializer):
         # ...
-        fields.MultiSelectField()
+        my_field = fields.MultipleChoiceField(choices=MY_CHOICES)
+        my_field2 = fields.MultipleChoiceField(choices=MY_CHOICES2)
         # ...
 
 
