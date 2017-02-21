@@ -80,6 +80,21 @@ Only you need it, if you want the translation of django-multiselectfield
     )
 
 
+Customizing templates
+---------------------
+
+It is possible to customize the HTML of this widget in your form template. To do so, you will need to loop through ``form.{field}.field.choices``. Here is an example that displays the field label underneath/after the checkbox for a ``MultiSelectField`` called ``providers``:
+
+.. code-block:: HTML+Django
+
+    {% for value, text in form.providers.field.choices %}
+      <div class="ui slider checkbox">
+        <input id="id_providers_{{ forloop.counter0 }}" name="{{ form.providers.name }}" type="checkbox" value="{{ value }}">
+        <label>{{ text }}</label>
+      </div>
+    {% endfor %}
+
+
 Django REST Framework
 ---------------------
 
