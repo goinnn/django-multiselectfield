@@ -163,6 +163,7 @@ class MultiSelectField(models.CharField):
 
             def get_display(obj):
                 return ", ".join(get_list(obj))
+            get_display.short_description = self.verbose_name
 
             setattr(cls, 'get_%s_list' % self.name, get_list)
             setattr(cls, 'get_%s_display' % self.name, get_display)
