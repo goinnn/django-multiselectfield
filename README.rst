@@ -89,7 +89,7 @@ It is possible to customize the HTML of this widget in your form template. To do
 
     {% for value, text in form.providers.field.choices %}
       <div class="ui slider checkbox">
-        <input id="id_providers_{{ forloop.counter0 }}" name="{{ form.providers.name }}" type="checkbox" value="{{ value }}"{% if value in campaign.providers %} checked="checked"{% endif %}>
+        <input id="id_providers_{{ forloop.counter0 }}" name="{{ form.providers.name }}" type="checkbox" value="{{ value }}"{% if value in checked_providers %} checked="checked"{% endif %}>
         <label>{{ text }}</label>
       </div>
     {% endfor %}
