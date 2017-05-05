@@ -20,6 +20,7 @@ from django import VERSION
 
 from django.db import models
 from django.utils.text import capfirst
+from django.utils.encoding import python_2_unicode_compatible
 from django.core import exceptions
 
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
@@ -63,14 +64,14 @@ class MultiSelectField(models.CharField):
     def _get_flatchoices(self):
         l = super(MultiSelectField, self)._get_flatchoices()
 
-        class MSGFlatchoices(list):
+        class MSFFlatchoices(list):
             # Used to trick django.contrib.admin.utils.display_for_field into
             # not treating the list of values as a dictionary key (which errors
             # out)
             def __bool__(self):
                 return False
             __nonzero__ = __bool__
-        return MSGFlatchoices(l)
+        return MSFFlatchoices(l)
     flatchoices = property(_get_flatchoices)
 
     def get_choices_default(self):
@@ -130,13 +131,15 @@ class MultiSelectField(models.CharField):
     def to_python(self, value):
         choices = dict(self.flatchoices)
 
-        class MSGList(list):
+        @python_2_unicode_compatible
+        class MSFList(list):
             def __str__(msgl):
-                return ', '.join([choices.get(int(i)) if i.isdigit() else choices.get(i) for i in msgl])
+                l = [choices.get(int(i)) if i.isdigit() else choices.get(i) for i in msgl]
+                return u', '.join([string_type(s) for s in l])
 
         if value:
-            return value if isinstance(value, list) else MSGList(value.split(','))
-        return MSGList([])
+            return value if isinstance(value, list) else MSFList(value.split(','))
+        return MSFList([])
 
     def from_db_value(self, value, expression, connection, context):
         if value is None:
