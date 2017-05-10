@@ -1,3 +1,28 @@
+0.1.6 (2017-05-10)
+------------------
+
+* Added support for Django 1.11
+* Added support for Python 3.6
+* Improved rendering in Django admin
+* Improved documentation
+* Thanks to:
+    * `atten <https://github.com/atten>`_
+    * `ixc <https://github.comixc>`_
+    * `LeilaniAnn <https://github.comLeilaniAnn>`_
+
+0.1.5 (2017-01-02)
+------------------
+
+* Added support for Django 1.8-1.10
+* Added support for named groups in choices
+* Added support for min_choices argument
+* Various fixes
+* More tests
+* Thanks to:
+    * `danilogbotelho <https://github.comdanilogbotelho>`_
+    * `dmitry-krasilnikov <https://github.comdmitry-krasilnikov>`_
+    * `Kamil Dębowski <https://github.comkdebowski>`_
+
 0.1.4 (2016-02-23)
 ------------------
 
