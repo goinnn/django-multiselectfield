@@ -8,3 +8,5 @@ build
 dist
 *.egg-info
 .coverage*
+.env
+example/example.db
