@@ -16,12 +16,16 @@
 
 # Initial code got from http://djangosnippets.org/users/danielroseman/
 
+import codecs
 import os
 from setuptools import setup, find_packages
 
 
 def read(*rnames):
-    with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
+    with codecs.open(
+        os.path.join(os.path.dirname(__file__), *rnames),
+        'r', 'utf-8',
+    ) as f:
         return f.read()
 
 
