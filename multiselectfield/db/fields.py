@@ -34,7 +34,6 @@ else:
 
 # Code from six egg https://bitbucket.org/gutworth/six/src/a3641cb211cc360848f1e2dd92e9ae6cd1de55dd/six.py?at=default
 
-
 def add_metaclass(metaclass):
     """Class decorator for creating a class with a metaclass."""
     def wrapper(cls):
@@ -45,6 +44,13 @@ def add_metaclass(metaclass):
             orig_vars.pop(slots_var)
         return metaclass(cls.__name__, cls.__bases__, orig_vars)
     return wrapper
+
+
+@python_2_unicode_compatible
+class MSFList(list):
+    def __str__(msgl):
+        l = [choices.get(int(i)) if i.isdigit() else choices.get(i) for i in msgl]
+        return u', '.join([string_type(s) for s in l])
 
 
 class MultiSelectField(models.CharField):
@@ -130,12 +136,6 @@ class MultiSelectField(models.CharField):
 
     def to_python(self, value):
         choices = dict(self.flatchoices)
-
-        @python_2_unicode_compatible
-        class MSFList(list):
-            def __str__(msgl):
-                l = [choices.get(int(i)) if i.isdigit() else choices.get(i) for i in msgl]
-                return u', '.join([string_type(s) for s in l])
 
         if value:
             return value if isinstance(value, list) else MSFList(value.split(','))
