@@ -47,6 +47,18 @@ def add_metaclass(metaclass):
     return wrapper
 
 
+@python_2_unicode_compatible
+class MSFList(list):
+
+    def __init__(self, choices, *args, **kwargs):
+        self.choices = choices
+        super(MSFList, self).__init__(*args, **kwargs)
+
+    def __str__(msgl):
+        l = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
+        return u', '.join([string_type(s) for s in l])
+
+
 class MultiSelectField(models.CharField):
     """ Choice values can not contain commas. """
 
@@ -131,15 +143,9 @@ class MultiSelectField(models.CharField):
     def to_python(self, value):
         choices = dict(self.flatchoices)
 
-        @python_2_unicode_compatible
-        class MSFList(list):
-            def __str__(msgl):
-                l = [choices.get(int(i)) if i.isdigit() else choices.get(i) for i in msgl]
-                return u', '.join([string_type(s) for s in l])
-
         if value:
-            return value if isinstance(value, list) else MSFList(value.split(','))
-        return MSFList([])
+            return value if isinstance(value, list) else MSFList(choices, value.split(','))
+        return MSFList(choices, [])
 
     def from_db_value(self, value, expression, connection, context):
         if value is None:
