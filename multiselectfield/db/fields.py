@@ -133,6 +133,8 @@ class MultiSelectField(models.CharField):
         return MultiSelectFormField(**defaults)
 
     def get_prep_value(self, value):
+        if isinstance(value, bytes):
+            return value.decode('utf-8')
         return '' if value is None else ",".join(value)
 
     def get_db_prep_value(self, value, connection, prepared=False):
