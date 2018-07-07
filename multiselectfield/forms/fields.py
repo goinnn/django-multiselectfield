@@ -73,3 +73,21 @@ class MultiSelectFormField(forms.MultipleChoiceField):
             self.validators.append(MaxChoicesValidator(self.max_choices))
         if self.min_choices is not None:
             self.validators.append(MinChoicesValidator(self.min_choices))
+
+    def has_changed(self, initial, data):
+        """Implementation same as MultipleChoiceField.hasChanged() except this
+        checks the order of lists as well"""
+        if self.disabled:
+            return False
+        if initial is None:
+            initial = []
+        if data is None:
+            data = []
+        if len(initial) != len(data):
+            return True
+
+        initial_list = [force_text(value) for value in initial]
+        data_list = [force_text(value) for value in data]
+
+        return initial_list != data_list
+
