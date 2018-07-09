@@ -16,6 +16,7 @@
 import sys
 from django import forms
 from django.forms.widgets import ChoiceWidget, CheckboxSelectMultiple
+from django.utils.encoding import force_text
 
 from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator, MinChoicesValidator, MaxChoicesValidator
