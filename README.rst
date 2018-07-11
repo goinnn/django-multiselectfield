@@ -1,22 +1,19 @@
-django-multiselectfield
+django-sortable-multiselectfield
 =======================
 
-.. image:: https://travis-ci.org/goinnn/django-multiselectfield.png?branch=master
-    :target: https://travis-ci.org/goinnn/django-multiselectfield
+Originally forked from: https://github.com/goinnn/django-multiselectfield
 
-.. image:: https://coveralls.io/repos/goinnn/django-multiselectfield/badge.png?branch=master
-    :target: https://coveralls.io/r/goinnn/django-multiselectfield
-
-.. image:: https://badge.fury.io/py/django-multiselectfield.png
-    :target: https://badge.fury.io/py/django-multiselectfield
-
-A new model field and form field. With this you can get a multiple select from a choices. Stores to the database as a CharField of comma-separated values.
-
-This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>`_.
+A new model field and form field. With this you can get a multiple select from a choices. Stores to the database as a CharField of comma-separated values. The form field allows sorting of the selected choices. The selected choices are shown at top in the order they were selected.
 
 Supported Python versions: 2.6, 2.7, 3.3+
 
 Supported Django versions: 1.4-1.11+
+
+Sorting behavior
+---------------
+- All list of items are sortable. Inside a choice group, all items are sortable too.
+- When the form is reloaded, all selected items show on top in sorted order, and unselected items go at bottom(in the same order they are defined).
+- When sorting is changed, the form is marked as dirty and saved again.
 
 Installation
 ============
@@ -27,7 +24,7 @@ Install with pip
 
 .. code-block:: bash
 
-    $ pip install django-multiselectfield
+    $ pip install git+https://github.com/kunalgrover05/django-multiselectfield
 
 Configure your models.py
 ------------------------
@@ -62,8 +59,6 @@ Configure your models.py
 
 In your settings.py
 -------------------
-
-Only you need it, if you want the translation of django-multiselectfield
 
 .. code-block:: python
 
@@ -112,6 +107,9 @@ Django REST Framework comes with a ``MultipleChoiceField`` that works perfectly 
         my_field2 = fields.MultipleChoiceField(choices=MY_CHOICES2)
         # ...
 
+Dependencies
+=========================
+Includes [JQuery UI](https://jqueryui.com/) library to allow sorting. It should be able to replace with any simpler JS libraries as well.
 
 Known Bugs and Limitations
 ==========================
@@ -125,17 +123,6 @@ All tests pass on Django 1.4, 1.5, and 1.8+, so if you can, use a modern version
    The Django bug was introduced in Django 1.6 and is fixed in Django 1.8 and onward, so ``values()`` and ``values_list()`` return a vanilla Python list of values for Django <= 1.5 and Django >= 1.8.
 
    See `issue #40 <https://github.com/goinnn/django-multiselectfield/issues/40>`_ for discussion about this bug.
-
-
-Development
-===========
-
-You can get the last bleeding edge version of django-multiselectfield by doing a clone
-of its git repository:
-
-.. code-block:: bash
-
-    git clone https://github.com/goinnn/django-multiselectfield
 
 
 Example project
