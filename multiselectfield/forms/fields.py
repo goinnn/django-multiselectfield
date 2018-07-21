@@ -43,7 +43,7 @@ class CheckboxSelectMultipleSorted(CheckboxSelectMultiple):
             return arr.index(str(val))
         except ValueError:
             # Keys not selected should be present at bottom
-            return sys.maxint
+            return sys.maxsize
 
     def optgroups(self, name, value, attrs=None):
         groups = super(CheckboxSelectMultipleSorted, self).optgroups(name, value, attrs=attrs)
