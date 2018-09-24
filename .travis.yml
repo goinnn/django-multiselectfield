@@ -13,26 +13,14 @@ env:
 matrix:
   exclude:
     - python: "2.7"
-      env: DJANGO_VERSION='Django>=1.11,<2.0'
-    - python: "3.4"
-      env: DJANGO_VERSION='Django>=1.11,<2.0'
-    - python: "3.4"
       env: DJANGO_VERSION='Django>=2.0,<2.1'
-    - python: "3.5"
-      env: DJANGO_VERSION='Django>=1.11,<2.0'
-    - python: "3.5"
-      env: DJANGO_VERSION='Django>=2.0,<2.1'
-    - python: "3.5"
+    - python: "2.7"
       env: DJANGO_VERSION='Django>=2.1,<2.2'
-    - python: "3.5"
+    - python: "2.7"
       env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
-    - python: "3.6"
-      env: DJANGO_VERSION='Django>=1.11,<2.0'
-    - python: "3.6"
-      env: DJANGO_VERSION='Django>=2.0,<2.1'
-    - python: "3.6"
+    - python: "3.4"
       env: DJANGO_VERSION='Django>=2.1,<2.2'
-    - python: "3.6"
+    - python: "2.7"
       env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
   allow_failures:
     - env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
