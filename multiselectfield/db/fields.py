@@ -147,7 +147,7 @@ class MultiSelectField(models.CharField):
             return value if isinstance(value, list) else MSFList(choices, value.split(','))
         return MSFList(choices, [])
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection, *args):
         if value is None:
             return value
         return self.to_python(value)
