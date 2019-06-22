@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this programe.  If not, see <http://www.gnu.org/licenses/>.
-import collections
+from collections.abc import Iterable
 import sys
 
 from django import VERSION
@@ -137,7 +137,7 @@ class MultiSelectField(models.CharField):
 
     def get_db_prep_value(self, value, connection, prepared=False):
         if not prepared and not isinstance(value, string_type):
-            if isinstance(value, collections.Iterable):
+            if isinstance(value, Iterable):
                 value = [str(item) for item in value]
             value = self.get_prep_value(value)
         return value
@@ -149,7 +149,7 @@ class MultiSelectField(models.CharField):
             return value if isinstance(value, list) else MSFList(choices, value.split(','))
         return MSFList(choices, [])
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         if value is None:
             return value
         return self.to_python(value)
