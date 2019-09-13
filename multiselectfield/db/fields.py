@@ -55,8 +55,8 @@ class MSFList(list):
         super(MSFList, self).__init__(*args, **kwargs)
 
     def __str__(msgl):
-        l = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
-        return u', '.join([string_type(s) for s in l])
+        msg_list = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
+        return u', '.join([string_type(s) for s in msg_list])
 
 
 class MultiSelectField(models.CharField):
@@ -74,7 +74,7 @@ class MultiSelectField(models.CharField):
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
     def _get_flatchoices(self):
-        l = super(MultiSelectField, self)._get_flatchoices()
+        flat_choices = super(MultiSelectField, self)._get_flatchoices()
 
         class MSFFlatchoices(list):
             # Used to trick django.contrib.admin.utils.display_for_field into
@@ -83,7 +83,7 @@ class MultiSelectField(models.CharField):
             def __bool__(self):
                 return False
             __nonzero__ = __bool__
-        return MSFFlatchoices(l)
+        return MSFFlatchoices(flat_choices)
     flatchoices = property(_get_flatchoices)
 
     def get_choices_default(self):
