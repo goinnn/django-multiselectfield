@@ -26,7 +26,6 @@ else:
     from django.core.urlresolvers import reverse
 
 
-
 def app_index(request):
     user = get_user_model().objects.get(username='admin')
     if not hasattr(user, 'backend'):
