@@ -41,8 +41,10 @@ setup(
         'Framework :: Django',
         'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
         'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -54,13 +56,13 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     tests_require=[
-        'django>=1.11',
+        'django>=1.4',
         'tox',
         'coverage',
         'flake8',
     ],
     install_requires=[
-        'django>=1.11',
+        'django>=1.4',
     ],
     zip_safe=False,
 )
