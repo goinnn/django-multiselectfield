@@ -16,8 +16,13 @@
 
 from django import VERSION
 from django.conf import settings
+from django.contrib import admin
+from django.views.static import serve
+
+
 try:
     from django.conf.urls import include, url
+
     # Compatibility for Django > 1.8
     def patterns(prefix, *args):
         if VERSION < (1, 9):
@@ -34,8 +39,6 @@ except ImportError:  # Django < 1.4
         from django.conf.urls.defaults import include, patterns, url
     else:
         from django.urls import include, url
-from django.contrib import admin
-from django.views.static import serve
 
 
 admin.autodiscover()
