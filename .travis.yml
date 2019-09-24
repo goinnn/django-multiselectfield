@@ -5,6 +5,7 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
 env:
   - DJANGO_VERSION='Django>=1.4,<1.5'
   - DJANGO_VERSION='Django>=1.5,<1.6'
@@ -21,11 +22,8 @@ matrix:
   exclude:
     - python: "2.7"
       env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
-      env: DJANGO_VERSION='Django>=2.0,<2.1'
     - python: "2.7"
       env: DJANGO_VERSION='Django>=2.1,<2.2'
-    - python: "2.7"
-      env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
     - python: "3.4"
       env: DJANGO_VERSION='Django>=1.4,<1.5'
     - python: "3.4"
@@ -34,8 +32,6 @@ matrix:
       env: DJANGO_VERSION='Django>=1.6,<1.7'
     - python: "3.4"
       env: DJANGO_VERSION='Django>=2.1,<2.2'
-    - python: "2.7"
-      env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
     - python: "3.5"
       env: DJANGO_VERSION='Django>=1.4,<1.5'
     - python: "3.5"
@@ -45,7 +41,9 @@ matrix:
     - python: "3.5"
       env: DJANGO_VERSION='Django>=1.7,<1.8'
     - python: "3.5"
-      env: DJANGO_VERSION='Django>=2.1,<=2.2'
+      env: DJANGO_VERSION='Django>=2.1,<2.2'
+    - python: "3.5"
+      env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
     - python: "3.6"
       env: DJANGO_VERSION='Django>=1.4,<1.5'
     - python: "3.6"
@@ -61,9 +59,27 @@ matrix:
     - python: "3.6"
       env: DJANGO_VERSION='Django>=1.10,<1.11'
     - python: "3.6"
-      env: DJANGO_VERSION='Django>=2.1,<=2.2'
-  allow_failures:
-    - env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
+      env: DJANGO_VERSION='Django>=2.1,<2.2'
+    - python: "3.6"
+      env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
+    - python: "3.7"
+      env: DJANGO_VERSION='Django>=1.4,<1.5'
+    - python: "3.7"
+      env: DJANGO_VERSION='Django>=1.5,<1.6'
+    - python: "3.7"
+      env: DJANGO_VERSION='Django>=1.6,<1.7'
+    - python: "3.7"
+      env: DJANGO_VERSION='Django>=1.7,<1.8'
+    - python: "3.7"
+      env: DJANGO_VERSION='Django>=1.8,<1.9'
+    - python: "3.7"
+      env: DJANGO_VERSION='Django>=1.9,<1.10'
+    - python: "3.7"
+      env: DJANGO_VERSION='Django>=1.10,<1.11'
+    - python: "3.7"
+      env: DJANGO_VERSION='Django>=2.1,<2.2'
+    - python: "3.7"
+      env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
 
 install:
   - pip install -q $DJANGO_VERSION
