@@ -16,7 +16,6 @@
 
 from django import VERSION
 from django.conf import settings
-from django.contrib import admin
 from django.views.static import serve
 
 
@@ -41,8 +40,6 @@ except ImportError:  # Django < 1.4
         from django.urls import include, url
 
 
-admin.autodiscover()
-
 js_info_dict = {
     'packages': ('django.conf',),
 }
@@ -51,7 +48,6 @@ if VERSION < (1, 11):
     urlpatterns = patterns(
         '',
         url(r'^', include('app.urls')),
-        url(r'^admin/', include(admin.site.urls)),
     )
     urlpatterns += patterns(
         '',
@@ -60,7 +56,6 @@ if VERSION < (1, 11):
 else:
     urlpatterns = [
         url(r'^', include('app.urls')),
-        url(r'^admin/', admin.site.urls),
         url(
             r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
             serve,

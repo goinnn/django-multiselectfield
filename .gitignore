@@ -10,3 +10,5 @@ dist
 .coverage*
 .env
 example/example.db
+.tox
+
