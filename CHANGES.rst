@@ -1,3 +1,12 @@
+0.1.9 (2019-10-02)
+------------------
+
+* Added support for Django 2
+* Added support for Python 3.6
+* Drop support for Python (2.6, 3.3)
+* Thanks to:
+    * `hirokinko <https://github.com/hirokinko>`_
+
 0.1.6 (2017-05-10)
 ------------------
 
@@ -64,7 +73,7 @@
 
 * Test/example project
 * Now works if the first composant of the list of tuple is an integer
-* Now max_length is not required, the Multiselect field calculate it automatically. 
+* Now max_length is not required, the Multiselect field calculate it automatically.
 * The max_choices attr can be a attr in the model field
 * Refactor the code
 * Spanish translations
