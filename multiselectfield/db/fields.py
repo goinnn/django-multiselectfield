@@ -20,7 +20,6 @@ from django import VERSION
 
 from django.db import models
 from django.utils.text import capfirst
-from django.utils.encoding import python_2_unicode_compatible
 from django.core import exceptions
 
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
@@ -47,7 +46,6 @@ def add_metaclass(metaclass):
     return wrapper
 
 
-@python_2_unicode_compatible
 class MSFList(list):
 
     def __init__(self, choices, *args, **kwargs):
@@ -57,6 +55,10 @@ class MSFList(list):
     def __str__(msgl):
         msg_list = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
         return u', '.join([string_type(s) for s in msg_list])
+
+    if sys.version_info < (3,):
+        def __unicode__(self, msgl):
+            return self.__str__(msgl)
 
 
 class MultiSelectField(models.CharField):
@@ -102,7 +104,10 @@ class MultiSelectField(models.CharField):
         return choices_selected
 
     def value_to_string(self, obj):
-        value = super(MultiSelectField, self).value_from_object(obj)
+        try:
+            value = self._get_val_from_obj(obj)
+        except AttributeError:
+            value = super(MultiSelectField, self).value_from_object(obj)
         return self.get_prep_value(value)
 
     def validate(self, value, model_instance):
