@@ -31,7 +31,7 @@ def read(*rnames):
 
 setup(
     name="django-multiselectfield",
-    version="0.1.8",
+    version="0.1.9",
     author="Pablo Martin",
     author_email="goinnn@gmail.com",
     description="Django multiple select field",
@@ -48,6 +48,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
     license="LGPL 3",
     keywords="django,multiple,select,field,choices",
