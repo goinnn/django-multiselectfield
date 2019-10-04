@@ -16,6 +16,9 @@
 
 from django import VERSION
 from django.conf import settings
+from django.views.static import serve
+
+
 try:
     from django.conf.urls import include, url
 
@@ -31,26 +34,34 @@ try:
         else:
             return list(args)
 except ImportError:  # Django < 1.4
-    from django.conf.urls.defaults import include, patterns, url
+    if VERSION < (1, 4):
+        from django.conf.urls.defaults import include, patterns, url
+    else:
+        from django.urls import include, url
 
-from django.contrib import admin
-from django.views.static import serve
-
-admin.autodiscover()
 
 js_info_dict = {
     'packages': ('django.conf',),
 }
 
-urlpatterns = patterns(
-    '',
-    url(r'^', include('app.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-)
-
-urlpatterns += patterns(
-    '',
-    url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
-        serve,
-        {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-)
+if VERSION < (1, 11):
+    urlpatterns = patterns(
+        '',
+        url(r'^', include('app.urls')),
+    )
+    urlpatterns += patterns(
+        '',
+        url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:]),
+    )
+else:
+    urlpatterns = [
+        url(r'^', include('app.urls')),
+        url(
+            r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
+            serve,
+            {
+                'document_root': settings.MEDIA_ROOT,
+                'show_indexes': True,
+            },
+        ),
+    ]

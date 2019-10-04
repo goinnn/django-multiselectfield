@@ -146,8 +146,7 @@ class MultiSelectTestCase(TestCase):
                           """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>""")
 
         actual_html = form.as_p()
-
-        if (1, 11) <= VERSION < (2, 0):
+        if (1, 11) <= VERSION:
             # Django 1.11+ does not assign 'for' attributes on labels if they
             # are group labels
             expected_html = expected_html.replace('label for="id_published_in_0"', 'label')
@@ -157,8 +156,12 @@ class MultiSelectTestCase(TestCase):
             # with HTML entities), so we skip the test for that version
             self.assertEqual(expected_html.replace('\n', ''), actual_html.replace('\n', ''))
 
+        if VERSION >= (2, 0):
+            expected_html = expected_html.replace('input checked="checked"', 'input checked')
+
         if VERSION >= (1, 7):
             self.assertHTMLEqual(expected_html, actual_html)
+        self.assertHTMLEqual(expected_html, actual_html)
 
 
 class MultiSelectUtilsTestCase(TestCase):

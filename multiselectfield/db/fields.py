@@ -20,7 +20,6 @@ from django import VERSION
 
 from django.db import models
 from django.utils.text import capfirst
-from django.utils.encoding import python_2_unicode_compatible
 from django.core import exceptions
 
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
@@ -47,7 +46,6 @@ def add_metaclass(metaclass):
     return wrapper
 
 
-@python_2_unicode_compatible
 class MSFList(list):
 
     def __init__(self, choices, *args, **kwargs):
@@ -55,8 +53,12 @@ class MSFList(list):
         super(MSFList, self).__init__(*args, **kwargs)
 
     def __str__(msgl):
-        l = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
-        return u', '.join([string_type(s) for s in l])
+        msg_list = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
+        return u', '.join([string_type(s) for s in msg_list])
+
+    if sys.version_info < (3,):
+        def __unicode__(self, msgl):
+            return self.__str__(msgl)
 
 
 class MultiSelectField(models.CharField):
@@ -74,7 +76,7 @@ class MultiSelectField(models.CharField):
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
     def _get_flatchoices(self):
-        l = super(MultiSelectField, self)._get_flatchoices()
+        flat_choices = super(MultiSelectField, self)._get_flatchoices()
 
         class MSFFlatchoices(list):
             # Used to trick django.contrib.admin.utils.display_for_field into
@@ -83,7 +85,7 @@ class MultiSelectField(models.CharField):
             def __bool__(self):
                 return False
             __nonzero__ = __bool__
-        return MSFFlatchoices(l)
+        return MSFFlatchoices(flat_choices)
     flatchoices = property(_get_flatchoices)
 
     def get_choices_default(self):
@@ -102,7 +104,10 @@ class MultiSelectField(models.CharField):
         return choices_selected
 
     def value_to_string(self, obj):
-        value = self.value_from_object(obj)
+        try:
+            value = self._get_val_from_obj(obj)
+        except AttributeError:
+            value = super(MultiSelectField, self).value_from_object(obj)
         return self.get_prep_value(value)
 
     def validate(self, value, model_instance):
@@ -147,10 +152,16 @@ class MultiSelectField(models.CharField):
             return value if isinstance(value, list) else MSFList(choices, value.split(','))
         return MSFList(choices, [])
 
-    def from_db_value(self, value, expression, connection, context):
-        if value is None:
-            return value
-        return self.to_python(value)
+    if VERSION < (2, ):
+        def from_db_value(self, value, expression, connection, context):
+            if value is None:
+                return value
+            return self.to_python(value)
+    else:
+        def from_db_value(self, value, expression, connection):
+            if value is None:
+                return value
+            return self.to_python(value)
 
     def contribute_to_class(self, cls, name):
         super(MultiSelectField, self).contribute_to_class(cls, name)

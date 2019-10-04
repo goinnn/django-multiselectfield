@@ -14,13 +14,16 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
-
+from django import VERSION
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth import get_user_model
-
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+
+if VERSION >= (2, 0):
+    from django.urls import reverse
+else:
+    from django.core.urlresolvers import reverse
 
 
 def app_index(request):
