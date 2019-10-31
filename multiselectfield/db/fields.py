@@ -138,7 +138,7 @@ class MultiSelectField(models.CharField):
         return MultiSelectFormField(**defaults)
 
     def get_prep_value(self, value):
-        return '' if value is None else ",".join(value)
+        return '' if value is None else ",".join(map(str, value))
 
     def get_db_prep_value(self, value, connection, prepared=False):
         if not prepared and not isinstance(value, string_type):
@@ -149,7 +149,12 @@ class MultiSelectField(models.CharField):
         choices = dict(self.flatchoices)
 
         if value:
-            return value if isinstance(value, list) else MSFList(choices, value.split(','))
+            if isinstance(value, list):
+                return value
+            elif isinstance(value, string_type):
+                return MSFList(choices, value.split(','))
+            elif isinstance(value, (set, dict)):
+                return MSFList(choices, list(value))
         return MSFList(choices, [])
 
     if VERSION < (2, ):
