@@ -27,6 +27,13 @@ CATEGORY_CHOICES = (
     (5, _('Books about literature')),
 )
 
+ONE = 1
+TWO = 2
+CHAPTER_CHOICES = (
+    (ONE, 'Chapter I'),
+    (TWO, 'Chapter II')
+)
+
 TAGS_CHOICES = (
     ('sex',         _('Sex')),          # noqa: E241
     ('work',        _('Work')),         # noqa: E241
@@ -67,6 +74,7 @@ class Book(models.Model):
     published_in = MultiSelectField(_("Province or State"),
                                     choices=PROVINCES_AND_STATES,
                                     max_choices=2)
+    chapters = MultiSelectField(choices=CHAPTER_CHOICES, default=ONE)
 
     def __str__(self):
         return self.title

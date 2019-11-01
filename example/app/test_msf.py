@@ -23,8 +23,7 @@ from django.test import TestCase
 
 from multiselectfield.utils import get_max_length
 
-from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES
-
+from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO
 
 if sys.version_info < (3,):
     u = unicode  # noqa: F821
@@ -91,6 +90,27 @@ class MultiSelectTestCase(TestCase):
                            'categories': '1,2'})
         if form.is_valid():
             form.save()
+
+    def test_empty_update(self):
+        book = Book.objects.get(id=1)
+        self.assertEqual(book.get_chapters_list(), ["Chapter I"])
+        book.chapters = {}
+        book.save(update_fields=['chapters'])
+        self.assertTrue(len(book.chapters) == 0)
+
+    def test_single_update(self):
+        book = Book.objects.get(id=1)
+        self.assertEqual(book.get_chapters_list(), ["Chapter I"])
+        book.chapters = {ONE}
+        book.save(update_fields=['chapters'])
+        self.assertEqual(book.get_chapters_list(), ["Chapter I"])
+
+    def test_multiple_update(self):
+        book = Book.objects.get(id=1)
+        self.assertEqual(book.get_chapters_list(), ["Chapter I"])
+        book.chapters = {ONE, TWO}
+        book.save(update_fields=['chapters'])
+        self.assertEqual(book.get_chapters_list(), ["Chapter I", "Chapter II"])
 
     def test_object(self):
         book = Book.objects.get(id=1)
