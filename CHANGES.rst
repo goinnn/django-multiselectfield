@@ -1,3 +1,9 @@
+0.2.0 (2019-12-12)
+------------------
+
+* Added support for Django 3
+* Added support for Python 3.8
+
 0.1.9 (2019-10-02)
 ------------------
 
