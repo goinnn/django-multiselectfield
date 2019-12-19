@@ -1,8 +1,10 @@
-0.2.0 (2019-12-12)
+0.1.11 (2019-12-19)
 ------------------
 
 * Added support for Django 3
 * Added support for Python 3.8
+* Thanks to:
+    * `thijsBoehme  <https://github.com/thijsBoehme>`_
 
 0.1.9 (2019-10-02)
 ------------------
