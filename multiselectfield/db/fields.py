@@ -152,7 +152,8 @@ class MultiSelectField(models.CharField):
             if isinstance(value, list):
                 return value
             elif isinstance(value, string_type):
-                return MSFList(choices, value.split(','))
+                value_list = map(lambda x: x.strip(), value.replace(u'，', ',').split(','))
+                return MSFList(choices, value_list)
             elif isinstance(value, (set, dict)):
                 return MSFList(choices, list(value))
         return MSFList(choices, [])
