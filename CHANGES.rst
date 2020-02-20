@@ -1,3 +1,10 @@
+0.1.12 (2020-02-20)
+------------------
+
+* Optimize multiselectfield to_python method
+* Thanks to:
+    * `daimon99  <https://github.com/daimon99>`_
+
 0.1.11 (2019-12-19)
 ------------------
 
