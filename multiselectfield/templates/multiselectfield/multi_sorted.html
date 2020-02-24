@@ -1,0 +1,27 @@
+{% load i18n staticfiles %}
+
+{% with id=widget.attrs.id %}
+    <ul {% if id %} id="{{ id }}" {% endif %}
+        class="sortable-item-list"
+            {% if widget.attrs.class %}
+                class="{{ widget.attrs.class }}"
+            {% endif %}>
+
+        {% for group, options, index in widget.optgroups %}
+            {% if group %}
+                <li>
+                    {{ group }}
+                    <ul class="sortable-item-list" {% if id %} id="{{ id }}_{{ index }}" {% endif %} >
+            {% endif %}
+            {% for option in options %}
+                <li class="sortable-item">
+                    {% include option.template_name with widget=option %}
+                </li>
+            {% endfor %}
+            {% if group %}
+                </ul>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endwith %}

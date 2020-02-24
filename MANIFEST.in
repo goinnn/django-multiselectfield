@@ -2,3 +2,5 @@ include README.rst
 include CHANGES.rst
 include COPYING.LGPLv3
 include multiselectfield/locale/*/LC_MESSAGES/*.*
+recursive-include multiselectfield/static *.js *.css *.png *.ico *.eot *.svg *.ttf *.woff *.woff2
+recursive-include multiselectfield/templates *.html
