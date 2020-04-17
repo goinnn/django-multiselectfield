@@ -47,7 +47,7 @@ def get_other_values(choices, value):
     :return: list of other values.
     """
     choice_values = [choice[0] for choice in choices]
-    other_values = [val for val in value if not val in choice_values]
+    other_values = [val for val in value if val not in choice_values]
     return other_values
 
 
