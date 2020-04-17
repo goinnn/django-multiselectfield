@@ -17,6 +17,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import CheckboxSelectMultiple
+from django.utils.translation import ugettext_lazy as _
 
 from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator, MinChoicesValidator, MaxChoicesValidator
