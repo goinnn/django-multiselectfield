@@ -17,12 +17,11 @@
 import sys
 
 from django import VERSION
-
+from django.core import exceptions
 from django.db import models
 from django.utils.text import capfirst
-from django.core import exceptions
 
-from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
+from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator, MultiSelectWithOtherFormField
 from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator
 
@@ -31,11 +30,13 @@ if sys.version_info < (3,):
 else:
     string_type = str
 
+
 # Code from six egg https://bitbucket.org/gutworth/six/src/a3641cb211cc360848f1e2dd92e9ae6cd1de55dd/six.py?at=default
 
 
 def add_metaclass(metaclass):
     """Class decorator for creating a class with a metaclass."""
+
     def wrapper(cls):
         orig_vars = cls.__dict__.copy()
         orig_vars.pop('__dict__', None)
@@ -43,6 +44,7 @@ def add_metaclass(metaclass):
         for slots_var in orig_vars.get('__slots__', ()):
             orig_vars.pop(slots_var)
         return metaclass(cls.__name__, cls.__bases__, orig_vars)
+
     return wrapper
 
 
@@ -84,8 +86,11 @@ class MultiSelectField(models.CharField):
             # out)
             def __bool__(self):
                 return False
+
             __nonzero__ = __bool__
+
         return MSFFlatchoices(flat_choices)
+
     flatchoices = property(_get_flatchoices)
 
     def get_choices_default(self):
@@ -158,7 +163,7 @@ class MultiSelectField(models.CharField):
                 return MSFList(choices, list(value))
         return MSFList(choices, [])
 
-    if VERSION < (2, ):
+    if VERSION < (2,):
         def from_db_value(self, value, expression, connection, context):
             if value is None:
                 return value
@@ -189,6 +194,7 @@ class MultiSelectField(models.CharField):
 
             def get_display(obj):
                 return ", ".join(get_list(obj))
+
             get_display.short_description = self.verbose_name
 
             setattr(cls, 'get_%s_list' % self.name, get_list)
@@ -200,6 +206,77 @@ if VERSION < (1, 8):
 
 try:
     from south.modelsinspector import add_introspection_rules
+
     add_introspection_rules([], ['^multiselectfield\.db.fields\.MultiSelectField'])
 except ImportError:
     pass
+
+
+class MultiSelectWithOtherField(MultiSelectField):
+
+    def __init__(self, other_max_length=None, *args, **kwargs):
+        self.other_max_length = other_max_length
+
+        if kwargs.get('max_length') is None and self.other_max_length is not None:
+            choice_max_length = get_max_length(kwargs['choices'], kwargs.get('max_length'))
+            kwargs['max_length'] = choice_max_length + self.other_max_length
+
+        if type(kwargs['choices']) == tuple:
+            kwargs['choices'] = kwargs.pop('choices') + (('other', 'Other'),)
+        super(MultiSelectWithOtherField, self).__init__(*args, **kwargs)
+        self.error_messages.update({
+            'invalid_char': 'value %s contains invalid character `|`'
+        })
+
+    def get_prep_value(self, value):
+        selected_value = other_value = ''
+        choice_values = [choice[0] for choice in self.choices]
+        if value:
+            for val in value:
+                if val in choice_values:
+                    selected_value += val + ','
+                else:
+                    other_value = val
+
+            selected_value += '|' + other_value
+        return selected_value
+
+    def formfield(self, **kwargs):
+        defaults = {
+            'required': not self.blank,
+            'label': capfirst(self.verbose_name),
+            'help_text': self.help_text,
+            'choices': self.choices,
+            'max_length': self.max_length,
+            'max_choices': self.max_choices,
+            'other_max_length': self.other_max_length
+        }
+        if self.has_default():
+            defaults['initial'] = self.get_default()
+        defaults.update(kwargs)
+        return MultiSelectWithOtherFormField(**defaults)
+
+    def validate(self, value, model_instance):
+        """
+        this function is to validate the input values for multi select field, however we are implementing field with
+        support of other input filed we are disabling validations to let other input text pass to the database.
+        :param value: list of all selected choice with other text.
+        :param model_instance: current model instance for with it is saving data.
+        :return: nothing
+        """
+        for opt_select in value:
+            if '|' in opt_select:
+                raise exceptions.ValidationError(self.error_messages['invalid_char'] % value)
+
+    def to_python(self, value):
+        choices = dict(self.flatchoices)
+        if value:
+            if isinstance(value, list):
+                return value
+            elif isinstance(value, string_type):
+                choices_str = value.replace('|', '')
+                selected_choices = [choice for choice in choices_str.split(',') if choice.strip()]
+                return MSFList(choices, selected_choices)
+            elif isinstance(value, (set, dict)):
+                return MSFList(choices, list(value))
+        return MSFList(choices, [])
