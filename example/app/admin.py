@@ -16,10 +16,12 @@
 
 from django.contrib import admin
 
+from .forms import BookForm
 from .models import Book
 
 
 class BookAdmin(admin.ModelAdmin):
+    form = BookForm
     list_display = ('title', 'categories', 'tags', 'published_in')
 
 

@@ -53,9 +53,10 @@ def get_other_values(choices, value):
 
 class CheckboxSelectMultipleWithOther(CheckboxSelectMultiple):
     """
-        Widget class to handle other value filed.
+    Widget class to handle other value filed.
     """
     other_choice = None
+    other_option_template = 'django/forms/widgets/text.html'
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
         option = super(CheckboxSelectMultipleWithOther, self).create_option(name, value, label, selected, index,
@@ -63,12 +64,18 @@ class CheckboxSelectMultipleWithOther(CheckboxSelectMultiple):
         option.update({
             'value': self.other_choice if value == 'other' else value,
             'type': 'text' if value == 'other' else self.input_type,
-            'is_other': label == 'Other'
+            'is_other': label == 'Other',
         })
+        if value == 'other':
+            option.update({
+                'template_name': self.other_option_template,
+            })
         return option
 
     def optgroups(self, name, value, attrs=None):
-        """Return a list of optgroups for this widget."""
+        """
+        Return a list of optgroups for this widget.
+        """
 
         other_values = get_other_values(self.choices, value)
 
@@ -82,7 +89,7 @@ class CheckboxSelectMultipleWithOther(CheckboxSelectMultiple):
 
 class MultiSelectWithOtherFormField(MultiSelectFormField):
     """
-    Form field class to handle other text input field with in the multiselect field
+    Form field class to handle other text input field within the multiselect field
     """
     widget = CheckboxSelectMultipleWithOther
 
@@ -96,12 +103,13 @@ class MultiSelectWithOtherFormField(MultiSelectFormField):
         return len(value) < self.other_max_length
 
     def validate(self, value):
-        """Validate that the input is a list or tuple."""
+        """
+        Validate that the input is a list or tuple.
+        """
         if self.required and not value:
             raise ValidationError(self.error_messages['required'], code='required')
 
         if self.other_max_length is not None:
-
             other_values = get_other_values(self.choices, value)
             for val in other_values:
                 if not self.valid_value(val):

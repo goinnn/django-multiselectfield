@@ -18,6 +18,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 from multiselectfield import MultiSelectField
+from multiselectfield.db.fields import MultiSelectWithOtherField
 
 CATEGORY_CHOICES = (
     (1, _('Handbooks and manuals by discipline')),
@@ -35,15 +36,15 @@ CHAPTER_CHOICES = (
 )
 
 TAGS_CHOICES = (
-    ('sex',         _('Sex')),          # noqa: E241
-    ('work',        _('Work')),         # noqa: E241
-    ('happy',       _('Happy')),        # noqa: E241
-    ('food',        _('Food')),         # noqa: E241
-    ('field',       _('Field')),        # noqa: E241
-    ('boring',      _('Boring')),       # noqa: E241
+    ('sex', _('Sex')),  # noqa: E241
+    ('work', _('Work')),  # noqa: E241
+    ('happy', _('Happy')),  # noqa: E241
+    ('food', _('Food')),  # noqa: E241
+    ('field', _('Field')),  # noqa: E241
+    ('boring', _('Boring')),  # noqa: E241
     ('interesting', _('Interesting')),  # noqa: E241
-    ('huge',        _('Huge')),         # noqa: E241
-    ('nice',        _('Nice')),         # noqa: E241
+    ('huge', _('Huge')),  # noqa: E241
+    ('nice', _('Nice')),  # noqa: E241
 )
 
 PROVINCES = (
@@ -59,7 +60,7 @@ STATES = (
 
 PROVINCES_AND_STATES = (
     (_("Canada - Provinces"), PROVINCES),
-    (_("USA - States"),       STATES),  # noqa: E241
+    (_("USA - States"), STATES),  # noqa: E241
 )
 
 
@@ -75,6 +76,9 @@ class Book(models.Model):
                                     choices=PROVINCES_AND_STATES,
                                     max_choices=2)
     chapters = MultiSelectField(choices=CHAPTER_CHOICES, default=ONE)
+
+    tabs_with_other = MultiSelectWithOtherField(choices=TAGS_CHOICES, other_max_length=100,
+                                                null=True, blank=True)
 
     def __str__(self):
         return self.title
