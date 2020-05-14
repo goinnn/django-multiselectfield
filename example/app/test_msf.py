@@ -151,10 +151,17 @@ class MultiSelectTestCase(TestCase):
         except ValidationError:
             pass
 
+        try:
+            get_field(Book, 'tabs_with_other').clean(['sex', 'work', 'other_option'], book)
+            raise AssertionError()
+        except ValidationError:
+            pass
+
     def test_serializer(self):
         book = Book.objects.get(id=1)
         self.assertEqual(get_field(Book, 'tags').value_to_string(book), 'sex,work,happy')
         self.assertEqual(get_field(Book, 'categories').value_to_string(book), '1,3,5')
+        self.assertEqual(get_field(Book, 'tabs_with_other').value_to_string(book), 'sex,other_option')
 
     def test_flatchoices(self):
         self.assertEqual(get_field(Book, 'published_in').flatchoices, list(PROVINCES + STATES))
