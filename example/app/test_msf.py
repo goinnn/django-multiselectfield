@@ -30,7 +30,6 @@ if sys.version_info < (3,):
 else:
     u = str
 
-
 if VERSION < (1, 9):
     def get_field(model, name):
         return model._meta.get_field_by_name(name)[0]
@@ -40,7 +39,6 @@ else:
 
 
 class MultiSelectTestCase(TestCase):
-
     fixtures = ['app_data.json']
     maxDiff = 4000
 
@@ -87,7 +85,7 @@ class MultiSelectTestCase(TestCase):
         form_class = modelform_factory(Book, fields=('title', 'tags', 'categories'))
         self.assertEqual(len(form_class.base_fields), 3)
         form = form_class({'title': 'new book',
-                           'categories': '1,2'})
+                           'categories': '1,2', 'tabs_with_other': 'sex,work,other_option'})
         if form.is_valid():
             form.save()
 
@@ -116,8 +114,11 @@ class MultiSelectTestCase(TestCase):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_tags_display(), 'Sex, Work, Happy')
         self.assertEqual(book.get_tags_list(), ['Sex', 'Work', 'Happy'])
-        self.assertEqual(book.get_categories_display(), 'Handbooks and manuals by discipline, Books of literary criticism, Books about literature')
-        self.assertEqual(book.get_categories_list(), ['Handbooks and manuals by discipline', 'Books of literary criticism', 'Books about literature'])
+        self.assertEqual(book.get_categories_display(),
+                         'Handbooks and manuals by discipline, Books of literary criticism, Books about literature')
+        self.assertEqual(book.get_categories_list(),
+                         ['Handbooks and manuals by discipline', 'Books of literary criticism',
+                          'Books about literature'])
 
         self.assertEqual(book.get_tags_list(), book.get_tags_display().split(', '))
         self.assertEqual(book.get_categories_list(), book.get_categories_display().split(', '))
@@ -159,11 +160,12 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(len(form_class.base_fields), 1)
         form = form_class(initial={'published_in': ['BC', 'AK']})
 
-        expected_html = u("""<p><label for="id_published_in_0">Province or State:</label> <ul id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n"""
-                          """<li><label for="id_published_in_0_1"><input checked="checked" id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n"""
-                          """<li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input checked="checked" id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n"""
-                          """<li><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n"""
-                          """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>""")
+        expected_html = u(
+            """<p><label for="id_published_in_0">Province or State:</label> <ul id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n"""
+            """<li><label for="id_published_in_0_1"><input checked="checked" id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n"""
+            """<li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input checked="checked" id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n"""
+            """<li><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n"""
+            """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>""")
 
         actual_html = form.as_p()
         if (1, 11) <= VERSION:

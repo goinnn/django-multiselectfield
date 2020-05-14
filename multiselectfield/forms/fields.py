@@ -19,7 +19,7 @@ from django.core.exceptions import ValidationError
 from django.forms import CheckboxSelectMultiple
 from django.utils.translation import ugettext_lazy as _
 
-from ..utils import get_max_length
+from ..utils import get_max_length, add_other_field_in_choices
 from ..validators import MaxValueMultiFieldValidator, MinChoicesValidator, MaxChoicesValidator
 
 
@@ -56,20 +56,20 @@ class CheckboxSelectMultipleWithOther(CheckboxSelectMultiple):
     Widget class to handle other value filed.
     """
     other_choice = None
-    other_option_template = 'django/forms/widgets/text.html'
+    other_option_template_name = 'django/forms/widgets/text.html'
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
         option = super(CheckboxSelectMultipleWithOther, self).create_option(name, value, label, selected, index,
                                                                             subindex, attrs)
-        option.update({
-            'value': self.other_choice if value == 'other' else value,
-            'type': 'text' if value == 'other' else self.input_type,
-            'is_other': label == 'Other',
-        })
+
         if value == 'other':
             option.update({
-                'template_name': self.other_option_template,
+                'value': self.other_choice,
+                'type': 'text',
+                'template_name': self.other_option_template_name,
+                'is_other': True
             })
+
         return option
 
     def optgroups(self, name, value, attrs=None):
@@ -94,13 +94,19 @@ class MultiSelectWithOtherFormField(MultiSelectFormField):
     widget = CheckboxSelectMultipleWithOther
 
     def __init__(self, other_max_length=None, *args, **kwargs):
+        if kwargs.get('choices'):
+            kwargs['choices'] = add_other_field_in_choices(kwargs['choices'])
+
         super(MultiSelectWithOtherFormField, self).__init__(*args, **kwargs)
+
         self.other_max_length = other_max_length
         self.error_messages.update(
-            dict(invalid_length=_('Other field value. %(value)s maximum allowed length violation.')))
+            dict(invalid_length=_(
+                'Other field value, maximum allowed length violation. Allowed limit is upto {other_max_length} characters.').format(
+                other_max_length=other_max_length)))
 
     def valid_value(self, value):
-        return len(value) < self.other_max_length
+        return len(value) <= self.other_max_length
 
     def validate(self, value):
         """

@@ -23,7 +23,7 @@ import six
 from django.utils.text import capfirst
 
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator, MultiSelectWithOtherFormField
-from ..utils import get_max_length
+from ..utils import get_max_length, add_other_field_in_choices
 from ..validators import MaxValueMultiFieldValidator
 
 if sys.version_info < (3,):
@@ -213,7 +213,19 @@ except ImportError:
     pass
 
 
+class OtherMultiSelectFieldList(MSFList):
+    def __str__(self):
+        selected_choice_list = [self.choices.get(int(i)) if i.isdigit() else (self.choices.get(i) or i) for i in self]
+        return u', '.join([string_type(s) for s in selected_choice_list])
+
 class MultiSelectWithOtherField(MultiSelectField):
+    """
+        This class is a Django Model field class that supports
+        multi select along with other option
+        The `other_max_length` parameter is required for this
+        Choice keys can not contain commas and other field can not contain
+        pipe character i.e. `|`
+    """
 
     def __init__(self, other_max_length=None, *args, **kwargs):
         self.other_max_length = other_max_length
@@ -222,8 +234,8 @@ class MultiSelectWithOtherField(MultiSelectField):
             choice_max_length = get_max_length(kwargs['choices'], kwargs.get('max_length'))
             kwargs['max_length'] = choice_max_length + other_max_length
 
-        if type(kwargs['choices']) == tuple:
-            kwargs['choices'] = kwargs.pop('choices') + (('other', 'Other'),)
+        if kwargs.get('choices'):
+            kwargs['choices'] = add_other_field_in_choices(kwargs['choices'])
 
         super(MultiSelectWithOtherField, self).__init__(*args, **kwargs)
 
@@ -262,11 +274,14 @@ class MultiSelectWithOtherField(MultiSelectField):
 
     def validate(self, value, model_instance):
         """
-        This function is to validate the input values for multi select field, however we are implementing field with
-        support of other input filed we are disabling validations to let other input text(other option) pass to the database.
+        This function is to validate the input values for multi select field,
+        however we are implementing field with support of other input filed
+        we are disabling validations to let other input text(other option)
+        pass to the database.
+
         :param value: list of all selected choice with other text.
         :param model_instance: current model instance for with it is saving data.
-        :return: nothing
+        :return: None
         """
         for opt_select in value:
             if self.other_delimiter in opt_select:
@@ -280,7 +295,7 @@ class MultiSelectWithOtherField(MultiSelectField):
             elif isinstance(value, string_type):
                 choices_str = value.replace(self.other_delimiter, '')
                 selected_choices = [choice for choice in choices_str.split(',') if choice.strip()]
-                return MSFList(choices, selected_choices)
+                return OtherMultiSelectFieldList(choices, selected_choices)
             elif isinstance(value, (set, dict)):
                 return MSFList(choices, list(value))
         return MSFList(choices, [])
