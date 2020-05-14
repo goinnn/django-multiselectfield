@@ -82,7 +82,7 @@ class MultiSelectTestCase(TestCase):
             self.assertListEqual(categories_list_list, [['1', '3', '5']])
 
     def test_form(self):
-        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories'))
+        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories', 'tabs_with_other'))
         self.assertEqual(len(form_class.base_fields), 3)
         form = form_class({'title': 'new book',
                            'categories': '1,2', 'tabs_with_other': 'sex,other_option'})
@@ -90,7 +90,7 @@ class MultiSelectTestCase(TestCase):
             form.save()
 
     def test_form_invalid(self):
-        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories'))
+        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories', 'tabs_with_other'))
         self.assertEqual(len(form_class.base_fields), 3)
         form = form_class({'title': 'new book',
                            'categories': '1,2', 'tabs_with_other': 'sex,work,other_option'})
