@@ -126,8 +126,7 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(book.get_categories_list(),
                          ['Handbooks and manuals by discipline', 'Books of literary criticism',
                           'Books about literature'])
-        self.assertEqual(book.get_tabs_with_other_display(),
-                         'Handbooks and manuals by discipline, Books of literary criticism, Books about literature')
+        self.assertEqual(book.get_tabs_with_other_display(), 'Sex, other_option')
 
         self.assertEqual(book.get_tags_list(), book.get_tags_display().split(', '))
         self.assertEqual(book.get_categories_list(), book.get_categories_display().split(', '))
@@ -163,7 +162,7 @@ class MultiSelectTestCase(TestCase):
         book = Book.objects.get(id=1)
         self.assertEqual(get_field(Book, 'tags').value_to_string(book), 'sex,work,happy')
         self.assertEqual(get_field(Book, 'categories').value_to_string(book), '1,3,5')
-        self.assertEqual(get_field(Book, 'tabs_with_other').value_to_string(book), 'sex,other_option')
+        self.assertEqual(get_field(Book, 'tabs_with_other').value_to_string(book), 'sex,|other_option')
 
     def test_flatchoices(self):
         self.assertEqual(get_field(Book, 'published_in').flatchoices, list(PROVINCES + STATES))
