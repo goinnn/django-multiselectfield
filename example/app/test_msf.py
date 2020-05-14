@@ -85,9 +85,16 @@ class MultiSelectTestCase(TestCase):
         form_class = modelform_factory(Book, fields=('title', 'tags', 'categories'))
         self.assertEqual(len(form_class.base_fields), 3)
         form = form_class({'title': 'new book',
-                           'categories': '1,2', 'tabs_with_other': 'sex,work,other_option'})
+                           'categories': '1,2', 'tabs_with_other': 'sex,other_option'})
         if form.is_valid():
             form.save()
+
+    def test_form_invalid(self):
+        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories'))
+        self.assertEqual(len(form_class.base_fields), 3)
+        form = form_class({'title': 'new book',
+                           'categories': '1,2', 'tabs_with_other': 'sex,work,other_option'})
+        self.assertFalse(form.is_valid())
 
     def test_empty_update(self):
         book = Book.objects.get(id=1)

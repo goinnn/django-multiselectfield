@@ -78,7 +78,7 @@ class Book(models.Model):
     chapters = MultiSelectField(choices=CHAPTER_CHOICES, default=ONE)
 
     tabs_with_other = MultiSelectWithOtherField(choices=TAGS_CHOICES, other_max_length=100,
-                                                null=True, blank=True)
+                                                null=True, blank=True,min_choices=1,max_length=2)
 
     def __str__(self):
         return self.title
