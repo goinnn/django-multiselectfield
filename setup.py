@@ -63,7 +63,7 @@ setup(
         'flake8',
     ],
     install_requires=[
-        'django>=1.4',
+        'django>=1.4', 'six'
     ],
     zip_safe=False,
 )

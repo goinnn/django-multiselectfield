@@ -30,7 +30,6 @@ if sys.version_info < (3,):
 else:
     u = str
 
-
 if VERSION < (1, 9):
     def get_field(model, name):
         return model._meta.get_field_by_name(name)[0]
@@ -40,7 +39,6 @@ else:
 
 
 class MultiSelectTestCase(TestCase):
-
     fixtures = ['app_data.json']
     maxDiff = 4000
 
@@ -69,6 +67,7 @@ class MultiSelectTestCase(TestCase):
     def test_values_list(self):
         tag_list_list = Book.objects.all().values_list('tags', flat=True)
         categories_list_list = Book.objects.all().values_list('categories', flat=True)
+        tabs_with_other_list_list = Book.objects.all().values_list('tabs_with_other', flat=True)
 
         # Workaround for Django bug #9619
         # https://code.djangoproject.com/ticket/9619
@@ -79,17 +78,26 @@ class MultiSelectTestCase(TestCase):
         if VERSION >= (1, 6) and VERSION < (1, 8):
             self.assertStringEqual(tag_list_list, [u('sex,work,happy')])
             self.assertStringEqual(categories_list_list, [u('1,3,5')])
+            self.assertStringEqual(tabs_with_other_list_list, [u('sex,other_option')])
         else:
             self.assertListEqual(tag_list_list, [['sex', 'work', 'happy']])
             self.assertListEqual(categories_list_list, [['1', '3', '5']])
+            self.assertListEqual(tabs_with_other_list_list, [['sex', 'other_option']])
 
     def test_form(self):
-        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories'))
-        self.assertEqual(len(form_class.base_fields), 3)
+        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories', 'tabs_with_other'))
+        self.assertEqual(len(form_class.base_fields), 4)
         form = form_class({'title': 'new book',
-                           'categories': '1,2'})
+                           'categories': '1,2', 'tabs_with_other': 'sex,other_option'})
         if form.is_valid():
             form.save()
+
+    def test_form_invalid(self):
+        form_class = modelform_factory(Book, fields=('title', 'tags', 'categories', 'tabs_with_other'))
+        self.assertEqual(len(form_class.base_fields), 4)
+        form = form_class({'title': 'new book',
+                           'categories': '1,2', 'tabs_with_other': 'sex,work,other_option'})
+        self.assertFalse(form.is_valid())
 
     def test_empty_update(self):
         book = Book.objects.get(id=1)
@@ -116,8 +124,12 @@ class MultiSelectTestCase(TestCase):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_tags_display(), 'Sex, Work, Happy')
         self.assertEqual(book.get_tags_list(), ['Sex', 'Work', 'Happy'])
-        self.assertEqual(book.get_categories_display(), 'Handbooks and manuals by discipline, Books of literary criticism, Books about literature')
-        self.assertEqual(book.get_categories_list(), ['Handbooks and manuals by discipline', 'Books of literary criticism', 'Books about literature'])
+        self.assertEqual(book.get_categories_display(),
+                         'Handbooks and manuals by discipline, Books of literary criticism, Books about literature')
+        self.assertEqual(book.get_categories_list(),
+                         ['Handbooks and manuals by discipline', 'Books of literary criticism',
+                          'Books about literature'])
+        self.assertEqual(book.get_tabs_with_other_display(), 'Sex, other_option')
 
         self.assertEqual(book.get_tags_list(), book.get_tags_display().split(', '))
         self.assertEqual(book.get_categories_list(), book.get_categories_display().split(', '))
@@ -143,10 +155,17 @@ class MultiSelectTestCase(TestCase):
         except ValidationError:
             pass
 
+        try:
+            get_field(Book, 'tabs_with_other').clean(['sex', 'work', 'other_option'], book)
+            raise AssertionError()
+        except ValidationError:
+            pass
+
     def test_serializer(self):
         book = Book.objects.get(id=1)
         self.assertEqual(get_field(Book, 'tags').value_to_string(book), 'sex,work,happy')
         self.assertEqual(get_field(Book, 'categories').value_to_string(book), '1,3,5')
+        self.assertEqual(get_field(Book, 'tabs_with_other').value_to_string(book), 'sex,|other_option')
 
     def test_flatchoices(self):
         self.assertEqual(get_field(Book, 'published_in').flatchoices, list(PROVINCES + STATES))
@@ -159,11 +178,12 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(len(form_class.base_fields), 1)
         form = form_class(initial={'published_in': ['BC', 'AK']})
 
-        expected_html = u("""<p><label for="id_published_in_0">Province or State:</label> <ul id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n"""
-                          """<li><label for="id_published_in_0_1"><input checked="checked" id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n"""
-                          """<li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input checked="checked" id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n"""
-                          """<li><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n"""
-                          """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>""")
+        expected_html = u(
+            """<p><label for="id_published_in_0">Province or State:</label> <ul id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n"""
+            """<li><label for="id_published_in_0_1"><input checked="checked" id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n"""
+            """<li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input checked="checked" id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n"""
+            """<li><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n"""
+            """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>""")
 
         actual_html = form.as_p()
         if (1, 11) <= VERSION:

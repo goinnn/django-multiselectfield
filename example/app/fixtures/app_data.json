@@ -6,6 +6,7 @@
         "title": "My book 1",
         "tags": "sex,work,happy",
         "categories": "1,3,5",
+        "tabs_with_other": "sex,|other_option",
         "published_in": "BC,AL,AK",
         "chapters": "1"
     }
