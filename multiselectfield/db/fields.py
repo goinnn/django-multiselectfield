@@ -206,6 +206,10 @@ class MultiSelectField(models.CharField):
             setattr(cls, 'get_%s_display' % self.name, get_display)
 
 
+if VERSION < (1, 8):
+    MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
+
+
 class OtherMultiSelectFieldList(MSFList):
     def __str__(self):
         selected_choice_list = [self.choices.get(int(i)) if i.isdigit() else (self.choices.get(i) or i) for i in self]
@@ -321,7 +325,6 @@ class MultiSelectWithOtherField(MultiSelectField):
 
 
 if VERSION < (1, 8):
-    MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
     MultiSelectWithOtherField = add_metaclass(models.SubfieldBase)(MultiSelectWithOtherField)
 
 try:
