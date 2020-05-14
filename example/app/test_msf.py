@@ -67,6 +67,7 @@ class MultiSelectTestCase(TestCase):
     def test_values_list(self):
         tag_list_list = Book.objects.all().values_list('tags', flat=True)
         categories_list_list = Book.objects.all().values_list('categories', flat=True)
+        tabs_with_other_list_list = Book.objects.all().values_list('tabs_with_other', flat=True)
 
         # Workaround for Django bug #9619
         # https://code.djangoproject.com/ticket/9619
@@ -77,9 +78,11 @@ class MultiSelectTestCase(TestCase):
         if VERSION >= (1, 6) and VERSION < (1, 8):
             self.assertStringEqual(tag_list_list, [u('sex,work,happy')])
             self.assertStringEqual(categories_list_list, [u('1,3,5')])
+            self.assertStringEqual(tabs_with_other_list_list, [u('sex,other_option')])
         else:
             self.assertListEqual(tag_list_list, [['sex', 'work', 'happy']])
             self.assertListEqual(categories_list_list, [['1', '3', '5']])
+            self.assertListEqual(tabs_with_other_list_list, [['sex', 'other_option']])
 
     def test_form(self):
         form_class = modelform_factory(Book, fields=('title', 'tags', 'categories', 'tabs_with_other'))
