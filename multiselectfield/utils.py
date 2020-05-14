@@ -16,7 +16,6 @@
 
 import sys
 
-
 if sys.version_info[0] == 2:
     string = basestring  # noqa: F821
     string_type = unicode  # noqa: F821
@@ -32,6 +31,7 @@ def get_max_length(choices, max_length, default=200):
         else:
             return default
     return max_length
+
 
 def add_other_field_in_choices(choices):
     _choices = choices

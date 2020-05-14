@@ -19,9 +19,8 @@ from django.contrib import admin
 
 try:
     from django.conf.urls import url
-
-
     # Compatibility for Django > 1.8
+
     def patterns(prefix, *args):
         if VERSION < (1, 9):
             from django.conf.urls import patterns as django_patterns
