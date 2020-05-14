@@ -16,10 +16,9 @@
 
 import sys
 
-from django import VERSION
-from django.core import exceptions, checks
-from django.db import models
 import six
+from django import VERSION
+from django.db import models
 from django.utils.text import capfirst
 
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator, MultiSelectWithOtherFormField
@@ -30,6 +29,11 @@ if sys.version_info < (3,):
     string_type = unicode  # noqa: F821
 else:
     string_type = str
+
+if VERSION >= (1, 8):
+    from django.core import exceptions, checks
+else:
+    from django.core import exceptions
 
 
 # Code from six egg https://bitbucket.org/gutworth/six/src/a3641cb211cc360848f1e2dd92e9ae6cd1de55dd/six.py?at=default
