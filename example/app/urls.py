@@ -15,12 +15,10 @@
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
 from django import VERSION
-from django.contrib import admin
-
 try:
     from django.conf.urls import url
-    # Compatibility for Django > 1.8
 
+    # Compatibility for Django > 1.8
     def patterns(prefix, *args):
         if VERSION < (1, 9):
             from django.conf.urls import patterns as django_patterns
@@ -36,8 +34,8 @@ except ImportError:  # Django < 1.4
 
 from .views import app_index
 
+
 urlpatterns = patterns(
     '',
     url(r'^$', app_index, name='app_index'),
-    url(r'^admin/', admin.site.urls),
 )
