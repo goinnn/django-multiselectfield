@@ -126,6 +126,8 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(book.get_categories_list(),
                          ['Handbooks and manuals by discipline', 'Books of literary criticism',
                           'Books about literature'])
+        self.assertEqual(book.get_tabs_with_other_display(),
+                         'Handbooks and manuals by discipline, Books of literary criticism, Books about literature')
 
         self.assertEqual(book.get_tags_list(), book.get_tags_display().split(', '))
         self.assertEqual(book.get_categories_list(), book.get_categories_display().split(', '))
