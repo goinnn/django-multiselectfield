@@ -202,21 +202,11 @@ class MultiSelectField(models.CharField):
             setattr(cls, 'get_%s_display' % self.name, get_display)
 
 
-if VERSION < (1, 8):
-    MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
-
-try:
-    from south.modelsinspector import add_introspection_rules
-
-    add_introspection_rules([], ['^multiselectfield\.db.fields\.MultiSelectField'])
-except ImportError:
-    pass
-
-
 class OtherMultiSelectFieldList(MSFList):
     def __str__(self):
         selected_choice_list = [self.choices.get(int(i)) if i.isdigit() else (self.choices.get(i) or i) for i in self]
         return u', '.join([string_type(s) for s in selected_choice_list])
+
 
 class MultiSelectWithOtherField(MultiSelectField):
     """
@@ -324,3 +314,16 @@ class MultiSelectWithOtherField(MultiSelectField):
         errors = super(MultiSelectWithOtherField, self).check(**kwargs)
         errors.extend(self._check_other_max_length_attribute(**kwargs))
         return errors
+
+
+if VERSION < (1, 8):
+    MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
+    MultiSelectWithOtherField = add_metaclass(models.SubfieldBase)(MultiSelectWithOtherField)
+
+try:
+    from south.modelsinspector import add_introspection_rules
+
+    add_introspection_rules([], ['^multiselectfield\.db.fields\.MultiSelectField',
+                                 '^multiselectfield\.db.fields\.MultiSelectWithOtherField'])
+except ImportError:
+    pass
