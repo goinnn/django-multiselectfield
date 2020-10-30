@@ -23,7 +23,7 @@ from django.utils.text import capfirst
 from django.core import exceptions
 
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
-from ..utils import get_max_length
+from ..utils import MSFList, get_max_length
 from ..validators import MaxValueMultiFieldValidator
 
 if sys.version_info < (3,):
@@ -44,21 +44,6 @@ def add_metaclass(metaclass):
             orig_vars.pop(slots_var)
         return metaclass(cls.__name__, cls.__bases__, orig_vars)
     return wrapper
-
-
-class MSFList(list):
-
-    def __init__(self, choices, *args, **kwargs):
-        self.choices = choices
-        super(MSFList, self).__init__(*args, **kwargs)
-
-    def __str__(msgl):
-        msg_list = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
-        return u', '.join([string_type(s) for s in msg_list])
-
-    if sys.version_info < (3,):
-        def __unicode__(self, msgl):
-            return self.__str__(msgl)
 
 
 class MultiSelectField(models.CharField):
@@ -130,6 +115,7 @@ class MultiSelectField(models.CharField):
                     'label': capfirst(self.verbose_name),
                     'help_text': self.help_text,
                     'choices': self.choices,
+                    'flat_choices': self.flatchoices,
                     'max_length': self.max_length,
                     'max_choices': self.max_choices}
         if self.has_default():
