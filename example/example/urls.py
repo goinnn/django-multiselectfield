@@ -36,8 +36,10 @@ try:
 except ImportError:  # Django < 1.4
     if VERSION < (1, 4):
         from django.conf.urls.defaults import include, patterns, url
-    else:
+    elif VERSION < (4, 0):
         from django.urls import include, url
+    else:
+        from django.urls import re_path as url
 
 
 js_info_dict = {
