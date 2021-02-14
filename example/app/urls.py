@@ -30,12 +30,19 @@ try:
         else:
             return list(args)
 except ImportError:  # Django < 1.4
-    from django.conf.urls.defaults import patterns, url
+    if VERSION < (4, 0):
+        from django.conf.urls.defaults import patterns, url
+    else:
+        from django.urls import re_path as url
 
 from .views import app_index
 
-
-urlpatterns = patterns(
-    '',
-    url(r'^$', app_index, name='app_index'),
-)
+if VERSION < (1, 11):
+    urlpatterns = patterns(
+        '',
+        url(r'^$', app_index, name='app_index'),
+    )
+else:
+    urlpatterns = [
+        url(r'^$', app_index, name='app_index'),
+    ]
