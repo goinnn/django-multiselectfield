@@ -117,6 +117,7 @@ class MultiSelectField(models.CharField):
                     'choices': self.choices,
                     'flat_choices': self.flatchoices,
                     'max_length': self.max_length,
+                    'min_choices': self.min_choices,
                     'max_choices': self.max_choices}
         if self.has_default():
             defaults['initial'] = self.get_default()
