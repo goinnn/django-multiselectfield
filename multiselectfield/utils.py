@@ -29,6 +29,7 @@ else:
     string = str
     string_type = string
 
+
 class _FakeSqlVal(UserList):
 
     contains_aggregate = False
