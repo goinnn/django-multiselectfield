@@ -1,3 +1,7 @@
+0.1.13 (2022-12-05)
+-------------------
+* Fix error with Django>=4.1.3: <https://github.com/goinnn/django-multiselectfield/pull/135>
+
 0.1.12 (2020-02-20)
 -------------------
 
