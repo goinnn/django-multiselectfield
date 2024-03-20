@@ -27,7 +27,7 @@ class MultiSelectFormField(forms.MultipleChoiceField):
         self.min_choices = kwargs.pop('min_choices', None)
         self.max_choices = kwargs.pop('max_choices', None)
         self.max_length = kwargs.pop('max_length', None)
-        self.flat_choices = kwargs.pop('flat_choices')
+        self.flat_choices = kwargs.pop('flat_choices', None)
         super(MultiSelectFormField, self).__init__(*args, **kwargs)
         self.max_length = get_max_length(self.choices, self.max_length)
         self.validators.append(MaxValueMultiFieldValidator(self.max_length))
