@@ -61,7 +61,10 @@ class MultiSelectField(models.CharField):
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
     def _get_flatchoices(self):
-        flat_choices = super(MultiSelectField, self)._get_flatchoices()
+        try:
+            flat_choices = super(MultiSelectField, self).flatchoices
+        except AttributeError:
+            flat_choices = super(MultiSelectField, self)._get_flatchoices()
 
         class MSFFlatchoices(list):
             # Used to trick django.contrib.admin.utils.display_for_field into
