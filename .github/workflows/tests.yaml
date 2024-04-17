@@ -1,0 +1,54 @@
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      # all supported django version on lowest/highest supported python
+      # see https://www.djangoproject.com/download/#supported-versions
+      # and https://docs.djangoproject.com/en/4.2/faq/install/#what-python-version-can-i-use-with-django
+      matrix:
+        include:
+          # EOL (last versions supported by goinnn's version)
+          # - { dj: "1.10", py: "3.7" } # should be py 3.5 but not available on github
+          # Supported versions not yet compatible
+          # - { dj: "3.2.*", py: "3.7" } # should be py 3.6 but not available on github
+          # - { dj: "3.2.*", py: "3.10" }
+          # - { dj: "4.0.*", py: "3.8" }
+          # - { dj: "4.0.*", py: "3.10" }
+          # Supported versions
+          - { dj: "4.1.*", py: "3.8" }
+          - { dj: "4.1.*", py: "3.11" }
+          - { dj: "4.2.*", py: "3.8" }
+          - { dj: "4.2.*", py: "3.12" }
+          - { dj: "5.0.*", py: "3.10" }
+          - { dj: "5.0.*", py: "3.12" }
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.py }}
+
+    - name: Install test deps
+      run: pip install flake8 coverage
+
+    - name: Install django
+      run: pip install django==${{ matrix.dj }}
+        
+    - name: Install library
+      run: pip install -e .
+
+    # Disabled for now, at some point we'll use black instead
+    # - name: Lint
+    #   run: flake8 --ignore=E501
+
+    - name: Run tests
+      working-directory: example
+      run: python -m coverage run manage.py test
