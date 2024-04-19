@@ -13,14 +13,6 @@ jobs:
       # and https://docs.djangoproject.com/en/4.2/faq/install/#what-python-version-can-i-use-with-django
       matrix:
         include:
-          # EOL (last versions supported by goinnn's version)
-          # - { dj: "1.10", py: "3.7" } # should be py 3.5 but not available on github
-          # Supported versions not yet compatible
-          # - { dj: "3.2.*", py: "3.7" } # should be py 3.6 but not available on github
-          # - { dj: "3.2.*", py: "3.10" }
-          # - { dj: "4.0.*", py: "3.8" }
-          # - { dj: "4.0.*", py: "3.10" }
-          # Supported versions
           - { dj: "4.1.*", py: "3.8" }
           - { dj: "4.1.*", py: "3.11" }
           - { dj: "4.2.*", py: "3.8" }
