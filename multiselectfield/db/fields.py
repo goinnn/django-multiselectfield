@@ -14,8 +14,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this programe.  If not, see <http://www.gnu.org/licenses/>.
 
-from django import VERSION
-
 from django.db import models
 from django.utils.text import capfirst
 from django.core import exceptions
@@ -101,10 +99,7 @@ class MultiSelectField(models.CharField):
         arr_choices = self.get_choices_selected(self.get_choices_default())
         for opt_select in value:
             if (opt_select not in arr_choices):
-                if VERSION >= (1, 6):
-                    raise exceptions.ValidationError(self.error_messages['invalid_choice'] % {"value": value})
-                else:
-                    raise exceptions.ValidationError(self.error_messages['invalid_choice'] % value)
+                raise exceptions.ValidationError(self.error_messages['invalid_choice'] % {"value": value})
 
     def get_default(self):
         default = super(MultiSelectField, self).get_default()
@@ -146,16 +141,10 @@ class MultiSelectField(models.CharField):
                 return MSFList(choices, list(value))
         return MSFList(choices, [])
 
-    if VERSION < (2, ):
-        def from_db_value(self, value, expression, connection, context):
-            if value is None:
-                return value
-            return self.to_python(value)
-    else:
-        def from_db_value(self, value, expression, connection):
-            if value is None:
-                return value
-            return self.to_python(value)
+    def from_db_value(self, value, expression, connection):
+        if value is None:
+            return value
+        return self.to_python(value)
 
     def contribute_to_class(self, cls, name):
         super(MultiSelectField, self).contribute_to_class(cls, name)
@@ -182,9 +171,6 @@ class MultiSelectField(models.CharField):
             setattr(cls, 'get_%s_list' % self.name, get_list)
             setattr(cls, 'get_%s_display' % self.name, get_display)
 
-
-if VERSION < (1, 8):
-    MultiSelectField = add_metaclass(models.SubfieldBase)(MultiSelectField)
 
 try:
     from south.modelsinspector import add_introspection_rules
