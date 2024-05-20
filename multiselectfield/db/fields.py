@@ -174,10 +174,3 @@ class MultiSelectField(models.CharField):
 
             setattr(cls, 'get_%s_list' % self.name, get_list)
             setattr(cls, 'get_%s_display' % self.name, get_display)
-
-
-try:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ['^multiselectfield\.db.fields\.MultiSelectField'])
-except ImportError:
-    pass
