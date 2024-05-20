@@ -14,8 +14,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this programe.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-
 from django import VERSION
 
 from django.db import models
@@ -25,13 +23,6 @@ from django.core import exceptions
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
 from ..utils import MSFList, get_max_length
 from ..validators import MaxValueMultiFieldValidator
-
-if sys.version_info < (3,):
-    string_type = unicode  # noqa: F821
-else:
-    string_type = str
-
-# Code from six egg https://bitbucket.org/gutworth/six/src/a3641cb211cc360848f1e2dd92e9ae6cd1de55dd/six.py?at=default
 
 
 def add_metaclass(metaclass):
@@ -44,6 +35,17 @@ def add_metaclass(metaclass):
             orig_vars.pop(slots_var)
         return metaclass(cls.__name__, cls.__bases__, orig_vars)
     return wrapper
+
+
+class MSFList(list):
+
+    def __init__(self, choices, *args, **kwargs):
+        self.choices = choices
+        super(MSFList, self).__init__(*args, **kwargs)
+
+    def __str__(msgl):
+        l = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
+        return ', '.join([str(s) for s in l])
 
 
 class MultiSelectField(models.CharField):
@@ -82,10 +84,10 @@ class MultiSelectField(models.CharField):
         if named_groups:
             for choice_group_selected in arr_choices:
                 for choice_selected in choice_group_selected[1]:
-                    choices_selected.append(string_type(choice_selected[0]))
+                    choices_selected.append(str(choice_selected[0]))
         else:
             for choice_selected in arr_choices:
-                choices_selected.append(string_type(choice_selected[0]))
+                choices_selected.append(str(choice_selected[0]))
         return choices_selected
 
     def value_to_string(self, obj):
@@ -107,7 +109,7 @@ class MultiSelectField(models.CharField):
     def get_default(self):
         default = super(MultiSelectField, self).get_default()
         if isinstance(default, int):
-            default = string_type(default)
+            default = str(default)
         return default
 
     def formfield(self, **kwargs):
@@ -127,7 +129,7 @@ class MultiSelectField(models.CharField):
         return '' if value is None else ",".join(map(str, value))
 
     def get_db_prep_value(self, value, connection, prepared=False):
-        if not prepared and not isinstance(value, string_type):
+        if not prepared and not isinstance(value, str):
             value = self.get_prep_value(value)
         return value
 
@@ -137,8 +139,8 @@ class MultiSelectField(models.CharField):
         if value:
             if isinstance(value, list):
                 return value
-            elif isinstance(value, string_type):
-                value_list = map(lambda x: x.strip(), value.replace(u'，', ',').split(','))
+            elif isinstance(value, str):
+                value_list = map(lambda x: x.strip(), value.replace('，', ',').split(','))
                 return MSFList(choices, value_list)
             elif isinstance(value, (set, dict)):
                 return MSFList(choices, list(value))
@@ -170,7 +172,7 @@ class MultiSelectField(models.CharField):
                                 item_display = choicedict.get(int(value), value)
                             except (ValueError, TypeError):
                                 item_display = value
-                        display.append(string_type(item_display))
+                        display.append(str(item_display))
                 return display
 
             def get_display(obj):

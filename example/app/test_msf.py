@@ -14,8 +14,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-
 from django import VERSION
 from django.core.exceptions import ValidationError
 from django.forms.models import modelform_factory
@@ -24,12 +22,6 @@ from django.test import TestCase
 from multiselectfield.utils import get_max_length
 
 from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO
-
-if sys.version_info < (3,):
-    u = unicode  # noqa: F821
-else:
-    u = str
-
 
 if VERSION < (1, 9):
     def get_field(model, name):
@@ -43,17 +35,6 @@ class MultiSelectTestCase(TestCase):
 
     fixtures = ['app_data.json']
     maxDiff = 4000
-
-    def assertListEqual(self, left, right, msg=None):
-        if sys.version_info >= (3, 2):
-            # Added in Python 3.2
-            self.assertCountEqual(left, right, msg=msg)
-        else:
-            # Manually check list equality
-            self.assertEqual(len(left), len(right), msg=msg)
-            for i, tag_list in enumerate(left):
-                for j, tag in enumerate(tag_list):
-                    self.assertEqual(tag, right[i][j], msg=msg)
 
     def assertStringEqual(self, left, right, msg=None):
         _msg = "Chars in position %%d differ: %%s != %%s. %s" % msg
@@ -77,11 +58,13 @@ class MultiSelectTestCase(TestCase):
         # of the data in the database (which in our case is a string of
         # comma-separated values). The bug was fixed in Django 1.8+.
         if VERSION >= (1, 6) and VERSION < (1, 8):
-            self.assertStringEqual(tag_list_list, [u('sex,work,happy')])
-            self.assertStringEqual(categories_list_list, [u('1,3,5')])
+            self.assertStringEqual(tag_list_list, [str('sex,work,happy')])
+            self.assertStringEqual(categories_list_list, [str('1,3,5')])
         else:
-            self.assertListEqual(tag_list_list, [['sex', 'work', 'happy']])
-            self.assertListEqual(categories_list_list, [['1', '3', '5']])
+            # assertCountEqual also ensures that the elements are the same (ignoring list order)
+            # https://docs.python.org/3.2/library/unittest.html#unittest.TestCase.assertCountEqual
+            self.assertCountEqual(tag_list_list, [['sex', 'work', 'happy']])
+            self.assertCountEqual(categories_list_list, [['1', '3', '5']])
 
     def test_form(self):
         form_class = modelform_factory(Book, fields=('title', 'tags', 'categories'))
@@ -159,11 +142,13 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(len(form_class.base_fields), 1)
         form = form_class(initial={'published_in': ['BC', 'AK']})
 
-        expected_html = u("""<p><label for="id_published_in_0">Province or State:</label> <ul id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n"""
-                          """<li><label for="id_published_in_0_1"><input checked="checked" id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n"""
-                          """<li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input checked="checked" id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n"""
-                          """<li><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n"""
-                          """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>""")
+        expected_html = str(
+            """<p><label for="id_published_in_0">Province or State:</label> <ul id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n"""
+            """<li><label for="id_published_in_0_1"><input checked="checked" id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n"""
+            """<li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input checked="checked" id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n"""
+            """<li><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n"""
+            """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>"""
+        )
 
         actual_html = form.as_p()
         if (1, 11) <= VERSION:
