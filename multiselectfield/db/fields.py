@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this programe.  If not, see <http://www.gnu.org/licenses/>.
 
+from django import VERSION
 from django.db import models
 from django.utils.text import capfirst
 from django.core import exceptions
@@ -54,14 +55,17 @@ class MultiSelectField(models.CharField):
         self.max_choices = kwargs.pop('max_choices', None)
         super(MultiSelectField, self).__init__(*args, **kwargs)
         self.max_length = get_max_length(self.choices, self.max_length)
-        self.validators[0] = MaxValueMultiFieldValidator(self.max_length)
+        self.validators.append(MaxValueMultiFieldValidator(self.max_length))
         if self.min_choices is not None:
             self.validators.append(MinChoicesValidator(self.min_choices))
         if self.max_choices is not None:
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
     def _get_flatchoices(self):
-        flat_choices = super(MultiSelectField, self)._get_flatchoices()
+        if VERSION >= (5,):
+            flat_choices = super(MultiSelectField, self).flatchoices
+        else:
+            flat_choices = super(MultiSelectField, self)._get_flatchoices()
 
         class MSFFlatchoices(list):
             # Used to trick django.contrib.admin.utils.display_for_field into

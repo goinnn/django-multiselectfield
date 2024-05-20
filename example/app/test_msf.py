@@ -116,7 +116,17 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(Book._meta.get_field('published_in').flatchoices, list(PROVINCES + STATES))
 
     def test_named_groups(self):
-        self.assertEqual(Book._meta.published_in.choices, PROVINCES_AND_STATES)
+        # We can't use a single self.assertEqual here, because model subchoices may be lists or tuples
+        # Iterate through the parent choices
+        for book_choices, province_or_state_choice in zip(Book._meta.get_field('published_in').choices, PROVINCES_AND_STATES):
+            parent_book_choice, *book_subchoices = book_choices
+            parent_pors_choice, *pors_subchoices = province_or_state_choice
+            # Check the parent keys
+            self.assertEqual(parent_book_choice, parent_pors_choice)
+            # Iterate through all of the subchoices
+            for book_subchoice, pors_subchoice in zip(book_subchoices, pors_subchoices):
+                # The model subchoices might be tuples, so make sure to convert both to lists
+                self.assertEqual(list(book_subchoice), list(pors_subchoice))
 
     def test_named_groups_form(self):
         form_class = modelform_factory(Book, fields=('published_in',))
