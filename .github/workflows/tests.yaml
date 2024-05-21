@@ -1,10 +1,7 @@
-on:
-  push:
-  pull_request:
+on: ["push", "pull_request"]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -44,3 +41,19 @@ jobs:
     - name: Run tests
       working-directory: example
       run: python -m coverage run manage.py test
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        flag-name: run-${{ join(matrix.*, '-') }}
+        parallel: true
+
+  finish:
+    needs: test
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v2
+      with:
+        parallel-finished: true
