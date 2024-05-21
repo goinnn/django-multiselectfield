@@ -18,8 +18,6 @@
 import os
 from os import path
 
-from django import VERSION
-
 DEBUG = True
 
 BASE_DIR = path.dirname(path.abspath(__file__))
@@ -41,6 +39,8 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -121,57 +121,30 @@ ROOT_URLCONF = 'example.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'example.wsgi.application'
 
-if VERSION < (1, 8):
-    TEMPLATE_DEBUG = DEBUG
-
-    # List of callables that know how to import templates from various sources.
-    TEMPLATE_LOADERS = (
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
-        # 'django.template.loaders.eggs.Loader',
-    )
-
-    TEMPLATE_DIRS = (
-        # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-        # Always use forward slashes, even on Windows.
-        # Don't forget to use absolute paths, not relative paths.
-    )
-
-    TEMPLATE_CONTEXT_PROCESSORS = (
-        'django.contrib.auth.context_processors.auth',
-        'django.core.context_processors.debug',
-        'django.core.context_processors.i18n',
-        'django.core.context_processors.media',
-        'django.core.context_processors.request',
-        'django.core.context_processors.tz',
-        'django.core.context_processors.static',
-        'django.contrib.messages.context_processors.messages',
-    )
-else:
-    TEMPLATES = [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'OPTIONS': {
-                'context_processors': [
-                    'django.contrib.auth.context_processors.auth',
-                    'django.template.context_processors.debug',
-                    'django.template.context_processors.i18n',
-                    'django.template.context_processors.media',
-                    'django.template.context_processors.request',
-                    'django.template.context_processors.static',
-                    'django.template.context_processors.tz',
-                    'django.contrib.messages.context_processors.messages',
-                ],
-                'debug': DEBUG,
-                'loaders': [
-                    # List of callables that know how to import templates from
-                    # various sources.
-                    'django.template.loaders.filesystem.Loader',
-                    'django.template.loaders.app_directories.Loader',
-                ]
-            },
-        }
-    ]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.request',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': DEBUG,
+            'loaders': [
+                # List of callables that know how to import templates from
+                # various sources.
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]
+        },
+    }
+]
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -227,13 +200,11 @@ LOGGING = {
     }
 }
 
-if VERSION >= (1, 4):
-    LOGGING['filters'] = {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        },
-    }
-    LOGGING['handlers']['mail_admins']['filters'] = ['require_debug_false']
+LOGGING['filters'] = {
+    'require_debug_false': {
+        '()': 'django.utils.log.RequireDebugFalse',
+    },
+}
+LOGGING['handlers']['mail_admins']['filters'] = ['require_debug_false']
 
-if VERSION >= (1, 6):
-    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'

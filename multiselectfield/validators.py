@@ -27,10 +27,10 @@ class MaxValueMultiFieldValidator(validators.MaxLengthValidator):
 
 
 class MinChoicesValidator(validators.MinLengthValidator):
-    message = _(u'You must select a minimum of  %(limit_value)d choices.')
+    message = _('You must select a minimum of  %(limit_value)d choices.')
     code = 'min_choices'
 
 
 class MaxChoicesValidator(validators.MaxLengthValidator):
-    message = _(u'You must select a maximum of  %(limit_value)d choices.')
+    message = _('You must select a maximum of  %(limit_value)d choices.')
     code = 'max_choices'
