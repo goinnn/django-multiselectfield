@@ -18,7 +18,8 @@
 
 import codecs
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 
 def read(*rnames):
@@ -31,7 +32,7 @@ def read(*rnames):
 
 setup(
     name="django-multiselectfield",
-    version="0.1.13",
+    version="0.1.12",
     author="Pablo Martin",
     author_email="goinnn@gmail.com",
     description="Django multiple select field",

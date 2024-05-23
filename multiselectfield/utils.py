@@ -22,13 +22,6 @@ from typing import Optional, Union
 
 from django.db.models.sql.query import Query
 
-if sys.version_info[0] == 2:
-    string = basestring  # noqa: F821
-    string_type = unicode  # noqa: F821
-else:
-    string = str
-    string_type = string
-
 
 class _FakeSqlVal(UserList):
 
@@ -59,10 +52,6 @@ class MSFList(list):
         else:
             result = list(self)
         return result
-
-    if sys.version_info < (3,):
-        def __unicode__(self, msgl):
-            return self.__str__(msgl)
 
 
 def get_max_length(choices, max_length, default=200):
