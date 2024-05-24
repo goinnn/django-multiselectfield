@@ -39,8 +39,10 @@ class MSFList(list):
         super(MSFList, self).__init__(*args, **kwargs)
 
     def __str__(msgl):
-        msg_list = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
-        return ', '.join([str(s) for s in msg_list])
+        msg_list = [
+            msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i)
+            for i in msgl]
+        return ', '.join(str(s) for s in msg_list)
 
     def resolve_expression(
             self, query: Query = None, allow_joins: bool = True,
