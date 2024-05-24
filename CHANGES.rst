@@ -1,3 +1,7 @@
+development (unreleased)
+-------------------
+* Fix error with Django>=4.1.3: <https://github.com/goinnn/django-multiselectfield/pull/135>
+
 0.1.12 (2020-02-20)
 -------------------
 

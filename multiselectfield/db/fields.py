@@ -36,17 +36,6 @@ def add_metaclass(metaclass):
     return wrapper
 
 
-class MSFList(list):
-
-    def __init__(self, choices, *args, **kwargs):
-        self.choices = choices
-        super(MSFList, self).__init__(*args, **kwargs)
-
-    def __str__(msgl):
-        l = [msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i) for i in msgl]
-        return ', '.join([str(s) for s in l])
-
-
 class MultiSelectField(models.CharField):
     """ Choice values can not contain commas. """
 
