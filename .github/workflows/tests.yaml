@@ -13,8 +13,6 @@ jobs:
       # and https://docs.djangoproject.com/en/4.2/faq/install/#what-python-version-can-i-use-with-django
       matrix:
         include:
-          - { dj: "4.1.*", py: "3.8" }
-          - { dj: "4.1.*", py: "3.11" }
           - { dj: "4.2.*", py: "3.8" }
           - { dj: "4.2.*", py: "3.12" }
           - { dj: "5.0.*", py: "3.10" }
