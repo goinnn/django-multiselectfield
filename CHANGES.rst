@@ -1,6 +1,22 @@
-development (unreleased)
+Changelog
+=========
+
+0.1.13 (2024-06-30)
 -------------------
-* Fix error with Django>=4.1.3: <https://github.com/goinnn/django-multiselectfield/pull/135>
+
+* Return MSFList instead of a plain list from form fields (`#118 <https://github.com/goinnn/django-multiselectfield/pull/118>`_, `#135 <https://github.com/goinnn/django-multiselectfield/pull/135>`_)
+* Fix CI (`#122 <https://github.com/goinnn/django-multiselectfield/pull/122>`_, `#147 <https://github.com/goinnn/django-multiselectfield/pull/147>`_, `#148 <https://github.com/goinnn/django-multiselectfield/pull/148>`_, `#151 <https://github.com/goinnn/django-multiselectfield/pull/151>`_)
+* Add ``min_choices`` to defaults when converting to form field (`#123 <https://github.com/goinnn/django-multiselectfield/pull/123>`_)
+* Django 5.0 support and remove old compatibility (`#148 <https://github.com/goinnn/django-multiselectfield/pull/148>`_)
+
+Thanks to:
+
+* `tomasgarzon <https://github.com/tomasgarzon>`_
+* `aleh-rymasheuski <https://github.com/aleh-rymasheuski>`_
+* `nametkin <https://github.com/nametkin>`_
+* `karolyi <https://github.com/karolyi>`_
+* `olivierdalang <https://github.com/olivierdalang>`_
+* `PetrDlouhy <https://github.com/PetrDlouhy>`_
 
 0.1.12 (2020-02-20)
 -------------------
