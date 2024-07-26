@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2013 by Pablo Martín <goinnn@gmail.com>
 #
 # This software is free software: you can redistribute it and/or modify
@@ -14,57 +13,18 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
-from django import VERSION
 from django.conf import settings
+from django.urls import include, path, re_path
 from django.views.static import serve
 
-
-try:
-    from django.conf.urls import include, url
-
-    # Compatibility for Django > 1.8
-    def patterns(prefix, *args):
-        if VERSION < (1, 9):
-            from django.conf.urls import patterns as django_patterns
-            return django_patterns(prefix, *args)
-        elif prefix != '':
-            raise NotImplementedError("You need to update your URLConf for "
-                                      "Django 1.10, or tweak it to remove the "
-                                      "prefix parameter")
-        else:
-            return list(args)
-except ImportError:  # Django < 1.4
-    if VERSION < (1, 4):
-        from django.conf.urls.defaults import include, patterns, url
-    elif VERSION < (4, 0):
-        from django.urls import include, url
-    else:
-        from django.urls import path, re_path
-        from django.urls import re_path as url
-
-
-js_info_dict = {
-    'packages': ('django.conf',),
-}
-
-if VERSION < (1, 11):
-    urlpatterns = patterns(
-        '',
-        path('', include('app.urls')),
-    )
-    urlpatterns += patterns(
-        '',
-        re_path(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:]),
-    )
-else:
-    urlpatterns = [
-        path('', include('app.urls')),
-        re_path(
-            r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
-            serve,
-            {
-                'document_root': settings.MEDIA_ROOT,
-                'show_indexes': True,
-            },
-        ),
-    ]
+urlpatterns = [
+    path('', include('app.urls')),
+    re_path(
+        r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
+        serve,
+        {
+            'document_root': settings.MEDIA_ROOT,
+            'show_indexes': True,
+        },
+    ),
+]
