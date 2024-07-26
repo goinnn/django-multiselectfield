@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
+from django.contrib import admin
 from django.urls import path
 
 from .views import app_index
@@ -20,4 +21,5 @@ from .views import app_index
 
 urlpatterns = [
     path('', app_index, name='app_index'),
+    path('admin/', admin.site.urls),
 ]
