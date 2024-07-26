@@ -12,9 +12,9 @@
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with this programe.  If not, see <http://www.gnu.org/licenses/>.
+# along with this programe.  If not, see <https://www.gnu.org/licenses/>.
 
-# Initial code got from http://djangosnippets.org/users/danielroseman/
+# Initial code got from https://djangosnippets.org/users/danielroseman/
 
 import codecs
 import os
