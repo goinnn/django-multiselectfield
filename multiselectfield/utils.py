@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 from collections import UserList
-from typing import Optional, Union
 
 from django.db.models.sql.query import Query
 

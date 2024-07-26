@@ -21,6 +21,7 @@ from multiselectfield.utils import get_max_length
 
 from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO
 
+
 class MultiSelectTestCase(TestCase):
 
     fixtures = ['app_data.json']
