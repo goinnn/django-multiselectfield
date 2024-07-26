@@ -8,7 +8,9 @@ build
 dist
 *.egg-info
 .coverage*
+.eggs/
 .env
 example/example.db
+example/app/migrations
 .tox
 
