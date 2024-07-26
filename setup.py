@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2012 by Pablo Martín <goinnn@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -52,12 +51,6 @@ setup(
     url='https://github.com/goinnn/django-multiselectfield',
     packages=find_packages(),
     include_package_data=True,
-    tests_require=[
-        'django>=1.4',
-        'tox',
-        'coverage',
-        'flake8',
-    ],
     install_requires=[
         'django>=4.2',
     ],
