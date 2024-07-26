@@ -10,7 +10,7 @@ jobs:
     strategy:
       # all supported django version on lowest/highest supported python
       # see https://www.djangoproject.com/download/#supported-versions
-      # and https://docs.djangoproject.com/en/4.2/faq/install/#what-python-version-can-i-use-with-django
+      # and https://docs.djangoproject.com/en/5.0/faq/install/#what-python-version-can-i-use-with-django
       matrix:
         include:
           - { django: "4.2", python: "3.8" }
