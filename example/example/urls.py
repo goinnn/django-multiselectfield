@@ -39,6 +39,7 @@ except ImportError:  # Django < 1.4
     elif VERSION < (4, 0):
         from django.urls import include, url
     else:
+        from django.urls import path, re_path
         from django.urls import re_path as url
 
 
@@ -49,16 +50,16 @@ js_info_dict = {
 if VERSION < (1, 11):
     urlpatterns = patterns(
         '',
-        url(r'^', include('app.urls')),
+        path('', include('app.urls')),
     )
     urlpatterns += patterns(
         '',
-        url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:]),
+        re_path(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:]),
     )
 else:
     urlpatterns = [
-        url(r'^', include('app.urls')),
-        url(
+        path('', include('app.urls')),
+        re_path(
             r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
             serve,
             {

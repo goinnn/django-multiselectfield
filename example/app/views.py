@@ -23,7 +23,7 @@ from django.http import HttpResponseRedirect
 if VERSION >= (2, 0):
     from django.urls import reverse
 else:
-    from django.core.urlresolvers import reverse
+    from django.urls import reverse
 
 
 def app_index(request):
