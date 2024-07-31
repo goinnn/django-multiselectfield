@@ -12,7 +12,7 @@ django-multiselectfield
 
 A new model field and form field. With this you can get a multiple select from a choices. Stores to the database as a CharField of comma-separated values.
 
-This egg is inspired by this `snippet <http://djangosnippets.org/snippets/1200/>`_.
+This egg is inspired by this `snippet <https://djangosnippets.org/snippets/1200/>`_.
 
 Supported Python versions: 2.7, 3.4+
 
