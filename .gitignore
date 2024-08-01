@@ -13,4 +13,3 @@ dist
 example/example.db
 example/app/migrations
 .tox
-
