@@ -1,8 +1,8 @@
 django-multiselectfield
 =======================
 
-.. image:: https://travis-ci.org/goinnn/django-multiselectfield.png?branch=master
-    :target: https://travis-ci.org/goinnn/django-multiselectfield
+.. image:: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml/badge.svg
+    :target: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml
 
 .. image:: https://coveralls.io/repos/goinnn/django-multiselectfield/badge.png?branch=master
     :target: https://coveralls.io/r/goinnn/django-multiselectfield
