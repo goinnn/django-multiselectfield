@@ -10,7 +10,7 @@ repos:
     -   id: flake8
         args: [--ignore=E501]
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 'v4.6.0'
+    rev: v4.6.0
     hooks:
     -   id: check-yaml
     -   id: check-toml
