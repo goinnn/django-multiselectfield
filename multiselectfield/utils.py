@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2013 by Pablo Martín <goinnn@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,7 +16,6 @@
 from __future__ import annotations
 
 from collections import UserList
-from typing import Optional, Union
 
 from django.db.models.sql.query import Query
 
@@ -36,7 +34,7 @@ class MSFList(list):
 
     def __init__(self, choices, *args, **kwargs):
         self.choices = choices
-        super(MSFList, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __str__(msgl):
         msg_list = [
@@ -46,8 +44,8 @@ class MSFList(list):
 
     def resolve_expression(
             self, query: Query = None, allow_joins: bool = True,
-            reuse: Optional[bool] = None, summarize: bool = False,
-            for_save: bool = False) -> Union[list, _FakeSqlVal]:
+            reuse: bool | None = None, summarize: bool = False,
+            for_save: bool = False) -> list | _FakeSqlVal:
         if for_save:
             result = _FakeSqlVal(self)
         else:
