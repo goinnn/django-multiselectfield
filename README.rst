@@ -14,7 +14,7 @@ A new model field and form field. With this you can get a multiple select from a
 
 This egg is inspired by this `snippet <https://djangosnippets.org/snippets/1200/>`_.
 
-Supported Python versions: 3.8+
+Supported Python versions: 3.9+
 
 Supported Django versions: 4.2+
 
