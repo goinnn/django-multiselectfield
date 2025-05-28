@@ -104,18 +104,29 @@ class MultiSelectField(models.CharField):
         return default
 
     def formfield(self, **kwargs):
-        defaults = {'required': not self.blank,
-                    'label': capfirst(self.verbose_name),
-                    'help_text': self.help_text,
-                    'choices': self.choices,
-                    'flat_choices': self.flatchoices,
-                    'max_length': self.max_length,
-                    'min_choices': self.min_choices,
-                    'max_choices': self.max_choices}
+        if isinstance(kwargs.get('form_class'), MultiSelectFormField):
+            return kwargs.get('form_class')
+
+        defaults = {
+            'required': not self.blank,
+            'label': capfirst(self.verbose_name),
+            'help_text': self.help_text,
+            'choices': self.choices,
+            'flat_choices': self.flatchoices,
+            'max_length': self.max_length,
+            'min_choices': self.min_choices,
+            'max_choices': self.max_choices
+        }
         if self.has_default():
             defaults['initial'] = self.get_default()
+
         defaults.update(kwargs)
-        return MultiSelectFormField(**defaults)
+        form_class = defaults.pop('form_class', MultiSelectFormField)
+
+        if form_class is None:
+            form_class = MultiSelectFormField
+
+        return form_class(**defaults)
 
     def get_prep_value(self, value):
         return '' if value is None else ",".join(map(str, value))
