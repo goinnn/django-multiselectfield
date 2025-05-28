@@ -16,9 +16,11 @@
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.forms.models import modelform_factory
 from django.test import TestCase
 
+from multiselectfield.db.fields import MultiSelectField
 from multiselectfield.forms.fields import MultiSelectFormField
 from multiselectfield.utils import get_max_length
 
@@ -204,6 +206,35 @@ class MultiSelectUtilsTestCase(TestCase):
             ('key3', 'value3'),
         ]
         self.assertEqual(get_max_length(choices, None), 14)
+
+
+class CategorizedChoicesTestCase(TestCase):
+    def test_categorized_choices_display(self):
+
+        CATEGORIZED_CHOICES = (
+            ('Grupo A', (
+                ('a1', 'Opción A1'),
+                ('a2', 'Opción A2'),
+            )),
+            ('Grupo B', (
+                ('b1', 'Opción B1'),
+                ('b2', 'Opción B2'),
+            ))
+        )
+
+        class TestModel(models.Model):
+            options = MultiSelectField(choices=CATEGORIZED_CHOICES, max_length=20)
+
+            class Meta:
+                app_label = 'app'
+
+        instance = TestModel(options=['a1', 'b2'])
+
+        actual = instance.get_options_display()
+        self.assertEqual(actual, "Opción A1, Opción B2")
+
+        actual_list = instance.get_options_list()
+        self.assertEqual(actual_list, ["Opción A1", "Opción B2"])
 
 
 class TestFormWithMultiSelectField(forms.Form):
