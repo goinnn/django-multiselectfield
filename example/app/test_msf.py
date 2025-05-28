@@ -222,13 +222,13 @@ class CategorizedChoicesTestCase(TestCase):
             ))
         )
 
-        class TestModel(models.Model):
+        class TestCategorizedModel(models.Model):
             options = MultiSelectField(choices=CATEGORIZED_CHOICES, max_length=20)
 
             class Meta:
                 app_label = 'app'
 
-        instance = TestModel(options=['a1', 'b2'])
+        instance = TestCategorizedModel(options=['a1', 'b2'])
 
         actual = instance.get_options_display()
         self.assertEqual(actual, "Opción A1, Opción B2")
