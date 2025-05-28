@@ -14,13 +14,14 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <https://www.gnu.org/licenses/>.
 
+from django import VERSION
 from django.core.exceptions import ValidationError
 from django.forms.models import modelform_factory
 from django.test import TestCase
 
 from multiselectfield.utils import get_max_length
 
-from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO
+from .models import TAGS_CHOICES, Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO
 
 
 class MultiSelectTestCase(TestCase):
@@ -187,6 +188,23 @@ class MultiSelectTestCase(TestCase):
         actual_html = form.as_p()
         self.assertHTMLEqual(expected_html, actual_html)
 
+    if VERSION >= (4, 0):
+        def test_form_field_initialization_django4(self):
+            form_class = modelform_factory(Book, fields=('tags',))
+            form = form_class()
+            form_field_from_form = form.fields['tags']
+
+            form_field = Book._meta.get_field('tags').formfield()
+
+            self.assertIsInstance(form_field, MultiSelectFormField)
+            self.assertIsInstance(form_field_from_form, MultiSelectFormField)
+
+            second_form_field = Book._meta.get_field('tags').formfield(form_class=form_field_from_form)
+            self.assertIs(second_form_field, form_field_from_form)
+
+            self.assertEqual(form_field.choices, TAGS_CHOICES)
+            self.assertEqual(form_field_from_form.choices, TAGS_CHOICES)
+            
 
 class MultiSelectUtilsTestCase(TestCase):
     def test_get_max_length_max_length_is_not_none(self):
