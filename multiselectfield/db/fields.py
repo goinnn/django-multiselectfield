@@ -44,7 +44,10 @@ class MultiSelectField(models.CharField):
         self.max_choices = kwargs.pop('max_choices', None)
         super(MultiSelectField, self).__init__(*args, **kwargs)
         self.max_length = get_max_length(self.choices, self.max_length)
-        self.validators.append(MaxValueMultiFieldValidator(self.max_length))
+        if VERSION <= (4, 1):
+            self.validators[0] = MaxValueMultiFieldValidator(self.max_length)
+        else:
+            self.validators.append(MaxValueMultiFieldValidator(self.max_length))
         if self.min_choices is not None:
             self.validators.append(MinChoicesValidator(self.min_choices))
         if self.max_choices is not None:
@@ -130,10 +133,10 @@ class MultiSelectField(models.CharField):
                 return value
             elif isinstance(value, str):
                 value_list = map(lambda x: x.strip(), value.replace('，', ',').split(','))
-                return MSFList(choices, value_list)
+                return MSFList(value_list, choices=choices)
             elif isinstance(value, (set, dict)):
-                return MSFList(choices, list(value))
-        return MSFList(choices, [])
+                return MSFList(list(value), choices=choices)
+        return MSFList([], choices=choices)
 
     def from_db_value(self, value, expression, connection):
         if value is None:

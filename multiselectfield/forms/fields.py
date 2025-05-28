@@ -37,4 +37,4 @@ class MultiSelectFormField(forms.MultipleChoiceField):
             self.validators.append(MinChoicesValidator(self.min_choices))
 
     def to_python(self, value):
-        return MSFList(dict(self.flat_choices), super(MultiSelectFormField, self).to_python(value))
+        return MSFList(super(MultiSelectFormField, self).to_python(value), choices=dict(self.flat_choices))

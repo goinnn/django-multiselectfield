@@ -19,6 +19,7 @@ from __future__ import annotations
 from collections import UserList
 from typing import Optional, Union
 
+from django import VERSION
 from django.db.models.sql.query import Query
 
 
@@ -34,25 +35,29 @@ class _FakeSqlVal(UserList):
 
 class MSFList(list):
 
-    def __init__(self, choices, *args, **kwargs):
-        self.choices = choices
+    def __init__(self, *args, **kwargs):
+        self.choices = kwargs.pop("choices", [])
         super(MSFList, self).__init__(*args, **kwargs)
 
-    def __str__(msgl):
+    def __str__(self):
         msg_list = [
-            msgl.choices.get(int(i)) if i.isdigit() else msgl.choices.get(i)
-            for i in msgl]
-        return ', '.join(str(s) for s in msg_list)
+            self.choices.get(int(i)) if i.isdigit() else self.choices.get(i)
+            for i in self]
 
-    def resolve_expression(
-            self, query: Query = None, allow_joins: bool = True,
-            reuse: Optional[bool] = None, summarize: bool = False,
-            for_save: bool = False) -> Union[list, _FakeSqlVal]:
-        if for_save:
-            result = _FakeSqlVal(self)
-        else:
-            result = list(self)
-        return result
+        value = ', '.join(str(s) for s in msg_list)
+        return value
+
+    if VERSION >= (4, 2):
+        def resolve_expression(
+                self, query: Query = None, allow_joins: bool = True,
+                reuse: Optional[bool] = None, summarize: bool = False,
+                for_save: bool = False) -> Union[list, _FakeSqlVal]:
+            if for_save:
+                result = _FakeSqlVal(self)
+            else:
+                result = list(self)
+
+            return result
 
 
 def get_max_length(choices, max_length, default=200):

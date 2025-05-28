@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <https://www.gnu.org/licenses/>.
 
+from django import VERSION
 from django.core.exceptions import ValidationError
 from django.forms.models import modelform_factory
 from django.test import TestCase
@@ -134,55 +135,33 @@ class MultiSelectTestCase(TestCase):
         self.assertEqual(len(form_class.base_fields), 1)
         form = form_class(initial={'published_in': ['BC', 'AK']})
 
-        expected_html = """
-            <p>
-              <label>
-                Province or State:
-              </label>
-              <div id="id_published_in">
-                <div>
-                  <label>
-                    Canada - Provinces
-                  </label>
-                  <div>
-                    <label for="id_published_in_0_0">
-                      <input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" />
-                      Alberta
-                    </label>
-                  </div>
-                  <div>
-                    <label for="id_published_in_0_1">
-                      <input checked id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" />
-                      British Columbia
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <label>
-                    USA - States
-                  </label>
-                  <div>
-                    <label for="id_published_in_1_0">
-                      <input checked id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" />
-                      Alaska
-                    </label>
-                  </div>
-                  <div>
-                    <label for="id_published_in_1_1">
-                      <input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" />
-                      Alabama
-                    </label>
-                  </div>
-                  <div>
-                    <label for="id_published_in_1_2">
-                      <input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" />
-                      Arizona
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </p>
-            """
+        if VERSION >= (4, 0):
+            expected_html = str(
+                """<p><label>Province or State:</label>
+                    <div id="id_published_in">
+                        <div>
+                            <label>Canada - Provinces</label>
+                            <div><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" />Alberta</label></div>
+                            <div><label for="id_published_in_0_1"><input checked id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" />British Columbia</label></div>
+                        </div>
+                        <div>
+                            <label>USA - States</label>
+                            <div><label for="id_published_in_1_0"><input checked id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" />Alaska</label></div>
+                            <div><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" />Alabama</label></div>
+                            <div><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" />Arizona</label></div>
+                        </div>
+                    </div>
+                </p>
+                """
+            )
+        else:
+            expected_html = str(
+                """<p><label>Province or State:</label> <ul id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n"""
+                """<li><label for="id_published_in_0_1"><input checked id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n"""
+                """<li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input checked id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n"""
+                """<li><label for="id_published_in_1_1"><input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n"""
+                """<li><label for="id_published_in_1_2"><input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>"""
+            )
 
         actual_html = form.as_p()
         self.assertHTMLEqual(expected_html, actual_html)
