@@ -14,7 +14,6 @@ jobs:
       matrix:
         include:
           # Django 3.2 LTS
-          - { python: "3.7", django: "3.2" }
           - { python: "3.8", django: "3.2" }
           - { python: "3.9", django: "3.2" }
           - { python: "3.10", django: "3.2" }
