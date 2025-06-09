@@ -171,7 +171,6 @@ class SortMultiSelectField(MultiSelectField):
                     'label': capfirst(self.verbose_name),
                     'help_text': self.help_text,
                     'choices': self.choices,
-                    'flat_choices': self.flatchoices,
                     'max_length': self.max_length,
                     'min_choices': self.min_choices,
                     'max_choices': self.max_choices}
