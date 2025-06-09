@@ -19,6 +19,8 @@ from django.db import models
 from django.utils.text import capfirst
 from django.core import exceptions
 
+from ..forms.fields import SortMultiSelectFormField
+
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
 from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator
@@ -160,3 +162,19 @@ class MultiSelectField(models.CharField):
 
             setattr(cls, 'get_%s_list' % self.name, get_list)
             setattr(cls, 'get_%s_display' % self.name, get_display)
+
+
+class SortMultiSelectField(MultiSelectField):
+
+    def formfield(self, **kwargs):
+        defaults = {'required': not self.blank,
+                    'label': capfirst(self.verbose_name),
+                    'help_text': self.help_text,
+                    'choices': self.choices,
+                    'max_length': self.max_length,
+                    'min_choices': self.min_choices,
+                    'max_choices': self.max_choices}
+        if self.has_default():
+            defaults['initial'] = self.get_default()
+        defaults.update(kwargs)
+        return SortMultiSelectFormField(**defaults)
