@@ -170,7 +170,7 @@ class MultiSelectTestCase(TestCase):
         self.assertHTMLEqual(expected_html, actual_html)
 
     if VERSION >= (4, 0):
-        def test_form_field_initialization_django4(self):
+        def test_form_field_initialization_django4_multiselect(self):
             form_class = modelform_factory(Book, fields=('tags',))
             form = form_class()
             form_field_from_form = form.fields['tags']
@@ -181,6 +181,23 @@ class MultiSelectTestCase(TestCase):
             self.assertIsInstance(form_field_from_form, MultiSelectFormField)
 
             second_form_field = Book._meta.get_field('tags').formfield(form_class=form_field_from_form)
+            self.assertIs(second_form_field, form_field_from_form)
+
+            self.assertEqual(form_field.choices, TAGS_CHOICES)
+            self.assertEqual(form_field_from_form.choices, TAGS_CHOICES)
+
+
+        def test_form_field_initialization_django4_sortmultiselect(self):
+            form_class = modelform_factory(Book, fields=('favorite_tags',))
+            form = form_class()
+            form_field_from_form = form.fields['favorite_tags']
+
+            form_field = Book._meta.get_field('favorite_tags').formfield()
+
+            self.assertIsInstance(form_field, MultiSelectFormField)
+            self.assertIsInstance(form_field_from_form, MultiSelectFormField)
+
+            second_form_field = Book._meta.get_field('favorite_tags').formfield(form_class=form_field_from_form)
             self.assertIs(second_form_field, form_field_from_form)
 
             self.assertEqual(form_field.choices, TAGS_CHOICES)
