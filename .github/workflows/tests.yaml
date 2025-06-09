@@ -46,6 +46,12 @@ jobs:
           - { python: "3.11", django: "5.1" }
           - { python: "3.12", django: "5.1" }
           - { python: "3.13", django: "5.1" }
+
+          # Django 5.2
+          - { python: "3.10", django: "5.2" }
+          - { python: "3.11", django: "5.2" }
+          - { python: "3.12", django: "5.2" }
+          - { python: "3.13", django: "5.2" }
       fail-fast: false
 
     steps:
