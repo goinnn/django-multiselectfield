@@ -186,7 +186,6 @@ class MultiSelectTestCase(TestCase):
             self.assertEqual(form_field.choices, TAGS_CHOICES)
             self.assertEqual(form_field_from_form.choices, TAGS_CHOICES)
 
-
         def test_form_field_initialization_django4_sortmultiselect(self):
             form_class = modelform_factory(Book, fields=('favorite_tags',))
             form = form_class()
@@ -202,7 +201,7 @@ class MultiSelectTestCase(TestCase):
 
             self.assertEqual(form_field.choices, TAGS_CHOICES)
             self.assertEqual(form_field_from_form.choices, TAGS_CHOICES)
-            
+
 
 class MultiSelectUtilsTestCase(TestCase):
     def test_get_max_length_max_length_is_not_none(self):
