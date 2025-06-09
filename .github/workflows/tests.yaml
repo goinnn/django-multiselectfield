@@ -112,7 +112,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ls -lsa
-          coverage combine coverage*
+          coverage combine */coverage*
           coverage xml
           coverage report
           coveralls --service=github
