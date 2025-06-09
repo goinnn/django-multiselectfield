@@ -269,4 +269,3 @@ class SortedMultiSelectTestCase(TestCase):
             tag_index = form_html.index(f'value="{tag}"')
             self.assertGreater(tag_index, previous_tag_index)
             previous_tag_index = tag_index
-
