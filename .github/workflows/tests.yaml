@@ -3,7 +3,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
 
@@ -13,33 +13,109 @@ jobs:
       # and https://docs.djangoproject.com/en/4.2/faq/install/#what-python-version-can-i-use-with-django
       matrix:
         include:
-          - { django: "4.2", python: "3.8" }
-          - { django: "4.2", python: "3.12" }
-          - { django: "5.0", python: "3.10" }
-          - { django: "5.0", python: "3.12" }
-          - { django: "5.1", python: "3.10" }
-          - { django: "5.1", python: "3.12" }
+          # Django 3.2 LTS
+          - { python: "3.8", django: "3.2" }
+          - { python: "3.9", django: "3.2" }
+          - { python: "3.10", django: "3.2" }
+
+          # Django 4.0
+          - { python: "3.8", django: "4.0" }
+          - { python: "3.9", django: "4.0" }
+          - { python: "3.10", django: "4.0" }
+
+          # Django 4.1
+          - { python: "3.8", django: "4.1" }
+          - { python: "3.9", django: "4.1" }
+          - { python: "3.10", django: "4.1" }
+          - { python: "3.11", django: "4.1" }
+
+          # Django 4.2 LTS
+          - { python: "3.8", django: "4.2" }
+          - { python: "3.9", django: "4.2" }
+          - { python: "3.10", django: "4.2" }
+          - { python: "3.11", django: "4.2" }
+          - { python: "3.12", django: "4.2" }
+
+          # Django 5.0
+          - { python: "3.10", django: "5.0" }
+          - { python: "3.11", django: "5.0" }
+          - { python: "3.12", django: "5.0" }
+
+          # Django 5.1
+          - { python: "3.10", django: "5.1" }
+          - { python: "3.11", django: "5.1" }
+          - { python: "3.12", django: "5.1" }
+          - { python: "3.13", django: "5.1" }
+
+          # Django 5.2
+          - { python: "3.10", django: "5.2" }
+          - { python: "3.11", django: "5.2" }
+          - { python: "3.12", django: "5.2" }
+          - { python: "3.13", django: "5.2" }
       fail-fast: false
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python }}
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
 
-    - name: Install test deps
-      run: pip install flake8 tox
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox tox-gh-actions coverage coveralls flake8
 
-    - name: Install library
-      run: pip install -e .
+      - name: Install library
+        run: pip install -e .
 
-    - name: Lint
-      run: flake8 --ignore=E501
+      - name: Run tests with tox
+        run: |
+          PYTHON_VERSION=`echo ${{ matrix.python }} | sed 's/\.//'`
+          DJANGO_VERSION=`echo ${{ matrix.django }} | sed 's/\.//'`
+          tox -e python${PYTHON_VERSION}-django${DJANGO_VERSION}
+        env:
+          PYTHONPATH: .
 
-    - name: Run tests
-      working-directory: example
-      run: |
-        PYTHON_VERSION=`echo ${{ matrix.python }} | sed 's/\.//'`
-        DJANGO_VERSION=`echo ${{ matrix.django }} | sed 's/\.//'`
-        tox -e python${PYTHON_VERSION}-django${DJANGO_VERSION}
+      - name: Store coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data-debug-${{ matrix.python }}-${{ matrix.django }}
+          path: coverage-debug*
+          if-no-files-found: warn
+
+      - name: Store coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data-no-debug-${{ matrix.python }}-${{ matrix.django }}
+          path: coverage-no-debug*
+          if-no-files-found: warn
+
+  coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Download coverage data
+        uses: actions/download-artifact@v4
+
+      - name: Install coverage
+        run: |
+          python -m pip install --upgrade pip
+          pip install coverage coveralls
+
+      - name: Combine coverage and upload
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          coverage combine */coverage*
+          coverage xml
+          coverage report
+          coveralls --service=github
