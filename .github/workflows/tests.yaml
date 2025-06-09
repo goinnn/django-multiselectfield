@@ -70,16 +70,15 @@ jobs:
           DJANGO_VERSION=`echo ${{ matrix.django }} | sed 's/\.//'`
           tox -e python${PYTHON_VERSION}-django${DJANGO_VERSION}
           ls -lsa
+          pwd
         env:
           PYTHONPATH: .
 
       - name: Store coverage data
         uses: actions/upload-artifact@v4
-        run: |
-          ls -lsa
         with:
           name: coverage-data-{PYTHON_VERSION}-django${DJANGO_VERSION}
-          path: ./.coverage.*
+          path: /**/.coverage.*
           if-no-files-found: warn
 
   coverage:
