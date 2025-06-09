@@ -76,15 +76,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-data-${{ matrix.python }}-${{ matrix.django }}
-          path: .coverage.*
+          path: '**/.coverage.*'
           if-no-files-found: warn
-
-      - name: Upload coverage to Coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          coverage combine
-          coveralls --service=github
 
   coverage:
     needs: test
@@ -106,6 +99,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install coverage coveralls
+
+      - name: Move all coverage files to root
+        run: |
+          find coverage-data -name '.coverage.*' -exec cp {} . \;
 
       - name: Combine coverage and upload
         env:
