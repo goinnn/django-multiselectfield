@@ -75,8 +75,7 @@ jobs:
       - name: Store coverage data
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-data-${{ matrix.python }}-${{ matrix.django }}
-          path: '**/.coverage.*'
+          name: .coverage.*
           if-no-files-found: warn
 
   coverage:
@@ -93,7 +92,7 @@ jobs:
       - name: Download coverage data
         uses: actions/download-artifact@v4
         with:
-          path: coverage-data
+          name: .coverage.*
 
       - name: Install coverage
         run: |
