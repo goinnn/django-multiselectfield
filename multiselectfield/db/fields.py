@@ -20,7 +20,7 @@ from django.utils.text import capfirst
 from django.core import exceptions
 
 from ..forms.fields import MultiSelectFormField, MinChoicesValidator, MaxChoicesValidator
-from ..utils import MSFList, get_max_length
+from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator
 
 
@@ -108,7 +108,6 @@ class MultiSelectField(models.CharField):
                     'label': capfirst(self.verbose_name),
                     'help_text': self.help_text,
                     'choices': self.choices,
-                    'flat_choices': self.flatchoices,
                     'max_length': self.max_length,
                     'min_choices': self.min_choices,
                     'max_choices': self.max_choices}
@@ -126,17 +125,11 @@ class MultiSelectField(models.CharField):
         return value
 
     def to_python(self, value):
-        choices = dict(self.flatchoices)
-
-        if value:
-            if isinstance(value, list):
-                return value
-            elif isinstance(value, str):
-                value_list = map(lambda x: x.strip(), value.replace('，', ',').split(','))
-                return MSFList(value_list, choices=choices)
-            elif isinstance(value, (set, dict)):
-                return MSFList(list(value), choices=choices)
-        return MSFList([], choices=choices)
+        if isinstance(value, list):
+            return value
+        if not value:
+            return []
+        return value.split(',')
 
     def from_db_value(self, value, expression, connection):
         if value is None:
