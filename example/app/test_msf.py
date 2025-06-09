@@ -21,7 +21,7 @@ from django.test import TestCase
 
 from multiselectfield.utils import get_max_length
 
-from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO
+from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO, TAGS_CHOICES
 
 
 class MultiSelectTestCase(TestCase):
@@ -60,21 +60,21 @@ class MultiSelectTestCase(TestCase):
     def test_empty_update(self):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
-        book.chapters = {}
+        book.chapters = []
         book.save(update_fields=['chapters'])
         self.assertTrue(len(book.chapters) == 0)
 
     def test_single_update(self):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
-        book.chapters = {ONE}
+        book.chapters = [ONE]
         book.save(update_fields=['chapters'])
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
 
     def test_multiple_update(self):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
-        book.chapters = {ONE, TWO}
+        book.chapters = [ONE, TWO]
         book.save(update_fields=['chapters'])
         self.assertEqual(book.get_chapters_list(), ["Chapter I", "Chapter II"])
 
@@ -181,3 +181,42 @@ class MultiSelectUtilsTestCase(TestCase):
             ('key3', 'value3'),
         ]
         self.assertEqual(get_max_length(choices, None), 14)
+
+
+class SortedMultiSelectTestCase(TestCase):
+
+    fixtures = ['app_data.json']
+
+    def test_empty_update(self):
+        book = Book.objects.get(id=1)
+        book.tags = ['happy', 'work', 'sex']
+        book.favorite_tags = ['happy', 'work', 'sex']
+        book.save()
+
+        form_class = modelform_factory(Book, fields=('tags', 'favorite_tags'))
+        form = form_class(instance=book)
+        form_html = str(form.as_p())
+
+        tags = TAGS_CHOICES
+
+        previous_tag_index = -1
+        for tag, _ in tags:
+            tag_index = form_html.index(f'value="{tag}"')
+            self.assertGreater(tag_index, previous_tag_index)
+            previous_tag_index = tag_index
+
+        form_html = form_html[previous_tag_index + len(f'value="{tag}"'):]
+        previous_tag_index = -1
+
+        for tag, _ in tags:
+            if tag in book.favorite_tags:
+                continue
+            tag_index = form_html.index(f'value="{tag}"')
+            self.assertGreater(tag_index, previous_tag_index)
+            previous_tag_index = tag_index
+
+        previous_tag_index = -1
+        for tag in book.favorite_tags:
+            tag_index = form_html.index(f'value="{tag}"')
+            self.assertGreater(tag_index, previous_tag_index)
+            previous_tag_index = tag_index
