@@ -26,7 +26,6 @@ class SortedCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
 
     class Media:
         js = (
-            'sortmultiselectfield/jquery-ui.min.js',
             'sortmultiselectfield/sortmultiselectfield.js'
         )
         css = {
