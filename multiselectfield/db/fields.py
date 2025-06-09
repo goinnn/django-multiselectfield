@@ -143,7 +143,7 @@ class MultiSelectField(models.CharField):
         if self.choices:
             def get_list(obj):
                 fieldname = name
-                choicedict = dict(self.choices)
+                choicedict = dict(self.flatchoices)
                 display = []
                 if getattr(obj, fieldname):
                     for value in getattr(obj, fieldname):
