@@ -69,6 +69,7 @@ jobs:
           PYTHON_VERSION=`echo ${{ matrix.python }} | sed 's/\.//'`
           DJANGO_VERSION=`echo ${{ matrix.django }} | sed 's/\.//'`
           tox -e python${PYTHON_VERSION}-django${DJANGO_VERSION}
+          ls -lsa
         env:
           PYTHONPATH: .
 
