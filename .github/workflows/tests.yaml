@@ -77,14 +77,14 @@ jobs:
       - name: Store coverage data
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-data-{PYTHON_VERSION}-django${DJANGO_VERSION}
+          name: coverage-data-debug-{PYTHON_VERSION}-django${DJANGO_VERSION}
           path: coverage-debug*
           if-no-files-found: warn
 
       - name: Store coverage data
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-data-{PYTHON_VERSION}-django${DJANGO_VERSION}
+          name: coverage-data-no-debug-{PYTHON_VERSION}-django${DJANGO_VERSION}
           path: coverage-no-debug*
           if-no-files-found: warn
 
