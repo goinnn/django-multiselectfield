@@ -17,18 +17,18 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-from multiselectfield import MultiSelectField
+from multiselectfield import MultiSelectField, SortMultiSelectField
 
 CATEGORY_CHOICES = (
-    (1, _('Handbooks and manuals by discipline')),
-    (2, _('Business books')),
-    (3, _('Books of literary criticism')),
-    (4, _('Books about literary theory')),
-    (5, _('Books about literature')),
+    ('1', _('Handbooks and manuals by discipline')),
+    ('2', _('Business books')),
+    ('3', _('Books of literary criticism')),
+    ('4', _('Books about literary theory')),
+    ('5', _('Books about literature')),
 )
 
-ONE = 1
-TWO = 2
+ONE = '1'
+TWO = '2'
 CHAPTER_CHOICES = (
     (ONE, 'Chapter I'),
     (TWO, 'Chapter II')
@@ -69,8 +69,8 @@ class Book(models.Model):
                                   max_choices=3,
                                   # default='1,5')
                                   default=1)
-    tags = MultiSelectField(choices=TAGS_CHOICES,
-                            null=True, blank=True)
+    tags = MultiSelectField(choices=TAGS_CHOICES, blank=True)
+    favorite_tags = SortMultiSelectField(choices=TAGS_CHOICES, blank=True)
     published_in = MultiSelectField(_("Province or State"),
                                     choices=PROVINCES_AND_STATES,
                                     max_choices=2)
