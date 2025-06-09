@@ -78,7 +78,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-data-{PYTHON_VERSION}-django${DJANGO_VERSION}
-          path: /**/.coverage.*
+          path: ./django-multiselectfield/django-multiselectfield/.coverage.*
           if-no-files-found: warn
 
   coverage:
