@@ -102,21 +102,17 @@ jobs:
       - name: Download coverage data
         uses: actions/download-artifact@v4
         with:
-          name: coverage-debug.*
+          name: coverage-debug*
 
       - name: Download coverage data
         uses: actions/download-artifact@v4
         with:
-          name: coverage-no-debug.*
+          name: coverage-no-debug*
 
       - name: Install coverage
         run: |
           python -m pip install --upgrade pip
           pip install coverage coveralls
-
-      - name: Move all coverage files to root
-        run: |
-          find coverage-data -name '.coverage.*' -exec cp {} . \;
 
       - name: Combine coverage and upload
         env:
