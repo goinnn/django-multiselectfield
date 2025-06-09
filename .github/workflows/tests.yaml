@@ -75,16 +75,16 @@ jobs:
       - name: Store coverage data
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-data-${{ matrix.python }}-${{ matrix.django }}
-          path: .coverage.*
+          name: coverage-data-debug-${{ matrix.python }}-${{ matrix.django }}
+          path: coverage-debug*
           if-no-files-found: warn
 
-      - name: Upload coverage to Coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          coverage combine
-          coveralls --service=github
+      - name: Store coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data-no-debug-${{ matrix.python }}-${{ matrix.django }}
+          path: coverage-no-debug*
+          if-no-files-found: warn
 
   coverage:
     needs: test
@@ -99,8 +99,6 @@ jobs:
 
       - name: Download coverage data
         uses: actions/download-artifact@v4
-        with:
-          path: coverage-data
 
       - name: Install coverage
         run: |
@@ -111,7 +109,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          coverage combine
+          coverage combine */coverage*
           coverage xml
           coverage report
           coveralls --service=github
