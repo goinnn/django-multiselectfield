@@ -28,9 +28,11 @@ CATEGORY_CHOICES = (
 
 ONE = '1'
 TWO = '2'
+THREE = '3'
 CHAPTER_CHOICES = (
     (ONE, 'Chapter I'),
-    (TWO, 'Chapter II')
+    (TWO, 'Chapter II'),
+    (THREE, 'Chapter III'),
 )
 
 TAGS_CHOICES = [
@@ -73,7 +75,7 @@ class Book(models.Model):
     published_in = MultiSelectField(_("Province or State"),
                                     choices=PROVINCES_AND_STATES,
                                     max_choices=2)
-    chapters = MultiSelectField(choices=CHAPTER_CHOICES, default=ONE, min_choices=1)
+    chapters = MultiSelectField(choices=CHAPTER_CHOICES, default=ONE, min_choices=2)
 
     def __str__(self):
         return self.title

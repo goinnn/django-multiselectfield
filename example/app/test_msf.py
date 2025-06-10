@@ -59,6 +59,22 @@ class MultiSelectTestCase(TestCase):
         if form.is_valid():
             form.save()
 
+    def test_form_min_choices(self):
+        form_class = modelform_factory(Book, fields=('title', 'chapters'))
+        self.assertEqual(len(form_class.base_fields), 2)
+        form = form_class({'title': 'new book',
+                           'chapters': ['1']})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors, {'chapters': ['You must select a minimum of 2 choices.']})
+
+    def test_form_max_choices(self):
+        form_class = modelform_factory(Book, fields=('title', 'published_in'))
+        self.assertEqual(len(form_class.base_fields), 2)
+        form = form_class({'title': 'new book',
+                           'published_in': ['BC', 'AK', 'AL']})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors, {'published_in': ['You must select a maximum of 2 choices.']})
+
     def test_empty_update(self):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])

@@ -19,5 +19,5 @@ msgstr ""
 
 #: validators.py:28
 #, python-format
-msgid "You must select a maximum of  %(limit_value)d choices."
+msgid "You must select a maximum of %(limit_value)d choices."
 msgstr "Tu debes de seleccionar un máximo de %(limit_value)d opciones."
