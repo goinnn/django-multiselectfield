@@ -137,6 +137,6 @@ There is a fully configured example project in the `example directory <https://g
 
 .. code-block:: bash
 
-    python manage.py migrate  # or python manage.py syncdb --noinput
+    python manage.py migrate
     python manage.py loaddata app_data
     python manage.py runserver

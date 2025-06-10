@@ -56,13 +56,13 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     tests_require=[
-        'django>=1.4',
+        'django>=3.2',
         'tox',
         'coverage',
         'flake8',
     ],
     install_requires=[
-        'django>=1.4',
+        'django>=3.2',
     ],
     zip_safe=False,
 )
