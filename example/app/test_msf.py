@@ -13,13 +13,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <https://www.gnu.org/licenses/>.
 
+from django import VERSION, forms
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.forms.models import modelform_factory
 from django.test import TestCase
 
+from multiselectfield.db.fields import MultiSelectField
+from multiselectfield.forms.fields import MultiSelectFormField
 from multiselectfield.utils import get_max_length
 
-from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO
+from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO, TAGS_CHOICES
 
 
 class MultiSelectTestCase(TestCase):
@@ -58,21 +62,21 @@ class MultiSelectTestCase(TestCase):
     def test_empty_update(self):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
-        book.chapters = {}
+        book.chapters = []
         book.save(update_fields=['chapters'])
         self.assertTrue(len(book.chapters) == 0)
 
     def test_single_update(self):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
-        book.chapters = {ONE}
+        book.chapters = [ONE]
         book.save(update_fields=['chapters'])
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
 
     def test_multiple_update(self):
         book = Book.objects.get(id=1)
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
-        book.chapters = {ONE, TWO}
+        book.chapters = [ONE, TWO]
         book.save(update_fields=['chapters'])
         self.assertEqual(book.get_chapters_list(), ["Chapter I", "Chapter II"])
 
@@ -132,59 +136,73 @@ class MultiSelectTestCase(TestCase):
         form_class = modelform_factory(Book, fields=('published_in',))
         self.assertEqual(len(form_class.base_fields), 1)
         form = form_class(initial={'published_in': ['BC', 'AK']})
+        css_class = 'multiselectfield'
+        if VERSION < (4, 2):
+            css_class = 'multiselectfield-django-old'
 
-        expected_html = """
-            <p>
-              <label>
-                Province or State:
-              </label>
-              <div id="id_published_in">
-                <div>
-                  <label>
-                    Canada - Provinces
-                  </label>
-                  <div>
-                    <label for="id_published_in_0_0">
-                      <input id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" />
-                      Alberta
-                    </label>
-                  </div>
-                  <div>
-                    <label for="id_published_in_0_1">
-                      <input checked id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" />
-                      British Columbia
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <label>
-                    USA - States
-                  </label>
-                  <div>
-                    <label for="id_published_in_1_0">
-                      <input checked id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" />
-                      Alaska
-                    </label>
-                  </div>
-                  <div>
-                    <label for="id_published_in_1_1">
-                      <input id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" />
-                      Alabama
-                    </label>
-                  </div>
-                  <div>
-                    <label for="id_published_in_1_2">
-                      <input id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" />
-                      Arizona
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </p>
-            """
+        if VERSION >= (4, 0):
+            expected_html = str(
+                f"""<p><label>Province or State:</label>
+                    <div class="{css_class}" id="id_published_in">
+                        <div>
+                            <label>Canada - Provinces</label>
+                            <div><label for="id_published_in_0_0"><input class="{css_class}" id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" />Alberta</label></div>
+                            <div><label for="id_published_in_0_1"><input class="{css_class}" checked id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" />British Columbia</label></div>
+                        </div>
+                        <div>
+                            <label>USA - States</label>
+                            <div><label for="id_published_in_1_0"><input class="{css_class}" checked id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" />Alaska</label></div>
+                            <div><label for="id_published_in_1_1"><input class="{css_class}" id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" />Alabama</label></div>
+                            <div><label for="id_published_in_1_2"><input class="{css_class}" id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" />Arizona</label></div>
+                        </div>
+                    </div>
+                </p>
+                """
+            )
+        else:
+            expected_html = str(
+                f"""<p><label>Province or State:</label> <ul class="{css_class}" id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input class="{css_class}" id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n
+                <li><label for="id_published_in_0_1"><input class="{css_class}" checked id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n
+                <li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input class="{css_class}" checked id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n
+                <li><label for="id_published_in_1_1"><input class="{css_class}" id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n
+                <li><label for="id_published_in_1_2"><input class="{css_class}" id="id_published_in_1_2" name="published_in" type="checkbox" value="AZ" /> Arizona</label></li></ul></li></ul></p>"""
+            )
 
         actual_html = form.as_p()
         self.assertHTMLEqual(expected_html, actual_html)
+
+    if VERSION >= (4, 0):
+        def test_form_field_initialization_django4_multiselect(self):
+            form_class = modelform_factory(Book, fields=('tags',))
+            form = form_class()
+            form_field_from_form = form.fields['tags']
+
+            form_field = Book._meta.get_field('tags').formfield()
+
+            self.assertIsInstance(form_field, MultiSelectFormField)
+            self.assertIsInstance(form_field_from_form, MultiSelectFormField)
+
+            second_form_field = Book._meta.get_field('tags').formfield(form_class=form_field_from_form)
+            self.assertIs(second_form_field, form_field_from_form)
+
+            self.assertEqual(form_field.choices, TAGS_CHOICES)
+            self.assertEqual(form_field_from_form.choices, TAGS_CHOICES)
+
+        def test_form_field_initialization_django4_sortmultiselect(self):
+            form_class = modelform_factory(Book, fields=('favorite_tags',))
+            form = form_class()
+            form_field_from_form = form.fields['favorite_tags']
+
+            form_field = Book._meta.get_field('favorite_tags').formfield()
+
+            self.assertIsInstance(form_field, MultiSelectFormField)
+            self.assertIsInstance(form_field_from_form, MultiSelectFormField)
+
+            second_form_field = Book._meta.get_field('favorite_tags').formfield(form_class=form_field_from_form)
+            self.assertIs(second_form_field, form_field_from_form)
+
+            self.assertEqual(form_field.choices, TAGS_CHOICES)
+            self.assertEqual(form_field_from_form.choices, TAGS_CHOICES)
 
 
 class MultiSelectUtilsTestCase(TestCase):
@@ -201,3 +219,88 @@ class MultiSelectUtilsTestCase(TestCase):
             ('key3', 'value3'),
         ]
         self.assertEqual(get_max_length(choices, None), 14)
+
+
+class CategorizedChoicesTestCase(TestCase):
+    def test_categorized_choices_display(self):
+
+        CATEGORIZED_CHOICES = (
+            ('Grupo A', (
+                ('a1', 'Opción A1'),
+                ('a2', 'Opción A2'),
+            )),
+            ('Grupo B', (
+                ('b1', 'Opción B1'),
+                ('b2', 'Opción B2'),
+            ))
+        )
+
+        class TestCategorizedModel(models.Model):
+            options = MultiSelectField(choices=CATEGORIZED_CHOICES, max_length=20)
+
+            class Meta:
+                app_label = 'app'
+
+        instance = TestCategorizedModel(options=['a1', 'b2'])
+
+        actual = instance.get_options_display()
+        self.assertEqual(actual, "Opción A1, Opción B2")
+
+        actual_list = instance.get_options_list()
+        self.assertEqual(actual_list, ["Opción A1", "Opción B2"])
+
+
+class TestFormWithMultiSelectField(forms.Form):
+    CHOICES = (
+        ('a', 'A'),
+        ('b', 'B'),
+    )
+    reason = MultiSelectFormField(choices=CHOICES, widget=forms.CheckboxSelectMultiple, required=False)
+
+
+class MultiSelectFormFieldTestCase(TestCase):
+    def test_multiselectformfield_without_flat_choices(self):
+        """Test that MultiSelectFormField works when used directly in a Form without flat_choices."""
+        try:
+            TestFormWithMultiSelectField()
+        except KeyError as e:
+            self.fail(f"MultiSelectFormField raised KeyError: {e}")
+
+
+class SortedMultiSelectTestCase(TestCase):
+
+    fixtures = ['app_data.json']
+
+    def test_empty_update(self):
+        book = Book.objects.get(id=1)
+        book.tags = ['happy', 'work', 'sex']
+        book.favorite_tags = ['happy', 'work', 'sex']
+        book.save()
+
+        form_class = modelform_factory(Book, fields=('tags', 'favorite_tags'))
+        form = form_class(instance=book)
+        form_html = str(form.as_p())
+
+        tags = TAGS_CHOICES
+
+        previous_tag_index = -1
+        for tag, _ in tags:
+            tag_index = form_html.index(f'value="{tag}"')
+            self.assertGreater(tag_index, previous_tag_index)
+            previous_tag_index = tag_index
+
+        form_html = form_html[previous_tag_index + len(f'value="{tag}"'):]
+        previous_tag_index = -1
+
+        for tag, _ in tags:
+            if tag in book.favorite_tags:
+                continue
+            tag_index = form_html.index(f'value="{tag}"')
+            self.assertGreater(tag_index, previous_tag_index)
+            previous_tag_index = tag_index
+
+        previous_tag_index = -1
+        for tag in book.favorite_tags:
+            tag_index = form_html.index(f'value="{tag}"')
+            self.assertGreater(tag_index, previous_tag_index)
+            previous_tag_index = tag_index

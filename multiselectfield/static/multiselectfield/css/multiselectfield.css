@@ -1,0 +1,9 @@
+.form-row .multiselectfield label {
+    width: 500px;
+}
+
+.form-row .multiselectfield label input[type="checkbox"].multiselectfield,
+.form-row .multiselectfield-django-old label input[type="checkbox"].multiselectfield-django-old {
+    margin-top: -4px;
+    vertical-align: middle;
+}

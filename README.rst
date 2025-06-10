@@ -1,8 +1,8 @@
 django-multiselectfield
 =======================
 
-.. image:: https://travis-ci.org/goinnn/django-multiselectfield.png?branch=master
-    :target: https://travis-ci.org/goinnn/django-multiselectfield
+.. image:: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml/badge.svg
+    :target: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml
 
 .. image:: https://coveralls.io/repos/goinnn/django-multiselectfield/badge.png?branch=master
     :target: https://coveralls.io/r/goinnn/django-multiselectfield
@@ -14,9 +14,9 @@ A new model field and form field. With this you can get a multiple select from a
 
 This egg is inspired by this `snippet <https://djangosnippets.org/snippets/1200/>`_.
 
-Supported Python versions: 2.7, 3.4+
+Supported Python versions: 3.8+
 
-Supported Django versions: 1.4-2.0+
+Supported Django versions: 3.2+
 
 Installation
 ============
@@ -113,18 +113,10 @@ Django REST Framework comes with a ``MultipleChoiceField`` that works perfectly 
         # ...
 
 
-Known Bugs and Limitations
-==========================
+Tests
+=====
 
-All tests pass on Django 1.4, 1.5, and 1.8+, so if you can, use a modern version of Django. However, if you must use Django 1.6 or 1.7 there are two known issues you will need to be aware of:
-
-1. `Named groups <https://github.com/goinnn/django-multiselectfield/pull/30#issue-52149983>`_ do not render properly in Django 1.6. The workaround is to manually render the field in your form or use a custom widget. If your workaround is suitably generic, please submit a pull request with it.
-
-2. Only in Django 1.6 and 1.7, due to `Django bug #9619 <https://code.djangoproject.com/ticket/9619>`_, passing a MultiSelectField to ``values()`` or ``values_list()`` will return the database representation of the field (a string of comma-separated values). The workaround is to manually call ``.split(',')`` on the result.
-
-   The Django bug was introduced in Django 1.6 and is fixed in Django 1.8 and onward, so ``values()`` and ``values_list()`` return a vanilla Python list of values for Django <= 1.5 and Django >= 1.8.
-
-   See `issue #40 <https://github.com/goinnn/django-multiselectfield/issues/40>`_ for discussion about this bug.
+All tests pass on Django 3.2.0, 4.0.0, 4.1.0, 4.2.0, 5.0.0 and 5.1.0
 
 
 Development
