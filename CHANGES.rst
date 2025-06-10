@@ -1,5 +1,9 @@
 Changelog
 =========
+development (unreleased)
+-------------------
+
+* Update syntax for targeted versions of Python and Django. (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
 
 0.1.13 (2024-06-30)
 -------------------

@@ -1,7 +1,7 @@
 [
 {
-    "pk": 1, 
-    "model": "app.book", 
+    "pk": 1,
+    "model": "app.book",
     "fields": {
         "title": "My book 1",
         "tags": "sex,work,happy",
@@ -12,20 +12,20 @@
     }
 },
 {
-    "pk": 1, 
-    "model": "auth.user", 
+    "pk": 1,
+    "model": "auth.user",
     "fields": {
-        "username": "admin", 
-        "first_name": "Pablo", 
-        "last_name": "Martin", 
-        "is_active": true, 
-        "is_superuser": true, 
-        "is_staff": true, 
-        "last_login": "2013-10-17T08:04:29.582Z", 
-        "groups": [], 
+        "username": "admin",
+        "first_name": "Pablo",
+        "last_name": "Martin",
+        "is_active": true,
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2013-10-17T08:04:29.582Z",
+        "groups": [],
         "user_permissions": [],
-        "password": "sha1$1ad04$868abf5737e05d3b68f5cb972fda1e227cc4f7d7", 
-        "email": "", 
+        "password": "sha1$1ad04$868abf5737e05d3b68f5cb972fda1e227cc4f7d7",
+        "email": "",
         "date_joined": "2013-10-17T08:04:29.582Z"
     }
 }

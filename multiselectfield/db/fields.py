@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2012 by Pablo Martín <goinnn@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -44,7 +43,7 @@ class MultiSelectField(models.CharField):
     def __init__(self, *args, **kwargs):
         self.min_choices = kwargs.pop('min_choices', None)
         self.max_choices = kwargs.pop('max_choices', None)
-        super(MultiSelectField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.max_length = get_max_length(self.choices, self.max_length)
         if VERSION <= (4, 1):
             self.validators[0] = MaxValueMultiFieldValidator(self.max_length)
@@ -57,9 +56,9 @@ class MultiSelectField(models.CharField):
 
     def _get_flatchoices(self):
         if VERSION >= (5,):
-            flat_choices = super(MultiSelectField, self).flatchoices
+            flat_choices = super().flatchoices
         else:
-            flat_choices = super(MultiSelectField, self)._get_flatchoices()
+            flat_choices = super()._get_flatchoices()
 
         class MSFFlatchoices(list):
             # Used to trick django.contrib.admin.utils.display_for_field into
@@ -90,7 +89,7 @@ class MultiSelectField(models.CharField):
         try:
             value = self._get_val_from_obj(obj)
         except AttributeError:
-            value = super(MultiSelectField, self).value_from_object(obj)
+            value = super().value_from_object(obj)
         return self.get_prep_value(value)
 
     def validate(self, value, model_instance):
@@ -100,7 +99,7 @@ class MultiSelectField(models.CharField):
                 raise exceptions.ValidationError(self.error_messages['invalid_choice'] % {"value": value})
 
     def get_default(self):
-        default = super(MultiSelectField, self).get_default()
+        default = super().get_default()
         if isinstance(default, int):
             default = str(default)
         return default
@@ -147,7 +146,7 @@ class MultiSelectField(models.CharField):
         return self.to_python(value)
 
     def contribute_to_class(self, cls, name):
-        super(MultiSelectField, self).contribute_to_class(cls, name)
+        super().contribute_to_class(cls, name)
         if self.choices:
             def get_list(obj):
                 fieldname = name

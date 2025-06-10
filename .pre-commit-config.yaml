@@ -1,0 +1,24 @@
+repos:
+-   repo: https://github.com/adamchainz/django-upgrade
+    rev: 1.23.1
+    hooks:
+    -   id: django-upgrade
+        args: [--target-version, "4.2"]
+-   repo: https://github.com/PyCQA/flake8
+    rev: 7.1.2
+    hooks:
+    -   id: flake8
+        args: [--ignore=E501]
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: check-yaml
+    -   id: check-toml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+    -   id: mixed-line-ending
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.19.1
+    hooks:
+    -   id: pyupgrade
+        args: [--py39-plus]

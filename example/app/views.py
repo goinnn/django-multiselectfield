@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2013 by Pablo Martín <goinnn@gmail.com>
 #
 # This software is free software: you can redistribute it and/or modify
@@ -14,16 +13,11 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <https://www.gnu.org/licenses/>.
 
-from django import VERSION
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseRedirect
-
-if VERSION >= (2, 0):
-    from django.urls import reverse
-else:
-    from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 def app_index(request):

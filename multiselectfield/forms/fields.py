@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2012 by Pablo Martín <goinnn@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -29,7 +28,7 @@ class MultiSelectFormField(forms.MultipleChoiceField):
         self.min_choices = kwargs.pop('min_choices', None)
         self.max_choices = kwargs.pop('max_choices', None)
         self.max_length = kwargs.pop('max_length', None)
-        super(MultiSelectFormField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.max_length = get_max_length(self.choices, self.max_length)
         self.validators.append(MaxValueMultiFieldValidator(self.max_length))
         if self.max_choices is not None:
