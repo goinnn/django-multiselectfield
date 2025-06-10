@@ -18,6 +18,19 @@ import sys
 from django import forms
 
 
+class MultiSelectCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
+
+    class Media:
+        css = {
+            'all': ('multiselectfield/css/multiselectfield.css',)
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.attrs['class'] = 'multiselectfield'
+
+
 class SortedCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
 
     def __init__(self, *args, **kwargs):

@@ -1,8 +1,4 @@
-.ui-pre-sortable {
+.multiselectfield {
     margin-top: 0 !important;
     vertical-align: middle !important;
-}
-
-.ui-pre-sortable label {
-    cursor: move;
 }
