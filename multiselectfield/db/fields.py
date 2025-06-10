@@ -106,17 +106,25 @@ class MultiSelectField(models.CharField):
         return default
 
     def formfield(self, **kwargs):
-        defaults = {'required': not self.blank,
-                    'label': capfirst(self.verbose_name),
-                    'help_text': self.help_text,
-                    'choices': self.choices,
-                    'max_length': self.max_length,
-                    'min_choices': self.min_choices,
-                    'max_choices': self.max_choices}
+        if isinstance(kwargs.get('form_class'), MultiSelectFormField):
+            return kwargs.get('form_class')
+
+        defaults = {
+            'required': not self.blank,
+            'label': capfirst(self.verbose_name),
+            'help_text': self.help_text,
+            'choices': self.choices,
+            'max_length': self.max_length,
+            'min_choices': self.min_choices,
+            'max_choices': self.max_choices
+        }
         if self.has_default():
             defaults['initial'] = self.get_default()
+
         defaults.update(kwargs)
-        return MultiSelectFormField(**defaults)
+        form_class = defaults.pop('form_class', MultiSelectFormField) or MultiSelectFormField
+
+        return form_class(**defaults)
 
     def get_prep_value(self, value):
         return '' if value is None else ",".join(map(str, value))
@@ -143,7 +151,7 @@ class MultiSelectField(models.CharField):
         if self.choices:
             def get_list(obj):
                 fieldname = name
-                choicedict = dict(self.choices)
+                choicedict = dict(self.flatchoices)
                 display = []
                 if getattr(obj, fieldname):
                     for value in getattr(obj, fieldname):
@@ -167,14 +175,22 @@ class MultiSelectField(models.CharField):
 class SortMultiSelectField(MultiSelectField):
 
     def formfield(self, **kwargs):
-        defaults = {'required': not self.blank,
-                    'label': capfirst(self.verbose_name),
-                    'help_text': self.help_text,
-                    'choices': self.choices,
-                    'max_length': self.max_length,
-                    'min_choices': self.min_choices,
-                    'max_choices': self.max_choices}
+        if isinstance(kwargs.get('form_class'), SortMultiSelectFormField):
+            return kwargs.get('form_class')
+
+        defaults = {
+            'required': not self.blank,
+            'label': capfirst(self.verbose_name),
+            'help_text': self.help_text,
+            'choices': self.choices,
+            'max_length': self.max_length,
+            'min_choices': self.min_choices,
+            'max_choices': self.max_choices
+        }
         if self.has_default():
             defaults['initial'] = self.get_default()
+
         defaults.update(kwargs)
-        return SortMultiSelectFormField(**defaults)
+        form_class = defaults.pop('form_class', SortMultiSelectFormField) or SortMultiSelectFormField
+
+        return form_class(**defaults)

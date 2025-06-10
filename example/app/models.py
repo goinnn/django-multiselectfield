@@ -34,7 +34,7 @@ CHAPTER_CHOICES = (
     (TWO, 'Chapter II')
 )
 
-TAGS_CHOICES = (
+TAGS_CHOICES = [
     ('sex',         _('Sex')),          # noqa: E241
     ('work',        _('Work')),         # noqa: E241
     ('happy',       _('Happy')),        # noqa: E241
@@ -44,7 +44,7 @@ TAGS_CHOICES = (
     ('interesting', _('Interesting')),  # noqa: E241
     ('huge',        _('Huge')),         # noqa: E241
     ('nice',        _('Nice')),         # noqa: E241
-)
+]
 
 PROVINCES = (
     ('AB', _("Alberta")),
