@@ -15,21 +15,39 @@
 # along with this programe.  If not, see <https://www.gnu.org/licenses/>.
 import sys
 
-from django import forms
+from django import forms, VERSION
 
 
-class SortedCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
+class MultiSelectCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
+
+    class Media:
+        css = {
+            'all': ('multiselectfield/css/multiselectfield.css',)
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.attrs['class'] = 'ui-pre-sortable'
+        if VERSION < (4, 2):
+            self.attrs['class'] = 'multiselectfield-django-old'
+        else:
+            self.attrs['class'] = 'multiselectfield'
+
+
+class SortedCheckboxSelectMultiple(MultiSelectCheckboxSelectMultiple):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.attrs['class'] += ' ui-pre-sortable'
 
     class Media:
         js = (
-            'sortmultiselectfield/sortmultiselectfield.js'
+            'sortmultiselectfield/sortmultiselectfield.js',
         )
         css = {
-            'all': ('sortmultiselectfield/sortmultiselectfield.css',)
+            'all': (
+                'multiselectfield/css/multiselectfield.css',
+                'sortmultiselectfield/sortmultiselectfield.css',
+            )
         }
 
     def optgroups(self, name, value, attrs=None):
