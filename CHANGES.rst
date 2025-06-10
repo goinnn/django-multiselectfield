@@ -1,9 +1,67 @@
-Changelog
-=========
-development (unreleased)
+0.1.14 (2025-06-11)
 -------------------
 
-* Update syntax for targeted versions of Python and Django. (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
+* Breaking changes
+
+    * Remove MSFList:
+
+        * It was created for integer choices and it is a misconception (`01dcad230dc368b88a39bfc36f90ddd145f381a2 <https://github.com/goinnn/django-multiselectfield/commit/01dcad230dc368b88a39bfc36f90ddd145f381a2>`_)
+
+    * In to_python value is or a list or a string. (`c4579138dda2833cbce26afbf57da5353aa45690 <https://github.com/goinnn/django-multiselectfield/commit/c4579138dda2833cbce26afbf57da5353aa45690>`_)
+
+        * Remove set case and dict case
+        * Please, If this breaks something, you can create a test to understand the use case
+
+    * Removing integer choices:
+
+        * It was an error. MultiSelectField inheritances of CharField, not IntegerField.
+        * It is impossible knows if original choice is (1, 'Item title 2.1') or ('1', 'Item title 2.1')
+
+
+* Fix: Form instance generated twice since Django  (`#168 <https://github.com/goinnn/django-multiselectfield/pull/168>`_)
+
+* Fix CSS admin (`#173 <https://github.com/goinnn/django-multiselectfield/pull/173>`_)
+
+* Fix Properly Display Categorized Choices in get_FOO_display (`#169 <https://github.com/goinnn/django-multiselectfield/pull/169>`_)
+
+* SortableForm: (`#169 <https://github.com/goinnn/django-multiselectfield/pull/172>`_)
+
+* Clean old code:
+
+    * Update syntax for targeted versions of Python and Django. (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
+
+    * Add pre-commit (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
+
+    * Fix Github actions
+
+    * Remove travis configuration
+
+    * Coveralls integrations
+
+    * Improve readme. Right version of Python / Django
+
+
+Thanks to:
+
+* `mikemanger <https://github.com/mikemanger>`_
+* `piranhaphish <https://github.com/piranhaphish>`_
+* `kunalgrover05 <https://github.com/kunalgrover05>`_
+* `royatkup <https://github.com/royatkup>`_
+* `qasimgulzar <https://github.com/qasimgulzar>`_
+* `austin-schick <https://github.com/austin-schick>`_
+* `Pfizer-BradleyBare <https://github.com/Pfizer-BradleyBare>`_
+* `SuperSandro2000 <https://github.com/SuperSandro2000>`_
+* `jucajuca <https://github.com/jucajuca>`_
+* `filipefigcorreia <https://github.com/filipefigcorreia>`_
+* `ZippoLag <https://github.com/ZippoLag>`_
+* `leifdenby <https://github.com/leifdenby>`_
+* `jordanvs <https://github.com/jordanvs>`_
+* `blag <https://github.com/blag>`_
+
+Special thanks to:
+
+* `ccalero <https://github.com/ccalero>`_ for fighting and updating django-multiselectfield
+* `Joinup Green Intelligence <https://joinup.es>`_ for believing in free (libre) software
 
 0.1.13 (2024-06-30)
 -------------------
