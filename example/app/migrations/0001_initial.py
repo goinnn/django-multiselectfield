@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('tags', multiselectfield.db.fields.MultiSelectField(blank=True, choices=[('sex', 'Sex'), ('work', 'Work'), ('happy', 'Happy'), ('food', 'Food'), ('field', 'Field'), ('boring', 'Boring'), ('interesting', 'Interesting'), ('huge', 'Huge'), ('nice', 'Nice')], max_length=54)),
                 ('favorite_tags', multiselectfield.db.fields.SortMultiSelectField(blank=True, choices=[('sex', 'Sex'), ('work', 'Work'), ('happy', 'Happy'), ('food', 'Food'), ('field', 'Field'), ('boring', 'Boring'), ('interesting', 'Interesting'), ('huge', 'Huge'), ('nice', 'Nice')], max_length=54)),
                 ('published_in', multiselectfield.db.fields.MultiSelectField(choices=[('Canada - Provinces', (('AB', 'Alberta'), ('BC', 'British Columbia'))), ('USA - States', (('AK', 'Alaska'), ('AL', 'Alabama'), ('AZ', 'Arizona')))], max_length=2, verbose_name='Province or State')),
-                ('chapters', multiselectfield.db.fields.MultiSelectField(choices=[(1, 'Chapter I'), (2, 'Chapter II')], default=1, max_length=3)),
+                ('chapters', multiselectfield.db.fields.MultiSelectField(choices=[(1, 'Chapter I'), (2, 'Chapter II')], default=1, max_length=3, min_choices=1)),
             ],
         ),
     ]

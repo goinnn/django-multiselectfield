@@ -73,7 +73,7 @@ class Book(models.Model):
     published_in = MultiSelectField(_("Province or State"),
                                     choices=PROVINCES_AND_STATES,
                                     max_choices=2)
-    chapters = MultiSelectField(choices=CHAPTER_CHOICES, default=ONE)
+    chapters = MultiSelectField(choices=CHAPTER_CHOICES, default=ONE, min_choices=1)
 
     def __str__(self):
         return self.title
