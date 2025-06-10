@@ -57,9 +57,8 @@ Configure your models.py
         my_field = MultiSelectField(choices=MY_CHOICES, default=['item_key1', 'item_key5'])
         my_field2 = MultiSelectField(choices=MY_CHOICES2, min_choices=2, max_choices=3, max_length=3)
 
-.. note::
 
-    Do not use integer choices like this:
+    # Do not use integer choices like this:
 
     MY_INTEGER_CHOICES2 = ((1, 'Item title 2.1'),
                            (2, 'Item title 2.2'),
@@ -67,8 +66,8 @@ Configure your models.py
                            (4, 'Item title 2.4'),
                            (5, 'Item title 2.5'))
 
-    Because when MultiSelectField gets data from db, it can not know if the values are integers or strings.
-    In other words, MultiSelectField save the same data for MY_CHOICES2 and MY_INTEGER_CHOICES2
+    # Because when MultiSelectField gets data from db, it can not know if the values are integers or strings.
+    # In other words, MultiSelectField save the same data for MY_CHOICES2 and MY_INTEGER_CHOICES2
 
 
 In your settings.py
