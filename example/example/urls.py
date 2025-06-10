@@ -14,11 +14,13 @@
 # along with this software.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.conf import settings
+from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.static import serve
 
 urlpatterns = [
     path('', include('app.urls')),
+    path('admin/', admin.site.urls),
     re_path(
         r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:],
         serve,
