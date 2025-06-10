@@ -140,7 +140,7 @@ class MultiSelectTestCase(TestCase):
         css_class = 'multiselectfield'
         if VERSION < (4, 2):
             css_class = 'multiselectfield-django-old'
-        
+
         if VERSION >= (4, 0):
             expected_html = str(
                 f"""<p><label>Province or State:</label>
