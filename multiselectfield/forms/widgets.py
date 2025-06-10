@@ -35,14 +35,17 @@ class SortedCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.attrs['class'] = 'ui-pre-sortable'
+        self.attrs['class'] = 'multiselectfield ui-pre-sortable'
 
     class Media:
         js = (
             'sortmultiselectfield/sortmultiselectfield.js'
         )
         css = {
-            'all': ('sortmultiselectfield/sortmultiselectfield.css',)
+            'all': (
+                'multiselectfield/css/multiselectfield.css',
+                'sortmultiselectfield/sortmultiselectfield.css',
+            )
         }
 
     def optgroups(self, name, value, attrs=None):
