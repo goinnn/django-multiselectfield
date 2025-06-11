@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2012 by Pablo Martín <goinnn@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,11 +19,6 @@ from django import forms, VERSION
 
 class MultiSelectCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
 
-    class Media:
-        css = {
-            'all': ('multiselectfield/css/multiselectfield.css',)
-        }
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if VERSION < (4, 2):
@@ -45,7 +39,6 @@ class SortedCheckboxSelectMultiple(MultiSelectCheckboxSelectMultiple):
         )
         css = {
             'all': (
-                'multiselectfield/css/multiselectfield.css',
                 'sortmultiselectfield/sortmultiselectfield.css',
             )
         }

@@ -1,0 +1,17 @@
+{% extends "admin/change_form.html" %}
+
+{% load static %}
+
+{% block extrastyle2 %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'multiselectfield/css/admin-multiselectfield.css' %}">
+{% endblock %}
+
+{% block blockbots %}
+  <script type="text/javascript">
+      var jQuery = django.jQuery;
+  </script>
+  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+  {{ block.super }}
+{% endblock %}

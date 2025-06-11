@@ -74,7 +74,7 @@ Supported Django versions: 3.2+
 1.3 In your settings.py
 -----------------------
 
-Only you need it, if you want the translation of django-multiselectfield
+Only you need it, if you want the translation of django-multiselectfield or you need static files.
 
 .. code-block:: python
 
@@ -97,6 +97,7 @@ Since version 0.1.14, this package also includes a second field type called: Sor
 
 For this field to work, you need to include `jQuery <https://jquery.com/download/>`_ (already included in the Django admin) and `jQuery UI <https://jqueryui.com/download/>`_.
 
+You can include them by updating the ModelAdmin’s form or directly in change_form.html (less efficient but faster), as shown in the example project.
 
 1.5 Other recomendations
 -------------------------
@@ -132,7 +133,16 @@ It is possible to customize the HTML of this widget in your form template. To do
     {% endfor %}
 
 
-2.2 Add a filter to the Django administration
+2.2 Fixing CSS alignment in the Django administration
+------------------------------------------------------
+
+Fixing alignment. The labels appear slightly lower than the checkboxes, and the label width is very small.
+
+Include the following CSS file: multiselectfield/css/admin-multiselectfield.css
+
+You can include it by updating the ModelAdmin’s form or directly in change_form.html (less efficient but faster), as shown in the example project.
+
+2.3 Add a filter to the Django administration
 ----------------------------------------------
 
 You can see it in example project
@@ -177,13 +187,13 @@ You can see it in example project
             _multiple_choice_filter('chapters', _('chapters')),
         )
 
-2.3 Add a django multiselect field to list_display in Django administration
+2.4 Add a django multiselect field to list_display in Django administration
 ----------------------------------------------------------------------------
 
 Django has no built-in way to add support for custom fields.
 
 
-2.3.1 Option 1. Use get_FOO_display
+2.4.1 Option 1. Use get_FOO_display
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Change one by one
@@ -199,7 +209,7 @@ Change one by one
         def get_categories_display(self, obj):
             return obj.get_categories_display()
 
-2.3.2 Option 2. Monkey patching Django
+2.4.2 Option 2. Monkey patching Django
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you have a lot of django multiselect fields in list_display previous option can be much work.
@@ -245,7 +255,7 @@ This code is inspired for django code. It is possible that for other versions of
             return utils._original_display_for_field(value, field, empty_value_display)
         return utils._original_display_for_field(value, field, empty_value_display, avoid_link=avoid_link)
 
-2.3 Add support for read-only fields in the Django administration
+2.5 Add support for read-only fields in the Django administration
 -----------------------------------------------------------------
 
 Django has no built-in way to add support for custom fields.
@@ -329,7 +339,7 @@ This code is inspired for django code. It is possible that for other versions of
         return conditional_escape(result_repr)
 
 
-2.4 Django REST Framework
+2.6 Django REST Framework
 -------------------------
 
 Django REST Framework comes with a ``MultipleChoiceField`` that works perfectly with this:
