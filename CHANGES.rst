@@ -40,6 +40,15 @@
         * (`e36cbae4c3b39dac4a3fee03fdda9622a101f22d <https://github.com/goinnn/django-multiselectfield/commit/e36cbae4c3b39dac4a3fee03fdda9622a101f22d>`_)
         * Inspirated by (`#116 <https://github.com/goinnn/django-multiselectfield/issues/116>`_)
 
+    * How add a django multiselect field to list_display in Django administration
+
+        * (`5638247c1d70670d4f81adf35143ef17a7d7575e <https://github.com/goinnn/django-multiselectfield/commit/5638247c1d70670d4f81adf35143ef17a7d7575e>`_)
+
+
+    * How add support for read-only fields in the Django administration:
+
+        * (`65376239ae7491414f896adb4d314349ff7c2667 <https://github.com/goinnn/django-multiselectfield/commit/65376239ae7491414f896adb4d314349ff7c2667>`_)
+
 * Clean old code:
 
     * Update syntax for targeted versions of Python and Django. (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
