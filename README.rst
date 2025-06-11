@@ -234,7 +234,7 @@ Other recomendations
 
 `Like django recommended: <https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.null>`_ Avoid using null on string-based fields such as CharField and TextField.
 
-So, if you need a not required use only blank=True (null=False):
+MultiSelectField is based on CharField (MultiSelectField inheritances of CharField). So, if you need a not required use only blank=True (null=False by default):
 
 .. code-block:: python
 
