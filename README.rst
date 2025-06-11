@@ -177,11 +177,16 @@ You can see it in example project
             _multiple_choice_filter('chapters', _('chapters')),
         )
 
-2.3 Add a django multiselect field to list_display
---------------------------------------------------
+2.3 Add a django multiselect field to list_display in Django administration
+----------------------------------------------------------------------------
+
+Django has no built-in way to add support for custom fields.
+
 
 2.3.1 Option 1. Use get_FOO_display
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Change one by one
 
 .. code-block:: python
 
@@ -197,7 +202,9 @@ You can see it in example project
 2.3.2 Option 2. Monkey patching Django
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you have a lot of django multiselect fields in list_display. You can see it in example project
+If you have a lot of django multiselect fields in list_display previous option can be much work.
+
+You can see it in example project.
 
 This code is inspired for django code. It is possible that for other versions of Django you may need to adapt it.
 
@@ -237,6 +244,89 @@ This code is inspired for django code. It is possible that for other versions of
         if VERSION < (5, 2):
             return utils._original_display_for_field(value, field, empty_value_display)
         return utils._original_display_for_field(value, field, empty_value_display, avoid_link=avoid_link)
+
+2.3 Add support for read-only fields in the Django administration
+-----------------------------------------------------------------
+
+Django has no built-in way to add support for custom fields.
+
+You can see it in example project. Log in to the Django admin in the sample project using the following credentials: user-readonly / DMF-123.
+
+This code is inspired for django code. It is possible that for other versions of Django you may need to adapt it.
+
+.. code-block:: python
+
+    from django.apps import AppConfig
+    from django.contrib.admin.helpers import AdminReadonlyField
+    from django.contrib.admin.utils import display_for_field, lookup_field
+    from django.core.exceptions import ObjectDoesNotExist
+    from django.db.models.fields.related import (
+        ForeignObjectRel,
+        ManyToManyRel,
+        OneToOneField,
+    )
+    from django.template.defaultfilters import linebreaksbr
+    from django.utils.html import conditional_escape
+    from django.utils.translation import gettext_lazy as _
+
+    from multiselectfield.db.fields import MultiSelectField
+
+
+    class AppAppConfig(AppConfig):
+        name = 'app'
+        verbose_name = 'app'
+
+        def ready(self):
+            if not hasattr(AdminReadonlyField, '_original_contents'):
+                AdminReadonlyField._original_contents = AdminReadonlyField.contents
+                AdminReadonlyField.contents = patched_contents
+
+    def patched_contents(self):
+        from django.contrib.admin.templatetags.admin_list import _boolean_icon
+
+        field, obj, model_admin = (
+            self.field["field"],
+            self.form.instance,
+            self.model_admin,
+        )
+        try:
+            f, attr, value = lookup_field(field, obj, model_admin)
+        except (AttributeError, ValueError, ObjectDoesNotExist):
+            result_repr = self.empty_value_display
+        else:
+            if field in self.form.fields:
+                widget = self.form[field].field.widget
+                # This isn't elegant but suffices for contrib.auth's
+                # ReadOnlyPasswordHashWidget.
+                if getattr(widget, "read_only", False):
+                    return widget.render(field, value)
+            if f is None:
+                if getattr(attr, "boolean", False):
+                    result_repr = _boolean_icon(value)
+                else:
+                    if hasattr(value, "__html__"):
+                        result_repr = value
+                    else:
+                        result_repr = linebreaksbr(value)
+            else:
+                if isinstance(f.remote_field, ManyToManyRel) and value is not None:
+                    result_repr = ", ".join(map(str, value.all()))
+                elif (
+                    isinstance(f.remote_field, (ForeignObjectRel, OneToOneField))
+                    and value is not None
+                ):
+                    result_repr = self.get_admin_url(f.remote_field, value)
+                # Custom: start
+                elif isinstance(f, MultiSelectField):
+                    if value in f.empty_values:
+                        result_repr = self.empty_value_display
+                    else:
+                        result_repr = getattr(obj, f'get_{f.name}_display')()
+                # Custom: end
+                else:
+                    result_repr = display_for_field(value, f, self.empty_value_display)
+                result_repr = linebreaksbr(result_repr)
+        return conditional_escape(result_repr)
 
 
 2.4 Django REST Framework
@@ -283,3 +373,4 @@ There is a fully configured example project in the `example directory <https://g
     python manage.py migrate
     python manage.py loaddata app_data
     python manage.py runserver
+    # And go to http://localhost:8000. You will be automatically authenticated as a superuser.
