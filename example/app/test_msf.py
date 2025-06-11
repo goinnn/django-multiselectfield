@@ -23,7 +23,7 @@ from multiselectfield.db.fields import MultiSelectField
 from multiselectfield.forms.fields import MultiSelectFormField
 from multiselectfield.utils import get_max_length
 
-from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO, TAGS_CHOICES
+from .models import Book, PROVINCES, STATES, PROVINCES_AND_STATES, ONE, TWO, THREE, TAGS_CHOICES
 
 
 class MultiSelectTestCase(TestCase):
@@ -77,24 +77,24 @@ class MultiSelectTestCase(TestCase):
 
     def test_empty_update(self):
         book = Book.objects.get(id=1)
-        self.assertEqual(book.get_chapters_list(), ["Chapter I"])
+        self.assertEqual(book.get_chapters_list(), ["Chapter I", "Chapter II"])
         book.chapters = []
         book.save(update_fields=['chapters'])
         self.assertTrue(len(book.chapters) == 0)
 
     def test_single_update(self):
         book = Book.objects.get(id=1)
-        self.assertEqual(book.get_chapters_list(), ["Chapter I"])
+        self.assertEqual(book.get_chapters_list(), ["Chapter I", "Chapter II"])
         book.chapters = [ONE]
         book.save(update_fields=['chapters'])
         self.assertEqual(book.get_chapters_list(), ["Chapter I"])
 
     def test_multiple_update(self):
         book = Book.objects.get(id=1)
-        self.assertEqual(book.get_chapters_list(), ["Chapter I"])
-        book.chapters = [ONE, TWO]
-        book.save(update_fields=['chapters'])
         self.assertEqual(book.get_chapters_list(), ["Chapter I", "Chapter II"])
+        book.chapters = [ONE, TWO, THREE]
+        book.save(update_fields=['chapters'])
+        self.assertEqual(book.get_chapters_list(), ["Chapter I", "Chapter II", "Chapter III"])
 
     def test_object(self):
         book = Book.objects.get(id=1)
@@ -158,7 +158,7 @@ class MultiSelectTestCase(TestCase):
 
         if VERSION >= (4, 0):
             expected_html = str(
-                f"""<p><label>Province or State:</label>
+                f"""<p><label>Province or state:</label>
                     <div class="{css_class}" id="id_published_in">
                         <div>
                             <label>Canada - Provinces</label>
@@ -177,7 +177,7 @@ class MultiSelectTestCase(TestCase):
             )
         else:
             expected_html = str(
-                f"""<p><label>Province or State:</label> <ul class="{css_class}" id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input class="{css_class}" id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n
+                f"""<p><label>province or state:</label> <ul class="{css_class}" id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input class="{css_class}" id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n
                 <li><label for="id_published_in_0_1"><input class="{css_class}" checked id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n
                 <li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input class="{css_class}" checked id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n
                 <li><label for="id_published_in_1_1"><input class="{css_class}" id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n
