@@ -177,7 +177,7 @@ class MultiSelectTestCase(TestCase):
             )
         else:
             expected_html = str(
-                f"""<p><label>province or state:</label> <ul class="{css_class}" id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input class="{css_class}" id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n
+                f"""<p><label>Province or state:</label> <ul class="{css_class}" id="id_published_in"><li>Canada - Provinces<ul id="id_published_in_0"><li><label for="id_published_in_0_0"><input class="{css_class}" id="id_published_in_0_0" name="published_in" type="checkbox" value="AB" /> Alberta</label></li>\n
                 <li><label for="id_published_in_0_1"><input class="{css_class}" checked id="id_published_in_0_1" name="published_in" type="checkbox" value="BC" /> British Columbia</label></li></ul></li>\n
                 <li>USA - States<ul id="id_published_in_1"><li><label for="id_published_in_1_0"><input class="{css_class}" checked id="id_published_in_1_0" name="published_in" type="checkbox" value="AK" /> Alaska</label></li>\n
                 <li><label for="id_published_in_1_1"><input class="{css_class}" id="id_published_in_1_1" name="published_in" type="checkbox" value="AL" /> Alabama</label></li>\n
