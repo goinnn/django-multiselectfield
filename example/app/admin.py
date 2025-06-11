@@ -48,7 +48,7 @@ def _multiple_choice_filter(field_name, label):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'categories', 'tags', 'published_in')
+    list_display = ('title', 'categories', 'tags', 'favorite_tags', 'published_in')
     list_filter = (
         _multiple_choice_filter('categories', _('categories')),
         _multiple_choice_filter('tags', _('tags')),

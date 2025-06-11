@@ -90,7 +90,15 @@ Only you need it, if you want the translation of django-multiselectfield
         'multiselectfield',
     )
 
-1.4 Other recomendations
+1.4 SortMultiSelectField
+------------------------
+
+Since version 0.1.14, this package also includes a second field type called: SortMultiSelectField.
+
+For this field to work, you need to include `jQuery <https://jquery.com/download/>`_ (already included in the Django admin) and `jQuery UI <https://jqueryui.com/download/>`_.
+
+
+1.5 Other recomendations
 -------------------------
 
 `Like django recommended: <https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.null>`_ Avoid using null on string-based fields such as CharField and TextField.

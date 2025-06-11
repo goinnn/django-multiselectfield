@@ -31,7 +31,7 @@
 
 * Fix Properly Display Categorized Choices in get_FOO_display (`#169 <https://github.com/goinnn/django-multiselectfield/pull/169>`_)
 
-* SortableForm: (`#169 <https://github.com/goinnn/django-multiselectfield/pull/172>`_)
+* SortMultiSelectField: (`#169 <https://github.com/goinnn/django-multiselectfield/pull/172>`_)
 
 * Documentation:
 
