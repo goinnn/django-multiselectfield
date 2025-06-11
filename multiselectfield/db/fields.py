@@ -42,39 +42,25 @@ class MultiSelectField(models.CharField):
         if self.max_choices is not None:
             self.validators.append(MaxChoicesValidator(self.max_choices))
 
-    def get_choices_default(self):
-        return self.get_choices(include_blank=False)
-
-    def get_choices_selected(self, arr_choices):
-        named_groups = arr_choices and isinstance(arr_choices[0][1], (list, tuple))
-        choices_selected = []
-        if named_groups:
-            for choice_group_selected in arr_choices:
-                for choice_selected in choice_group_selected[1]:
-                    choices_selected.append(str(choice_selected[0]))
-        else:
-            for choice_selected in arr_choices:
-                choices_selected.append(str(choice_selected[0]))
-        return choices_selected
-
     def value_to_string(self, obj):
-        try:
-            value = self._get_val_from_obj(obj)
-        except AttributeError:
-            value = super().value_from_object(obj)
+        value = super().value_from_object(obj)
         return self.get_prep_value(value)
 
     def validate(self, value, model_instance):
-        arr_choices = self.get_choices_selected(self.get_choices_default())
-        for opt_select in value:
-            if (opt_select not in arr_choices):
-                raise exceptions.ValidationError(self.error_messages['invalid_choice'] % {"value": value})
+        if not self.editable:
+            # Skip validation for non-editable fields.
+            return
+        if self.choices is not None and value not in self.empty_values:
+            arr_choices = dict(self.flatchoices).keys()
+            for opt_select in value:
+                if opt_select not in arr_choices:
+                    raise exceptions.ValidationError(self.error_messages['invalid_choice'] % {"value": value})
 
-    def get_default(self):
-        default = super().get_default()
-        if isinstance(default, int):
-            default = str(default)
-        return default
+        if value is None and not self.null:
+            raise exceptions.ValidationError(self.error_messages["null"], code="null")
+
+        if not self.blank and value in self.empty_values:
+            raise exceptions.ValidationError(self.error_messages["blank"], code="blank")
 
     def formfield(self, **kwargs):
         if isinstance(kwargs.get('form_class'), MultiSelectFormField):
@@ -98,18 +84,19 @@ class MultiSelectField(models.CharField):
         return form_class(**defaults)
 
     def get_prep_value(self, value):
-        return '' if value is None else ",".join(map(str, value))
-
-    def get_db_prep_value(self, value, connection, prepared=False):
-        if not prepared and not isinstance(value, str):
-            value = self.get_prep_value(value)
-        return value
+        if isinstance(value, str):
+            return value
+        if value is None:
+            return ''
+        # It is a list
+        return ",".join(value)
 
     def to_python(self, value):
         if isinstance(value, list):
             return value
         if not value:
             return []
+        # It is a string
         return value.split(',')
 
     def from_db_value(self, value, expression, connection):
@@ -126,13 +113,8 @@ class MultiSelectField(models.CharField):
                 display = []
                 if getattr(obj, fieldname):
                     for value in getattr(obj, fieldname):
-                        item_display = choicedict.get(value, None)
-                        if item_display is None:
-                            try:
-                                item_display = choicedict.get(int(value), value)
-                            except (ValueError, TypeError):
-                                item_display = value
-                        display.append(str(item_display))
+                        item_display = choicedict.get(value, value)
+                        display.append(item_display)
                 return display
 
             def get_display(obj):

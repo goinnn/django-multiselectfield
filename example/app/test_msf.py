@@ -330,17 +330,41 @@ class SortedMultiSelectTestCase(TestCase):
             previous_tag_index = tag_index
 
 
-class MsfSelectTestCase(TestCase):
+class MultiSelectFilterTestCase(TestCase):
     fixtures = ['app_data.json']
 
-    def test_valid_select(self):
-        """
-        Should be able to use a multiselectfield result to select
-        See
-        https://github.com/goinnn/django-multiselectfield/pull/135
-        """
+    def test_simple_filter_like_list(self):
         book = Book.objects.first()
-        result = Book.objects.filter(categories=book.categories).only('pk')
+        result = Book.objects.filter(tags=book.tags).only('pk')
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].pk, book.pk)
-        self.assertIn(member='1,3,5', container=str(result.query))
+        self.assertIn(member='sex,work,happy', container=str(result.query))
+
+    def test_simple_filter_like_string(self):
+        book = Book.objects.first()
+        result = Book.objects.filter(tags=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 0)
+        book.tags = [book.tags[0]]
+        book.save()
+        result = Book.objects.filter(tags=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertTrue(str(result.query).endswith('= sex'))
+
+    def test_iexact_filter(self):
+        book = Book.objects.first()
+        result = Book.objects.filter(tags__exact=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 0)
+        book.tags = [book.tags[0]]
+        book.save()
+        result = Book.objects.filter(tags__exact=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertTrue(str(result.query).endswith('= sex'))
+
+    def test_icontains_filter(self):
+        book = Book.objects.first()
+        result = Book.objects.filter(tags__icontains=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertIn(member='%sex%', container=str(result.query))
