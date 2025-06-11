@@ -14,10 +14,48 @@
 # along with this software.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.contrib import admin
+from django.db.models import Q
+from django.utils.translation import gettext as _
 
 from .models import Book
+
+
+
+def _multiple_choice_filter(field_name, label):
+
+    class MultiSelectFilter(admin.SimpleListFilter):
+        title = label
+        parameter_name = field_name
+
+        def lookups(self, request, model_admin):
+            return model_admin.model._meta.get_field(field_name).flatchoices
+
+        def queryset(self, request, queryset):
+            value = self.value()
+            if value:
+                queryset = queryset.filter(Q(**{
+                    f'{self.parameter_name}__exact': value,
+                }) | Q(**{
+                    f'{self.parameter_name}__startswith': f'{value},',
+                }) | Q(**{
+                    f'{self.parameter_name}__endswith': f',{value}'
+                }) | Q(**{
+                    f'{self.parameter_name}__icontains': f',{value},'
+                }))
+
+            return queryset
+    return MultiSelectFilter
+
 
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'categories', 'tags', 'published_in')
+    list_filter = (
+        _multiple_choice_filter('categories', _('categories')),
+        _multiple_choice_filter('tags', _('tags')),
+        _multiple_choice_filter('favorite_tags', _('favourite tags')),
+        _multiple_choice_filter('published_in', _('province or state')),
+        _multiple_choice_filter('chapters', _('chapters')),
+    )
+

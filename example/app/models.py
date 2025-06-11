@@ -71,12 +71,12 @@ PROVINCES_AND_STATES = (
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=200)
-    categories = MultiSelectField(choices=CATEGORY_CHOICES, max_choices=3, default=[ONE, FIVE])
-    tags = MultiSelectField(choices=TAGS_CHOICES, blank=True)
-    favorite_tags = SortMultiSelectField(choices=TAGS_CHOICES, blank=True)
-    published_in = MultiSelectField(_("Province or State"), choices=PROVINCES_AND_STATES, max_choices=2)
-    chapters = MultiSelectField(choices=CHAPTER_CHOICES, default=[ONE], min_choices=2)
+    title = models.CharField(_('title'), max_length=200)
+    categories = MultiSelectField(_('categories'), choices=CATEGORY_CHOICES, max_choices=3, default=[ONE, FIVE])
+    tags = MultiSelectField(_('tags'), choices=TAGS_CHOICES, blank=True)
+    favorite_tags = SortMultiSelectField(_('favorite tags'), choices=TAGS_CHOICES, blank=True)
+    published_in = MultiSelectField(_("province or state"), choices=PROVINCES_AND_STATES, max_choices=2)
+    chapters = MultiSelectField(_("chapters"), choices=CHAPTER_CHOICES, default=[ONE], min_choices=2)
 
     def __str__(self):
         return self.title
