@@ -127,6 +127,14 @@ class MultiSelectTestCase(TestCase):
         except ValidationError:
             pass
 
+        Book._meta.get_field('published_in').clean(['AB', 'AK'], book)
+
+        try:
+            Book._meta.get_field('published_in').clean(['AB', 'KK'], book)
+            raise AssertionError()
+        except ValidationError:
+            pass
+
     def test_serializer(self):
         book = Book.objects.get(id=1)
         self.assertEqual(Book._meta.get_field('tags').value_to_string(book), 'sex,work,happy')
