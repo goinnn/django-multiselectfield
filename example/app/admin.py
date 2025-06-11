@@ -20,7 +20,6 @@ from django.utils.translation import gettext as _
 from .models import Book
 
 
-
 def _multiple_choice_filter(field_name, label):
 
     class MultiSelectFilter(admin.SimpleListFilter):
@@ -47,7 +46,6 @@ def _multiple_choice_filter(field_name, label):
     return MultiSelectFilter
 
 
-
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'categories', 'tags', 'published_in')
@@ -58,4 +56,3 @@ class BookAdmin(admin.ModelAdmin):
         _multiple_choice_filter('published_in', _('province or state')),
         _multiple_choice_filter('chapters', _('chapters')),
     )
-
