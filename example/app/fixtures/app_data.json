@@ -5,10 +5,10 @@
     "fields": {
         "title": "My book 1",
         "tags": "sex,work,happy",
-        "favorite_tags": "sex,work,happy",
+        "favorite_tags": "sex,work",
         "categories": "1,3,5",
-        "published_in": "BC,AL,AK",
-        "chapters": "1"
+        "published_in": "BC,AL",
+        "chapters": "1,2"
     }
 },
 {
