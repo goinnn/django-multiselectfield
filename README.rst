@@ -1,3 +1,4 @@
+=======================
 django-multiselectfield
 =======================
 
@@ -18,19 +19,19 @@ Supported Python versions: 3.8+
 
 Supported Django versions: 3.2+
 
-Installation
-============
+1. Installation
+================
 
 
-Install with pip
-----------------
+1.1 Install with pip
+---------------------
 
 .. code-block:: bash
 
     $ pip install django-multiselectfield
 
-Configure your models.py
-------------------------
+1.2 Configure your models.py
+----------------------------
 
 .. code-block:: python
 
@@ -70,8 +71,8 @@ Configure your models.py
     # In other words, MultiSelectField save the same data for MY_CHOICES2 and MY_INTEGER_CHOICES2
 
 
-In your settings.py
--------------------
+1.3 In your settings.py
+-----------------------
 
 Only you need it, if you want the translation of django-multiselectfield
 
@@ -89,9 +90,27 @@ Only you need it, if you want the translation of django-multiselectfield
         'multiselectfield',
     )
 
+1.4 Other recomendations
+-------------------------
 
-Customizing templates
----------------------
+`Like django recommended: <https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.null>`_ Avoid using null on string-based fields such as CharField and TextField.
+
+MultiSelectField is based on CharField (MultiSelectField inheritances of CharField). So, if you need a not required use only blank=True (null=False by default):
+
+.. code-block:: python
+
+    class MyModel(models.Model):
+
+        # .....
+
+        my_field = MultiSelectField(choices=MY_CHOICES, blank=True)
+
+
+2. Custom and integrations
+===========================
+
+2.1 Customizing templates
+--------------------------
 
 It is possible to customize the HTML of this widget in your form template. To do so, you will need to loop through ``form.{field}.field.choices``. Here is an example that displays the field label underneath/after the checkbox for a ``MultiSelectField`` called ``providers``:
 
@@ -105,8 +124,8 @@ It is possible to customize the HTML of this widget in your form template. To do
     {% endfor %}
 
 
-Add a filter to the Django administration
-------------------------------------------
+2.2 Add a filter to the Django administration
+----------------------------------------------
 
 You can see it in example project
 
@@ -150,11 +169,11 @@ You can see it in example project
             _multiple_choice_filter('chapters', _('chapters')),
         )
 
-Add a django multiselect field to list_display
-----------------------------------------------
+2.3 Add a django multiselect field to list_display
+--------------------------------------------------
 
-Option 1. Use get_FOO_display
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2.3.1 Option 1. Use get_FOO_display
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -167,8 +186,8 @@ Option 1. Use get_FOO_display
         def get_categories_display(self, obj):
             return obj.get_categories_display()
 
-Option 2. Monkey patching Django
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2.3.2 Option 2. Monkey patching Django
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you have a lot of django multiselect fields in list_display. You can see it in example project
 
@@ -212,8 +231,8 @@ This code is inspired for django code. It is possible that for other versions of
         return utils._original_display_for_field(value, field, empty_value_display, avoid_link=avoid_link)
 
 
-Django REST Framework
----------------------
+2.4 Django REST Framework
+-------------------------
 
 Django REST Framework comes with a ``MultipleChoiceField`` that works perfectly with this:
 
@@ -229,30 +248,14 @@ Django REST Framework comes with a ``MultipleChoiceField`` that works perfectly 
         my_field2 = fields.MultipleChoiceField(choices=MY_CHOICES2)
         # ...
 
-Other recomendations
---------------------
-
-`Like django recommended: <https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.null>`_ Avoid using null on string-based fields such as CharField and TextField.
-
-MultiSelectField is based on CharField (MultiSelectField inheritances of CharField). So, if you need a not required use only blank=True (null=False by default):
-
-.. code-block:: python
-
-    class MyModel(models.Model):
-
-        # .....
-
-        my_field = MultiSelectField(choices=MY_CHOICES, blank=True)
-
-
-Tests
-=====
+3. Tests
+========
 
 All tests pass on Django 3.2.0, 4.0.0, 4.1.0, 4.2.0, 5.0.0 and 5.1.0
 
 
-Development
-===========
+4. Development
+==============
 
 You can get the last bleeding edge version of django-multiselectfield by doing a clone
 of its git repository:
@@ -262,8 +265,8 @@ of its git repository:
     git clone https://github.com/goinnn/django-multiselectfield
 
 
-Example project
-===============
+5. Example project
+===================
 
 There is a fully configured example project in the `example directory <https://github.com/goinnn/django-multiselectfield/tree/master/example/>`_. You can run it as usual:
 
