@@ -119,6 +119,8 @@ WSGI_APPLICATION = 'example.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, '../templates')],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
@@ -131,12 +133,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'debug': DEBUG,
-            'loaders': [
-                # List of callables that know how to import templates from
-                # various sources.
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ]
         },
     }
 ]

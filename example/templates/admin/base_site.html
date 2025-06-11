@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+
+{% block title %}django-multiselectfield example project{% endblock %}
+
+{% block blockbots %}
+  {% if adminform %}
+    <script type="text/javascript">
+        var jQuery = django.jQuery;
+    </script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
