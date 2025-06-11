@@ -27,7 +27,10 @@
 
 * Fix: Form instance generated twice since Django  (`#168 <https://github.com/goinnn/django-multiselectfield/pull/168>`_)
 
-* Fix CSS admin (`#173 <https://github.com/goinnn/django-multiselectfield/pull/173>`_)
+* Fix CSS admin:
+
+    *  (`#173 <https://github.com/goinnn/django-multiselectfield/pull/173>`_)
+    *  (`7711f4aa755c81d00f07ce8a6ff0fd9240061f9c <https://github.com/goinnn/django-multiselectfield/commit/7711f4aa755c81d00f07ce8a6ff0fd9240061f9c>`_)
 
 * Fix Properly Display Categorized Choices in get_FOO_display (`#169 <https://github.com/goinnn/django-multiselectfield/pull/169>`_)
 
