@@ -150,7 +150,66 @@ You can see it in example project
             _multiple_choice_filter('chapters', _('chapters')),
         )
 
+Add a django multiselect field to list_display
+----------------------------------------------
 
+Option 1. Use get_FOO_display
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+
+    @admin.register(Book)
+    class BookAdmin(admin.ModelAdmin):
+        list_display = ('title', 'get_categories_display',)
+
+        @admin.display(description=_('categories'), ordering='categories')
+        def get_categories_display(self, obj):
+            return obj.get_categories_display()
+
+Option 2. Monkey patching Django
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you have a lot of django multiselect fields in list_display. You can see it in example project
+
+This code is inspired for django code. It is possible that for other versions of Django you may need to adapt it.
+
+.. code-block:: python
+
+    from django.apps import AppConfig
+    from django import VERSION
+    from django.contrib.admin import utils
+    from django.utils.hashable import make_hashable
+
+    from multiselectfield.db.fields import MultiSelectField
+
+
+    class AppAppConfig(AppConfig):
+        name = 'app'
+        verbose_name = 'app'
+
+        def ready(self):
+            if not hasattr(utils, '_original_display_for_field'):
+                utils._original_display_for_field = utils.display_for_field
+                utils.display_for_field = patched_display_for_field
+
+
+    # Monkey patching for use multiselect field in list_display
+
+    def patched_display_for_field(value, field, empty_value_display, avoid_link=False):
+        if isinstance(field, MultiSelectField) and getattr(field, "flatchoices", None):
+            try:
+                flatchoices = dict(field.flatchoices)
+                return ', '.join([flatchoices.get(v, empty_value_display) for v in value]) or empty_value_display
+            except TypeError:
+                # Allow list-like choices.
+                flatchoices = dict(make_hashable(field.flatchoices))
+                value = make_hashable(value)
+                return ', '.join([flatchoices.get(v, empty_value_display) for v in value]) or empty_value_display
+
+        if VERSION < (5, 2):
+            return utils._original_display_for_field(value, field, empty_value_display)
+        return utils._original_display_for_field(value, field, empty_value_display, avoid_link=avoid_link)
 
 
 Django REST Framework
