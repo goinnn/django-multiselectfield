@@ -26,6 +26,13 @@
 
 * SortableForm: (`#169 <https://github.com/goinnn/django-multiselectfield/pull/172>`_)
 
+* Documentation:
+
+    * How add a filter to the Django administration:
+
+        * (`e36cbae4c3b39dac4a3fee03fdda9622a101f22d <https://github.com/goinnn/django-multiselectfield/commit/e36cbae4c3b39dac4a3fee03fdda9622a101f22d>`_)
+        * Inspirated by (`#116 <https://github.com/goinnn/django-multiselectfield/issues/116>`_)
+
 * Clean old code:
 
     * Update syntax for targeted versions of Python and Django. (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
@@ -56,6 +63,7 @@ Thanks to:
 * `ZippoLag <https://github.com/ZippoLag>`_
 * `leifdenby <https://github.com/leifdenby>`_
 * `jordanvs <https://github.com/jordanvs>`_
+* `hetdev <https://github.com/hetdev>`_
 * `blag <https://github.com/blag>`_
 
 Special thanks to:
