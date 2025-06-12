@@ -4,15 +4,15 @@ django-multiselectfield
 
 .. image:: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml/badge.svg
     :target: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml
-    :height: 40px
+    :height: 30px
 
 .. image:: https://coveralls.io/repos/goinnn/django-multiselectfield/badge.png?branch=master
     :target: https://coveralls.io/r/goinnn/django-multiselectfield
-    :height: 40px
+    :height: 30px
 
 .. image:: https://badge.fury.io/py/django-multiselectfield.png
     :target: https://badge.fury.io/py/django-multiselectfield
-    :height: 40px
+    :height: 30px
 
 .. image:: https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png
    :target: https://www.buymeacoffee.com/goinnn
