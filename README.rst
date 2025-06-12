@@ -110,7 +110,7 @@ Only required if you want the translation of django-multiselectfield or need its
 1.4 SortMultiSelectField
 ------------------------
 
-Since version 0.1.14, this package also includes a another field type called: SortMultiSelectField.
+Since version 1.0.0 (2025-06-12), this package also includes a another field type called: SortMultiSelectField.
 
 For this field to work, you need to include `jQuery <https://jquery.com/download/>`_ (already included in the Django admin) and `jQuery UI <https://jqueryui.com/download/>`_.
 

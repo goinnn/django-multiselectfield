@@ -1,5 +1,16 @@
-0.1.14 (2025-06-11)
+1.0.0 (2025-06-12)
 -------------------
+
+This release introduces multiple changes that are incompatible with previous versions.
+
+The major version number has been incremented following `Semantic Versioning (SemVer) <https://semver.org/>`_, as several components of the package have changed in ways that may require updates in client code.
+
+The internal codebase has been significantly cleaned up and reorganized, making it more maintainable and consistent.
+
+This version contains **40% fewer lines of code** compared to the previous release.
+
+Less code means fewer bugs, easier maintenance, and better long-term sustainability.
+
 
 * Breaking changes
 
