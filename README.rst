@@ -17,7 +17,7 @@ django-multiselectfield
 
     <div align="center">
         <h2>Support this package by donating here! ➡️</h2>
-        <a href="ttps://www.buymeacoffee.com/goinnn">
+        <a href="https://www.buymeacoffee.com/goinnn">
             <img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me a Coffee" height="40">
         </a>
         <a href="https://www.paypal.com/paypalme/goinnn">
