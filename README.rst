@@ -4,18 +4,20 @@ django-multiselectfield
 
 .. image:: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml/badge.svg
     :target: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml
+    :height: 40px
 
 .. image:: https://coveralls.io/repos/goinnn/django-multiselectfield/badge.png?branch=master
     :target: https://coveralls.io/r/goinnn/django-multiselectfield
+    :height: 40px
 
 .. image:: https://badge.fury.io/py/django-multiselectfield.png
     :target: https://badge.fury.io/py/django-multiselectfield
+    :height: 40px
 
-.. image:: https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png
+.. image:: https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png
    :target: https://www.buymeacoffee.com/goinnn
    :alt: Buy me a coffee
-   :height: 20px
-   :width: 72px
+   :height: 40px
 
 
 A new model field and form field. With this, you can get a multiple select from choices. It is stored to the database as a CharField of comma-separated values.
