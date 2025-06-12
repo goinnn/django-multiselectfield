@@ -1,3 +1,8 @@
+1.0.1 (2025-06-12)
+-------------------
+
+* Badge image worked on GitHub but was broken on PyPI — fixed it.
+
 1.0.0 (2025-06-12)
 -------------------
 
