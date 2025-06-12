@@ -20,7 +20,7 @@ Support this package by donating here! ➡️
 
 If you find this package useful, consider supporting it:
 
-.. image:: https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png
+.. image:: https://raw.githubusercontent.com/goinnn/django-multiselectfield/master/assets/arial-yellow.png
     :target: https://www.buymeacoffee.com/goinnn
     :alt: Buy Me a Coffee
     :height: 40px
