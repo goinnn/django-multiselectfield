@@ -11,6 +11,10 @@ django-multiselectfield
 .. image:: https://badge.fury.io/py/django-multiselectfield.png
     :target: https://badge.fury.io/py/django-multiselectfield
 
+.. image:: https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png
+   :target: https://www.buymeacoffee.com/goinnn
+   :alt: Buy me a coffee
+
 A new model field and form field. With this, you can get a multiple select from choices. It is stored to the database as a CharField of comma-separated values.
 
 This package is inspired by this `snippet <https://djangosnippets.org/snippets/1200/>`_.
