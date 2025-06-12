@@ -4,20 +4,27 @@ django-multiselectfield
 
 .. image:: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml/badge.svg
     :target: https://github.com/goinnn/django-multiselectfield/actions/workflows/tests.yaml
-    :height: 30px
 
 .. image:: https://coveralls.io/repos/goinnn/django-multiselectfield/badge.png?branch=master
     :target: https://coveralls.io/r/goinnn/django-multiselectfield
-    :height: 30px
 
 .. image:: https://badge.fury.io/py/django-multiselectfield.png
     :target: https://badge.fury.io/py/django-multiselectfield
-    :height: 30px
 
-.. image:: https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png
-   :target: https://www.buymeacoffee.com/goinnn
-   :alt: Buy me a coffee
-   :height: 40px
+
+
+.. raw:: html
+
+    <div align="center">
+        <h2>Support this package by donating here! ➡️</h2>
+        <a href="ttps://www.buymeacoffee.com/goinnn">
+            <img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me a Coffee" height="40">
+        </a>
+        <a href="https://www.paypal.com/paypalme/goinnn">
+            <img src="https://img.shields.io/badge/PayPal-badge?style=plastic&logo=paypal&color=white" alt="Paypal" height="40">
+        </a>
+    </div>
+    <br>
 
 
 A new model field and form field. With this, you can get a multiple select from choices. It is stored to the database as a CharField of comma-separated values.
