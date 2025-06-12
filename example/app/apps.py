@@ -35,12 +35,12 @@ def patched_display_for_field(value, field, empty_value_display, avoid_link=Fals
     if isinstance(field, MultiSelectField) and getattr(field, "flatchoices", None):
         try:
             flatchoices = dict(field.flatchoices)
-            return ', '.join([flatchoices.get(v, empty_value_display) for v in value]) or empty_value_display
+            return ', '.join([str(flatchoices.get(v, empty_value_display)) for v in value]) or empty_value_display
         except TypeError:
             # Allow list-like choices.
             flatchoices = dict(make_hashable(field.flatchoices))
             value = make_hashable(value)
-            return ', '.join([flatchoices.get(v, empty_value_display) for v in value]) or empty_value_display
+            return ', '.join([str(flatchoices.get(v, empty_value_display)) for v in value]) or empty_value_display
 
     if VERSION < (5, 2):
         return utils._original_display_for_field(value, field, empty_value_display)
