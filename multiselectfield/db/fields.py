@@ -114,7 +114,7 @@ class MultiSelectField(models.CharField):
                 if getattr(obj, fieldname):
                     for value in getattr(obj, fieldname):
                         item_display = choicedict.get(value, value)
-                        display.append(item_display)
+                        display.append(str(item_display))
                 return display
 
             def get_display(obj):
