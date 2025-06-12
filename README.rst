@@ -97,7 +97,7 @@ Since version 0.1.14, this package also includes a second field type called: Sor
 
 For this field to work, you need to include `jQuery <https://jquery.com/download/>`_ (already included in the Django admin) and `jQuery UI <https://jqueryui.com/download/>`_.
 
-You can include them by updating the ModelAdmin’s form or directly in change_form.html (less efficient but faster), as shown in the example project.
+You can include them by updating the ModelAdmin’s form or directly in change_form.html (less efficient but faster), as shown in the `example project <https://github.com/goinnn/django-multiselectfield/blob/b7d113a4a1ad6b35698126729264942e30e30039/example/templates/admin/change_form.html#L11>`_.
 
 1.5 Other recomendations
 -------------------------
@@ -140,12 +140,12 @@ Fixing alignment. The labels appear slightly lower than the checkboxes, and the 
 
 Include the following CSS file: multiselectfield/css/admin-multiselectfield.css
 
-You can include it by updating the ModelAdmin’s form or directly in change_form.html (less efficient but faster), as shown in the example project.
+You can include it by updating the ModelAdmin’s form or directly in change_form.html (less efficient but faster), as shown in the `example project <https://github.com/goinnn/django-multiselectfield/blob/b7d113a4a1ad6b35698126729264942e30e30039/example/templates/admin/change_form.html#L7>`_.
 
 2.3 Add a filter to the Django administration
 ----------------------------------------------
 
-You can see it in example project
+You can see it in `example project <https://github.com/goinnn/django-multiselectfield/blob/4ee111e11e2f3a51aa693c0863ee64d93b4a097d/example/app/admin.py#L23>`_
 
 .. code-block:: python
 
@@ -214,7 +214,7 @@ Change one by one
 
 If you have a lot of django multiselect fields in list_display previous option can be much work.
 
-You can see it in example project.
+You can see it in `example project <https://github.com/goinnn/django-multiselectfield/blob/65376239ae7491414f896adb4d314349ff7c2667/example/app/apps.py#L34>`_.
 
 This code is inspired for django code. It is possible that for other versions of Django you may need to adapt it.
 
@@ -260,7 +260,7 @@ This code is inspired for django code. It is possible that for other versions of
 
 Django has no built-in way to add support for custom fields.
 
-You can see it in example project. Log in to the Django admin in the sample project using the following credentials: user-readonly / DMF-123.
+You can see it in `example project <https://github.com/goinnn/django-multiselectfield/blob/65376239ae7491414f896adb4d314349ff7c2667/example/app/apps.py#L52>`_. Log in to the Django admin in the sample project using the following credentials: user-readonly / DMF-123.
 
 This code is inspired for django code. It is possible that for other versions of Django you may need to adapt it.
 
@@ -365,8 +365,7 @@ All tests pass on Django 3.2.0, 4.0.0, 4.1.0, 4.2.0, 5.0.0 and 5.1.0
 4. Development
 ==============
 
-You can get the last bleeding edge version of django-multiselectfield by doing a clone
-of its git repository:
+You can get the last bleeding edge version of django-multiselectfield by doing a clone of its git repository:
 
 .. code-block:: bash
 
