@@ -6,7 +6,7 @@
     * Remove MSFList (`01dcad230dc368b88a39bfc36f90ddd145f381a2 <https://github.com/goinnn/django-multiselectfield/commit/01dcad230dc368b88a39bfc36f90ddd145f381a2>`_):
 
         * Removed: (`50d3f785883e0a314f2dc89950e3fe1e88a7ede6 <https://github.com/goinnn/django-multiselectfield/commit/50d3f785883e0a314f2dc89950e3fe1e88a7ede6>`_)
-        * It was created to add add support for MultiSelectFields in Admin.list_display. But it never does work. If you add a multiselect field to list_display, django does not call to __str__ method of MSGList (renamed to MSFList)
+        * It was created to add support for MultiSelectFields in Admin.list_display. But it never does work. If you add a multiselect field to list_display, django does not call to __str__ method of MSGList (renamed to MSFList)
         * It was created for integer choices too and it is a misconception. Explained in the README file.
 
     * Remove MSFFlatchoices (`01dcad230dc368b88a39bfc36f90ddd145f381a2 <https://github.com/goinnn/django-multiselectfield/commit/01dcad230dc368b88a39bfc36f90ddd145f381a2>`_):
@@ -14,7 +14,7 @@
         * Removed: (`5638247c1d70670d4f81adf35143ef17a7d7575e <https://github.com/goinnn/django-multiselectfield/commit/5638247c1d70670d4f81adf35143ef17a7d7575e>`_)
         * Now, in list_display, the labels of the choices are shown (separated by commas) instead of the values (separated by commas).
 
-    * In to_python value is or a list or a string. (`c4579138dda2833cbce26afbf57da5353aa45690 <https://github.com/goinnn/django-multiselectfield/commit/c4579138dda2833cbce26afbf57da5353aa45690>`_)
+    * In to_python method value is a list or a string. (`c4579138dda2833cbce26afbf57da5353aa45690 <https://github.com/goinnn/django-multiselectfield/commit/c4579138dda2833cbce26afbf57da5353aa45690>`_)
 
         * Remove set case and dict case
         * Please, If this breaks something, you can create a test to understand the use case
@@ -41,7 +41,7 @@
     * How add a filter to the Django administration:
 
         * (`e36cbae4c3b39dac4a3fee03fdda9622a101f22d <https://github.com/goinnn/django-multiselectfield/commit/e36cbae4c3b39dac4a3fee03fdda9622a101f22d>`_)
-        * Inspirated by (`#116 <https://github.com/goinnn/django-multiselectfield/issues/116>`_)
+        * Inspired by (`#116 <https://github.com/goinnn/django-multiselectfield/issues/116>`_)
 
     * How add a django multiselect field to list_display in Django administration
 

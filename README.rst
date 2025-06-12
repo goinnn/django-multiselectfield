@@ -99,7 +99,7 @@ For this field to work, you need to include `jQuery <https://jquery.com/download
 
 You can include them by updating the ModelAdmin’s form or directly in change_form.html (less efficient but faster), as shown in the `example project <https://github.com/goinnn/django-multiselectfield/blob/b7d113a4a1ad6b35698126729264942e30e30039/example/templates/admin/change_form.html#L11>`_.
 
-1.5 Other recomendations
+1.5 Other recommendations
 -------------------------
 
 `Like django recommended: <https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.null>`_ Avoid using null on string-based fields such as CharField and TextField.
@@ -214,9 +214,9 @@ Change one by one
 
 If you have a lot of django multiselect fields in list_display previous option can be much work.
 
-You can see it in `example project <https://github.com/goinnn/django-multiselectfield/blob/65376239ae7491414f896adb4d314349ff7c2667/example/app/apps.py#L34>`_.
+You can see it in the `example project <https://github.com/goinnn/django-multiselectfield/blob/65376239ae7491414f896adb4d314349ff7c2667/example/app/apps.py#L34>`_.
 
-This code is inspired for django code. It is possible that for other versions of Django you may need to adapt it.
+This code is inspired by django code. It is possible that for other versions of Django you may need to adapt it.
 
 .. code-block:: python
 
@@ -260,9 +260,9 @@ This code is inspired for django code. It is possible that for other versions of
 
 Django has no built-in way to add support for custom fields.
 
-You can see it in `example project <https://github.com/goinnn/django-multiselectfield/blob/65376239ae7491414f896adb4d314349ff7c2667/example/app/apps.py#L52>`_. Log in to the Django admin in the sample project using the following credentials: user-readonly / DMF-123.
+You can see it in the `example project <https://github.com/goinnn/django-multiselectfield/blob/65376239ae7491414f896adb4d314349ff7c2667/example/app/apps.py#L52>`_. Log in to the Django admin in the sample project using the following credentials: user-readonly / DMF-123.
 
-This code is inspired for django code. It is possible that for other versions of Django you may need to adapt it.
+This code is inspired by django code. It is possible that for other versions of Django you may need to adapt it.
 
 .. code-block:: python
 
