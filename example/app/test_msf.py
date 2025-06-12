@@ -334,14 +334,25 @@ class MultiSelectFilterTestCase(TestCase):
     fixtures = ['app_data.json']
 
     def test_simple_filter_like_list(self):
+        all_tags = dict(TAGS_CHOICES).keys()
+        result = Book.objects.filter(tags=all_tags).only('pk')
+        self.assertEqual(len(result), 0)
+        self.assertIn(member=f"= {','.join(all_tags)}", container=str(result.query))
+
         book = Book.objects.first()
+        self.assertEqual(book.tags, ['sex', 'work', 'happy'])
         result = Book.objects.filter(tags=book.tags).only('pk')
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].pk, book.pk)
-        self.assertIn(member='sex,work,happy', container=str(result.query))
+        self.assertIn(member='= sex,work,happy', container=str(result.query))
 
     def test_simple_filter_like_string(self):
+        result = Book.objects.filter(tags='boring').only('pk')
+        self.assertEqual(len(result), 0)
+        self.assertIn(member='= boring', container=str(result.query))
+
         book = Book.objects.first()
+        self.assertEqual(book.tags, ['sex', 'work', 'happy'])
         result = Book.objects.filter(tags=book.tags[0]).only('pk')
         self.assertEqual(len(result), 0)
         book.tags = [book.tags[0]]
@@ -350,21 +361,95 @@ class MultiSelectFilterTestCase(TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].pk, book.pk)
         self.assertTrue(str(result.query).endswith('= sex'))
+
+    def test_exact_filter(self):
+        book = Book.objects.first()
+        self.assertEqual(book.tags, ['sex', 'work', 'happy'])
+        result = Book.objects.filter(tags__exact=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 0)
+        book.tags = [book.tags[0]]
+        book.save()
+
+        result = Book.objects.filter(tags__exact=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertTrue(str(result.query).endswith('= sex'))
+
+    def test_contains_filter(self):
+        result = Book.objects.filter(tags__contains='boring').only('pk')
+        self.assertEqual(len(result), 0)
+        self.assertIn(member='LIKE %boring%', container=str(result.query))
+
+        book = Book.objects.first()
+        result = Book.objects.filter(tags__contains=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertIn(member='LIKE %sex%', container=str(result.query))
+
+    def test_startswith_filter(self):
+        result = Book.objects.filter(tags__startswith='boring').only('pk')
+        self.assertEqual(len(result), 0)
+        self.assertIn(member='LIKE boring%', container=str(result.query))
+
+        book = Book.objects.first()
+        result = Book.objects.filter(tags__startswith=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertIn(member='LIKE sex%', container=str(result.query))
+
+    def test_endswith_filter(self):
+        result = Book.objects.filter(tags__endswith='boring').only('pk')
+        self.assertEqual(len(result), 0)
+        self.assertIn(member='LIKE %boring', container=str(result.query))
+
+        book = Book.objects.first()
+        result = Book.objects.filter(tags__endswith=book.tags[-1]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertIn(member='LIKE %happy', container=str(result.query))
 
     def test_iexact_filter(self):
         book = Book.objects.first()
-        result = Book.objects.filter(tags__exact=book.tags[0]).only('pk')
+        self.assertEqual(book.tags, ['sex', 'work', 'happy'])
+        result = Book.objects.filter(tags__iexact=book.tags[0]).only('pk')
         self.assertEqual(len(result), 0)
         book.tags = [book.tags[0]]
         book.save()
-        result = Book.objects.filter(tags__exact=book.tags[0]).only('pk')
+
+        result = Book.objects.filter(tags__iexact=book.tags[0]).only('pk')
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].pk, book.pk)
-        self.assertTrue(str(result.query).endswith('= sex'))
+        self.assertIn(member='LIKE sex ', container=str(result.query))
 
     def test_icontains_filter(self):
+        result = Book.objects.filter(tags__icontains='boring').only('pk')
+        self.assertEqual(len(result), 0)
+        self.assertIn(member='LIKE %boring%', container=str(result.query))
+
         book = Book.objects.first()
         result = Book.objects.filter(tags__icontains=book.tags[0]).only('pk')
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].pk, book.pk)
-        self.assertIn(member='%sex%', container=str(result.query))
+        self.assertIn(member='LIKE %sex%', container=str(result.query))
+
+    def test_istartswith_filter(self):
+        result = Book.objects.filter(tags__istartswith='boring').only('pk')
+        self.assertEqual(len(result), 0)
+        self.assertIn(member='LIKE boring%', container=str(result.query))
+
+        book = Book.objects.first()
+        result = Book.objects.filter(tags__istartswith=book.tags[0]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertIn(member='LIKE sex%', container=str(result.query))
+
+    def test_iendswith_filter(self):
+        result = Book.objects.filter(tags__iendswith='boring').only('pk')
+        self.assertEqual(len(result), 0)
+        self.assertIn(member='LIKE %boring', container=str(result.query))
+
+        book = Book.objects.first()
+        result = Book.objects.filter(tags__iendswith=book.tags[-1]).only('pk')
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].pk, book.pk)
+        self.assertIn(member='LIKE %happy', container=str(result.query))
