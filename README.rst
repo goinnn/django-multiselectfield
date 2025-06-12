@@ -11,9 +11,9 @@ django-multiselectfield
 .. image:: https://badge.fury.io/py/django-multiselectfield.png
     :target: https://badge.fury.io/py/django-multiselectfield
 
-A new model field and form field. With this you can get a multiple select from a choices. Stores to the database as a CharField of comma-separated values.
+A new model field and form field. With this, you can get a multiple select from choices. It is stored to the database as a CharField of comma-separated values.
 
-This egg is inspired by this `snippet <https://djangosnippets.org/snippets/1200/>`_.
+This package is inspired by this `snippet <https://djangosnippets.org/snippets/1200/>`_.
 
 Supported Python versions: 3.8+
 
@@ -67,14 +67,15 @@ Supported Django versions: 3.2+
                            (4, 'Item title 2.4'),
                            (5, 'Item title 2.5'))
 
-    # Because when MultiSelectField gets data from db, it can not know if the values are integers or strings.
+    # Because when MultiSelectField retrieves data from db, it cannot know if the values are integers or strings.
     # In other words, MultiSelectField save the same data for MY_CHOICES2 and MY_INTEGER_CHOICES2
+    # Or in practice it should be the same MY_CHOICES2 and MY_INTEGER_CHOICES2
 
 
 1.3 In your settings.py
 -----------------------
 
-Only you need it, if you want the translation of django-multiselectfield or you need static files.
+Only required if you want the translation of django-multiselectfield or need its static files.
 
 .. code-block:: python
 
@@ -93,7 +94,7 @@ Only you need it, if you want the translation of django-multiselectfield or you 
 1.4 SortMultiSelectField
 ------------------------
 
-Since version 0.1.14, this package also includes a second field type called: SortMultiSelectField.
+Since version 0.1.14, this package also includes a another field type called: SortMultiSelectField.
 
 For this field to work, you need to include `jQuery <https://jquery.com/download/>`_ (already included in the Django admin) and `jQuery UI <https://jqueryui.com/download/>`_.
 
@@ -102,9 +103,9 @@ You can include them by updating the ModelAdmin’s form or directly in change_f
 1.5 Other recommendations
 -------------------------
 
-`Like django recommended: <https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.null>`_ Avoid using null on string-based fields such as CharField and TextField.
+`As django recommended: <https://docs.djangoproject.com/en/5.2/ref/models/fields/#django.db.models.Field.null>`_ Avoid using null on string-based fields such as CharField and TextField.
 
-MultiSelectField is based on CharField (MultiSelectField inheritances of CharField). So, if you need a not required use only blank=True (null=False by default):
+MultiSelectField is based on CharField (MultiSelectField inheritances of CharField). So, if the field is not required, use only blank=True (null=False by default):
 
 .. code-block:: python
 
@@ -121,7 +122,7 @@ MultiSelectField is based on CharField (MultiSelectField inheritances of CharFie
 2.1 Customizing templates
 --------------------------
 
-It is possible to customize the HTML of this widget in your form template. To do so, you will need to loop through ``form.{field}.field.choices``. Here is an example that displays the field label underneath/after the checkbox for a ``MultiSelectField`` called ``providers``:
+You can customize the HTML of this widget in your form template. To do so, you will need to loop through ``form.{field}.field.choices``. Here is an example that displays the field label underneath/after the checkbox for a ``MultiSelectField`` called ``providers``:
 
 .. code-block:: HTML+Django
 
@@ -136,7 +137,7 @@ It is possible to customize the HTML of this widget in your form template. To do
 2.2 Fixing CSS alignment in the Django administration
 ------------------------------------------------------
 
-Fixing alignment. The labels appear slightly lower than the checkboxes, and the label width is very small.
+This fixes alignment. The labels appear slightly lower than the checkboxes, and the label width is very small.
 
 Include the following CSS file: multiselectfield/css/admin-multiselectfield.css
 
@@ -190,13 +191,13 @@ You can see it in `example project <https://github.com/goinnn/django-multiselect
 2.4 Add a django multiselect field to list_display in Django administration
 ----------------------------------------------------------------------------
 
-Django has no built-in way to add support for custom fields.
+Django doesn't provide built-in support for custom fields.
 
 
 2.4.1 Option 1. Use get_FOO_display
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Change one by one
+Change them individually
 
 .. code-block:: python
 
@@ -212,7 +213,7 @@ Change one by one
 2.4.2 Option 2. Monkey patching Django
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you have a lot of django multiselect fields in list_display previous option can be much work.
+If you have many django multiselect fields in list_display, the previous option can be much work.
 
 You can see it in the `example project <https://github.com/goinnn/django-multiselectfield/blob/65376239ae7491414f896adb4d314349ff7c2667/example/app/apps.py#L34>`_.
 
@@ -258,7 +259,7 @@ This code is inspired by django code. It is possible that for other versions of 
 2.5 Add support for read-only fields in the Django administration
 -----------------------------------------------------------------
 
-Django has no built-in way to add support for custom fields.
+Django doesn't provide built-in support for custom fields.
 
 You can see it in the `example project <https://github.com/goinnn/django-multiselectfield/blob/65376239ae7491414f896adb4d314349ff7c2667/example/app/apps.py#L52>`_. Log in to the Django admin in the sample project using the following credentials: user-readonly / DMF-123.
 

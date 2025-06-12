@@ -6,22 +6,22 @@
     * Remove MSFList (`01dcad230dc368b88a39bfc36f90ddd145f381a2 <https://github.com/goinnn/django-multiselectfield/commit/01dcad230dc368b88a39bfc36f90ddd145f381a2>`_):
 
         * Removed: (`50d3f785883e0a314f2dc89950e3fe1e88a7ede6 <https://github.com/goinnn/django-multiselectfield/commit/50d3f785883e0a314f2dc89950e3fe1e88a7ede6>`_)
-        * It was created to add support for MultiSelectFields in Admin.list_display. But it never does work. If you add a multiselect field to list_display, django does not call to __str__ method of MSGList (renamed to MSFList)
-        * It was created for integer choices too and it is a misconception. Explained in the README file.
+        * It was created to support MultiSelectFields in admin.list_display, but it never actually worked. If you add a multiselect field to list_display, Django does not call to __str__ method of MSGList (renamed to MSFList)
+        * It was created for integer choices too and it is a misconception. This is explained in the README file.
 
     * Remove MSFFlatchoices (`01dcad230dc368b88a39bfc36f90ddd145f381a2 <https://github.com/goinnn/django-multiselectfield/commit/01dcad230dc368b88a39bfc36f90ddd145f381a2>`_):
 
         * Removed: (`5638247c1d70670d4f81adf35143ef17a7d7575e <https://github.com/goinnn/django-multiselectfield/commit/5638247c1d70670d4f81adf35143ef17a7d7575e>`_)
-        * Now, in list_display, the labels of the choices are shown (separated by commas) instead of the values (separated by commas).
+        * In list_display, labels for the choices are now shown (comma-separated) instead of the values of the choices (comma-separated).
 
-    * In to_python method value is a list or a string. (`c4579138dda2833cbce26afbf57da5353aa45690 <https://github.com/goinnn/django-multiselectfield/commit/c4579138dda2833cbce26afbf57da5353aa45690>`_)
+    * In to_python method, value is a list or a string. (`c4579138dda2833cbce26afbf57da5353aa45690 <https://github.com/goinnn/django-multiselectfield/commit/c4579138dda2833cbce26afbf57da5353aa45690>`_)
 
         * Remove set case and dict case
-        * Please, If this breaks something, you can create a test to understand the use case
+        * If this breaks something, please create a test to help understand the use case.
 
     * Removing integer choices:
 
-        * It was an error. MultiSelectField inheritances of CharField, not IntegerField.
+        * It was a mistake. MultiSelectField inherits of CharField, not IntegerField.
         * It is impossible knows if original choice is (1, 'Item title 2.1') or ('1', 'Item title 2.1')
 
 
@@ -38,7 +38,7 @@
 
 * Documentation:
 
-    * How add a filter to the Django administration:
+    * How to add a filter to the Django administration:
 
         * (`e36cbae4c3b39dac4a3fee03fdda9622a101f22d <https://github.com/goinnn/django-multiselectfield/commit/e36cbae4c3b39dac4a3fee03fdda9622a101f22d>`_)
         * Inspired by (`#116 <https://github.com/goinnn/django-multiselectfield/issues/116>`_)
@@ -48,23 +48,23 @@
         * (`5638247c1d70670d4f81adf35143ef17a7d7575e <https://github.com/goinnn/django-multiselectfield/commit/5638247c1d70670d4f81adf35143ef17a7d7575e>`_)
 
 
-    * How add support for read-only fields in the Django administration:
+    * How to add support for read-only fields in the Django administration:
 
         * (`65376239ae7491414f896adb4d314349ff7c2667 <https://github.com/goinnn/django-multiselectfield/commit/65376239ae7491414f896adb4d314349ff7c2667>`_)
 
-* Clean old code:
+* Cleanup: Removed outdated code and updated compatibility:
 
-    * Update syntax for targeted versions of Python and Django. (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
+    * Updated syntax for the targeted Python and Django versions. (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
 
-    * Add pre-commit (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
+    * Add pre-commit hooks (`#161 <https://github.com/goinnn/django-multiselectfield/pull/161>`_)
 
-    * Fix Github actions
+    * Fixed GitHub Actions workflow.
 
-    * Remove travis configuration
+    * Removed Travis CI configuration.
 
-    * Coveralls integrations
+    * Fix Coveralls integrations
 
-    * Improve readme. Right version of Python / Django
+    * Improved the README: clarified the correct versions of Python and Django.
 
 
 Thanks to:
