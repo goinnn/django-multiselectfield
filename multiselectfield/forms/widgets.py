@@ -27,7 +27,7 @@ class MultiSelectCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
             self.attrs['class'] = 'multiselectfield'
 
 
-class SortedCheckboxSelectMultiple(MultiSelectCheckboxSelectMultiple):
+class SortMultiSelectCheckboxSelectMultiple(MultiSelectCheckboxSelectMultiple):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -47,19 +47,19 @@ class SortedCheckboxSelectMultiple(MultiSelectCheckboxSelectMultiple):
         """Return a list of optgroups for this widget."""
         groups = []
         has_selected = False
-        choices = self.choices
 
+        # Custom: start
         def index_of(val, in_list):
             try:
                 return in_list.index(val)
             except ValueError:
                 return sys.maxsize
 
-        choices = sorted(choices, key=lambda choice: index_of(choice[0], value))
-
-        for index, (option_value, option_label) in enumerate(choices):
+        for index, (option_value, option_label) in enumerate(sorted(self.choices, key=lambda choice: index_of(choice[0], value))):
+            # Custom: end
             if option_value is None:
-                option_value = ''
+                option_value = ""
+
             subgroup = []
             if isinstance(option_label, (list, tuple)):
                 group_name = option_value

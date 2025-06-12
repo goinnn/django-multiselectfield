@@ -16,7 +16,7 @@
 from django import forms
 
 
-from ..forms.widgets import MultiSelectCheckboxSelectMultiple, SortedCheckboxSelectMultiple
+from ..forms.widgets import MultiSelectCheckboxSelectMultiple, SortMultiSelectCheckboxSelectMultiple
 from ..utils import get_max_length
 from ..validators import MaxValueMultiFieldValidator, MinChoicesValidator, MaxChoicesValidator
 
@@ -38,4 +38,4 @@ class MultiSelectFormField(forms.MultipleChoiceField):
 
 
 class SortMultiSelectFormField(MultiSelectFormField):
-    widget = SortedCheckboxSelectMultiple
+    widget = SortMultiSelectCheckboxSelectMultiple
