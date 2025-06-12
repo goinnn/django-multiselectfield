@@ -12,19 +12,20 @@ django-multiselectfield
     :target: https://badge.fury.io/py/django-multiselectfield
 
 
+Support this package by donating here! ➡️
+=========================================
 
-.. raw:: html
+If you find this package useful, consider supporting it:
 
-    <div align="center">
-        <h2>Support this package by donating here! ➡️</h2>
-        <a href="https://www.buymeacoffee.com/goinnn">
-            <img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me a Coffee" height="40">
-        </a>
-        <a href="https://www.paypal.com/paypalme/goinnn">
-            <img src="https://img.shields.io/badge/PayPal-badge?style=plastic&logo=paypal&color=white" alt="Paypal" height="40">
-        </a>
-    </div>
-    <br>
+.. image:: https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png
+    :target: https://www.buymeacoffee.com/goinnn
+    :alt: Buy Me a Coffee
+    :height: 40px
+
+.. image:: https://img.shields.io/badge/PayPal-badge?style=plastic&logo=paypal&color=white
+    :target: https://www.paypal.com/paypalme/goinnn
+    :alt: Paypal
+    :height: 40px
 
 
 A new model field and form field. With this, you can get a multiple select from choices. It is stored to the database as a CharField of comma-separated values.
